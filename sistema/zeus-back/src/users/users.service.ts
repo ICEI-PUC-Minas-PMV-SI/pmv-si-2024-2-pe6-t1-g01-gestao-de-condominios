@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, type UserRelations } from '../entities/user.entity';
-import { randomBytes, scrypt as _scrypt } from "crypto"
-import { promisify } from "util"
+import { randomBytes, scrypt as _scrypt } from 'crypto';
+import { promisify } from 'util';
 
-const scrypt = promisify(_scrypt)
+const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class UsersService {
@@ -20,20 +20,20 @@ export class UsersService {
   async findOne(id: number, relations?: UserRelations[]) {
     let user: User;
 
-    if(relations && relations.length > 0) {
+    if (relations && relations.length > 0) {
       user = await this.repo.findOne({
         where: { id },
-        relations
+        relations,
       });
     }
 
-    user = await this.repo.findOneBy({ id })
+    user = await this.repo.findOneBy({ id });
 
     if (!user) {
       throw new NotFoundException('Usuário not found');
     }
 
-    return user
+    return user;
   }
 
   findByEmail(email: string) {
@@ -43,14 +43,14 @@ export class UsersService {
   async update(id: number, attrs: Partial<User>) {
     const user = await this.findOne(id);
 
-    if(!user) {
+    if (!user) {
       throw new NotFoundException('user not found');
     }
 
-    if(attrs.password) {
-      const salt = randomBytes(8).toString('hex')
-      const hash = (await scrypt(attrs.password, salt, 32)) as Buffer
-      attrs.password = salt + '.' + hash.toString('hex')
+    if (attrs.password) {
+      const salt = randomBytes(8).toString('hex');
+      const hash = (await scrypt(attrs.password, salt, 32)) as Buffer;
+      attrs.password = salt + '.' + hash.toString('hex');
     }
 
     Object.assign(user, attrs);
@@ -59,7 +59,7 @@ export class UsersService {
 
   async remove(id: number) {
     const user = await this.findOne(id);
-    if(!user) {
+    if (!user) {
       throw new NotFoundException('user not found');
     }
     return this.repo.remove(user);

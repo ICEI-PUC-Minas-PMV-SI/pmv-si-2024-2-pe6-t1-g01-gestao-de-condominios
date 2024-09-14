@@ -9,7 +9,7 @@ export class VisitorsService {
   constructor(@InjectRepository(Visitor) private repo: Repository<Visitor>) {}
 
   create(name: string, cellphone: string, cpf: number) {
-    const visitor = this.repo.create({ name, cellphone, cpf});
+    const visitor = this.repo.create({ name, cellphone, cpf });
     return this.repo.save(visitor);
   }
 
@@ -18,7 +18,7 @@ export class VisitorsService {
   }
 
   findOne(id: number) {
-    if(!id) {
+    if (!id) {
       return null;
     }
     return this.repo.findOne({ where: { id } });
@@ -26,7 +26,7 @@ export class VisitorsService {
 
   async update(id: number, body: UpdateVisitorsDto) {
     const visitor = await this.findOne(id);
-    if(!visitor) {
+    if (!visitor) {
       throw new NotFoundException('visitor not found');
     }
     Object.assign(visitor, body);
@@ -35,7 +35,7 @@ export class VisitorsService {
 
   async remove(id: number) {
     const visitor = await this.findOne(id);
-    if(!visitor) {
+    if (!visitor) {
       throw new NotFoundException('visitor not found');
     }
     return this.repo.remove([visitor]);

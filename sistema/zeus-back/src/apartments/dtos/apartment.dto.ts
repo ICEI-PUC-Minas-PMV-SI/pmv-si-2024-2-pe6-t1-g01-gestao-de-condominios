@@ -1,8 +1,7 @@
-import { Expose } from "class-transformer";
+import { Expose } from 'class-transformer';
 import { User } from 'src/entities/user.entity';
 
 export class ApartmentDto {
-
   @Expose()
   id: number;
 

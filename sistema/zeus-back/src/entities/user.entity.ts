@@ -39,6 +39,8 @@ export class User {
   })
   role: UserRole;
 
-  @ManyToOne(() => Apartment, (apartment) => apartment.residents, { nullable: true })
+  @ManyToOne(() => Apartment, (apartment) => apartment.residents, {
+    nullable: true,
+  })
   apartment: Apartment;
 }
