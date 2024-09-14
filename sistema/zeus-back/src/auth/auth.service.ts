@@ -7,6 +7,7 @@ import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { UserRole } from 'src/entities/user.entity';
 
 const scrypt = promisify(_scrypt);
 
@@ -17,17 +18,25 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(email: string, password: string) {
+  async signup(email: string, password: string, role: UserRole) {
     const users = await this.usersService.findByEmail(email);
     if (users.length) {
       throw new BadRequestException('email in use');
+    }
+
+    if (!role) {
+      throw new BadRequestException('role is required');
+    }
+
+    if (!(role in UserRole)) {
+      throw new BadRequestException('role is invalid');
     }
 
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
 
-    const user = await this.usersService.create(email, result);
+    const user = await this.usersService.create(email, result, role);
 
     const payload = { email: user.email };
     const accessToken = this.jwtService.sign(payload);

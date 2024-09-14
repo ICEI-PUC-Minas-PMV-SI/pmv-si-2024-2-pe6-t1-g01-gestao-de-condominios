@@ -15,4 +15,10 @@ describe('AuthService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should verify roles on signup', () => {
+    expect(
+      service.signup('test@mock.com', 'password', 'invalid_role' as any),
+    ).toThrow('role is invalid');
+  });
 });

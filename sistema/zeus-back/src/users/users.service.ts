@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, type UserRelations } from '../entities/user.entity';
+import { User, UserRole, type UserRelations } from '../entities/user.entity';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 
@@ -11,8 +11,8 @@ const scrypt = promisify(_scrypt);
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  create(email: string, password: string) {
-    const user = this.repo.create({ email, password });
+  create(email: string, password: string, role: UserRole) {
+    const user = this.repo.create({ email, password, role });
 
     return this.repo.save(user);
   }
