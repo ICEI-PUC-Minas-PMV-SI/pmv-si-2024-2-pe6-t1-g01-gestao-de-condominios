@@ -28,6 +28,7 @@ export class AuthController {
     const { user, accessToken } = await this.authService.signup(
       body.email,
       body.password,
+      body.role,
     );
     return { user, accessToken };
   }
