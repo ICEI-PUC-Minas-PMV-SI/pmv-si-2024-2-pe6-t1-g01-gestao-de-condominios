@@ -1,16 +1,24 @@
-import { Body, Controller, Get, Put, Delete, Param, Query, NotFoundException, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Put,
+  Delete,
+  Param,
+  Query,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
-import { JwtSessionGuard } from '../auth/guards/jwt-auth.guard'
+import { JwtSessionGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('user')
 @Serialize(UserDto)
 export class UsersController {
-  constructor(
-    private usersService: UsersService
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   @Get('/:id')
   @UseGuards(JwtSessionGuard)

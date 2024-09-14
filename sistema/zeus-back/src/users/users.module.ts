@@ -17,10 +17,10 @@ import { CurrentUserMiddleware } from './middlewares/current-user.middlewares';
     //   useClass: CurrentUserInterceptor
     // }
   ],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CurrentUserMiddleware).forRoutes('*')
+    consumer.apply(CurrentUserMiddleware).forRoutes('*');
   }
 }

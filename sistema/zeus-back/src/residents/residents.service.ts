@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateResidentDto } from './dto/update-resident.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserRole } from '../entities/user.entity';
@@ -15,25 +19,27 @@ export class ResidentsService {
   async findOne(id: number) {
     const resident = await this.repo.findOne({
       where: { id, role: UserRole.MORADOR },
-      relations: ['apartment']
+      relations: ['apartment'],
     });
 
     if (!resident) {
       throw new NotFoundException('Morador not found');
     }
-  
+
     return resident;
   }
 
   async update(id: number, body: UpdateResidentDto) {
     const resident = await this.findOne(id);
 
-    if(!resident) {
+    if (!resident) {
       throw new NotFoundException('Morador not found');
     }
 
-    if(resident.role !== 'MORADOR') {
-      throw new BadRequestException('O usuário deve ser do tipo MORADOR para ser atualizado.');
+    if (resident.role !== 'MORADOR') {
+      throw new BadRequestException(
+        'O usuário deve ser do tipo MORADOR para ser atualizado.',
+      );
     }
 
     Object.assign(resident, body);
@@ -42,7 +48,7 @@ export class ResidentsService {
 
   async remove(id: number) {
     const resident = await this.findOne(id);
-    if(!resident) {
+    if (!resident) {
       throw new NotFoundException('Morador not found');
     }
     return this.repo.remove(resident);

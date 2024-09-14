@@ -5,7 +5,7 @@ export class UpdateResidentDto {
   @IsString()
   @IsOptional()
   name: string;
-  
+
   @IsEmail()
   @IsOptional()
   email: string;

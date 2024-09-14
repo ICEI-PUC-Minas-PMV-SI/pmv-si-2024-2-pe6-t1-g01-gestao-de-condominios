@@ -5,12 +5,14 @@ import { Apartment } from '../entities/apartment.entity';
 
 @Injectable()
 export class ApartmentsService {
-  constructor(@InjectRepository(Apartment) private repo: Repository<Apartment>) {}
+  constructor(
+    @InjectRepository(Apartment) private repo: Repository<Apartment>,
+  ) {}
 
   create(number: number, block?: string) {
-    const apartment = this.repo.create({ 
-      number, 
-      block: block ?? null
+    const apartment = this.repo.create({
+      number,
+      block: block ?? null,
     });
 
     return this.repo.save(apartment);
@@ -39,7 +41,7 @@ export class ApartmentsService {
 
   async update(id: number, attrs: Partial<Apartment>) {
     const apartment = await this.findOne(id);
-    if(!apartment) {
+    if (!apartment) {
       throw new NotFoundException('Apartamento não encontrado.');
     }
     Object.assign(apartment, attrs);
@@ -48,7 +50,7 @@ export class ApartmentsService {
 
   async remove(id: number) {
     const apartment = await this.findOne(id);
-    if(!apartment) {
+    if (!apartment) {
       throw new NotFoundException('Apartamento não encontrado.');
     }
     return this.repo.remove(apartment);

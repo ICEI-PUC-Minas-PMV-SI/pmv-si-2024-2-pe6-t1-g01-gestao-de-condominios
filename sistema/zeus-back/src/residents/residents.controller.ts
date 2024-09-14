@@ -1,4 +1,12 @@
-import { Controller, Get, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Put,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ResidentsService } from './residents.service';
 import { UpdateResidentDto } from './dto/update-resident.dto';
 import { JwtSessionGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -8,8 +16,7 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 @Controller('resident')
 @Serialize(ResidentDto)
 export class ResidentsController {
-  constructor(
-    private readonly residentsService: ResidentsService) {}
+  constructor(private readonly residentsService: ResidentsService) {}
 
   @Get()
   @UseGuards(JwtSessionGuard)
@@ -26,7 +33,7 @@ export class ResidentsController {
   @Put(':id')
   @UseGuards(JwtSessionGuard)
   update(@Param('id') id: string, @Body() body: UpdateResidentDto) {
-    return this.residentsService.update(+id, {...body, role: 'MORADOR'});
+    return this.residentsService.update(+id, { ...body, role: 'MORADOR' });
   }
 
   @Delete(':id')

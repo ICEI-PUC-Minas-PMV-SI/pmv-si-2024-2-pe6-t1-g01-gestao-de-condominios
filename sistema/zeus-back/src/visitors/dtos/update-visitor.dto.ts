@@ -1,15 +1,15 @@
-import {IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 
-export class UpdateVisitorsDto{
-    @IsString() 
-    @IsOptional()
-    name: string;
+export class UpdateVisitorsDto {
+  @IsString()
+  @IsOptional()
+  name: string;
 
-    @IsString()
-    @IsOptional()
-    cellphone: string;
+  @IsString()
+  @IsOptional()
+  cellphone: string;
 
-    @IsNumber()
-    @IsOptional()
-    cpf: number;
+  @IsNumber()
+  @IsOptional()
+  cpf: number;
 }

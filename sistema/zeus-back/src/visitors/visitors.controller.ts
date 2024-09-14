@@ -1,16 +1,27 @@
 import { CreateVisitorDto } from './dtos/create-visitor.dto';
 import { UpdateVisitorsDto } from './dtos/update-visitor.dto';
 import { VisitorsService } from './visitors.service';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 @Controller('visitor')
 export class VisitorsController {
-
   constructor(private readonly visitorsService: VisitorsService) {}
 
   @Post()
   async create(@Body() body: CreateVisitorDto) {
-    const visitor = await this.visitorsService.create(body.name, body.cellphone, body.cpf);
+    const visitor = await this.visitorsService.create(
+      body.name,
+      body.cellphone,
+      body.cpf,
+    );
 
     return visitor;
   }
@@ -34,5 +45,4 @@ export class VisitorsController {
   remove(@Param('id') id: string) {
     return this.visitorsService.remove(+id);
   }
-
 }
