@@ -28,6 +28,10 @@ export class AuthService {
       throw new BadRequestException('role is required');
     }
 
+    if (!(role in UserRole)) {
+      throw new BadRequestException('role is invalid');
+    }
+
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
