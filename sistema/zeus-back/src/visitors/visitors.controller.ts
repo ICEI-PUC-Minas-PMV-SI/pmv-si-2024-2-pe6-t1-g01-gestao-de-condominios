@@ -1,15 +1,7 @@
 import { CreateVisitorDto } from './dtos/create-visitor.dto';
 import { UpdateVisitorsDto } from './dtos/update-visitor.dto';
 import { VisitorsService } from './visitors.service';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, Post } from '@nestjs/common';
 
 @Controller('visitor')
 export class VisitorsController {
@@ -36,7 +28,7 @@ export class VisitorsController {
     return this.visitorsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() body: UpdateVisitorsDto) {
     return this.visitorsService.update(+id, body);
   }

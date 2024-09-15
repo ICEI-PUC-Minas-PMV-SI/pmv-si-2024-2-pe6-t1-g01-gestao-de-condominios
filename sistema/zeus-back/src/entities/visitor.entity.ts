@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
 @Entity()
 export class Visitor {
@@ -17,7 +12,7 @@ export class Visitor {
   cellphone: string;
 
   @Column()
-  cpf: number;
+  cpf: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

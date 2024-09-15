@@ -8,7 +8,7 @@ import { Visitor } from 'src/entities/visitor.entity';
 export class VisitorsService {
   constructor(@InjectRepository(Visitor) private repo: Repository<Visitor>) {}
 
-  create(name: string, cellphone: string, cpf: number) {
+  create(name: string, cellphone: string, cpf: string) {
     const visitor = this.repo.create({ name, cellphone, cpf });
     return this.repo.save(visitor);
   }

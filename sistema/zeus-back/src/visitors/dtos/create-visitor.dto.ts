@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateVisitorDto {
   @IsString()
@@ -7,6 +7,6 @@ export class CreateVisitorDto {
   @IsString()
   cellphone: string;
 
-  @IsNumber()
-  cpf: number;
+  @IsString()
+  cpf: string;
 }

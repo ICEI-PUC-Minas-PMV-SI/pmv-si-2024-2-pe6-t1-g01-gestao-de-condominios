@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { User } from './user.entity'; // ajuste o caminho se necessário
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Apartment {
@@ -14,4 +14,7 @@ export class Apartment {
 
   @OneToMany(() => User, (user) => user.apartment)
   residents: User[];
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
 }

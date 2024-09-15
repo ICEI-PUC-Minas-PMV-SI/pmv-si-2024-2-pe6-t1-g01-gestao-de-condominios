@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Apartment } from './apartment.entity';
 
@@ -43,4 +43,7 @@ export class User {
     nullable: true,
   })
   apartment: Apartment;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
 }
