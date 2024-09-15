@@ -6,12 +6,14 @@ import {
   Param,
   Delete,
   UseGuards,
+  Post,
 } from '@nestjs/common';
 import { ResidentsService } from './residents.service';
 import { UpdateResidentDto } from './dto/update-resident.dto';
 import { JwtSessionGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ResidentDto } from './dto/resident.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
+import { CreateResidentDto } from './dto/create-resident.dto';
 
 @Controller('resident')
 @Serialize(ResidentDto)
@@ -22,6 +24,12 @@ export class ResidentsController {
   @UseGuards(JwtSessionGuard)
   findAll() {
     return this.residentsService.findAll();
+  }
+
+  @Post()
+  @UseGuards(JwtSessionGuard)
+  create(@Body() body: CreateResidentDto) {
+    return this.residentsService.create(body);
   }
 
   @Get(':id')
