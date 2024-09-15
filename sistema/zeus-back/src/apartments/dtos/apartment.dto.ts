@@ -13,4 +13,7 @@ export class ApartmentDto {
 
   @Expose()
   users: User[];
+
+  @Expose()
+  createdAt: string;
 }

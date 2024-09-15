@@ -25,4 +25,7 @@ export class ResidentDto {
 
   @Expose()
   apartment: Apartment;
+
+  @Expose()
+  createdAt: string;
 }

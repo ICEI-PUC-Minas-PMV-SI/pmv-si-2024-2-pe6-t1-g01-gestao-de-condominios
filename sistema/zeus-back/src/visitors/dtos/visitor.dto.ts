@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class UserDto {
+export class VisitorDto {
   @Expose()
   id: number;
 
@@ -8,16 +8,10 @@ export class UserDto {
   name: string;
 
   @Expose()
-  email: string;
-
-  @Expose()
   cellphone: string;
 
   @Expose()
   cpf: string;
-
-  @Expose()
-  role: string;
 
   @Expose()
   createdAt: string;

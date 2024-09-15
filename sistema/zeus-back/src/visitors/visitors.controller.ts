@@ -1,9 +1,12 @@
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CreateVisitorDto } from './dtos/create-visitor.dto';
 import { UpdateVisitorsDto } from './dtos/update-visitor.dto';
 import { VisitorsService } from './visitors.service';
 import { Body, Controller, Delete, Get, Param, Put, Post } from '@nestjs/common';
+import { VisitorDto } from './dtos/visitor.dto';
 
 @Controller('visitor')
+@Serialize(VisitorDto)
 export class VisitorsController {
   constructor(private readonly visitorsService: VisitorsService) {}
 
