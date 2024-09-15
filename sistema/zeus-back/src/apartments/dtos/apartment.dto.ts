@@ -15,5 +15,8 @@ export class ApartmentDto {
   users: User[];
 
   @Expose()
-  createdAt: string;
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }

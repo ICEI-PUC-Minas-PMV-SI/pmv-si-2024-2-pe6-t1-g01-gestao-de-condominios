@@ -14,5 +14,8 @@ export class VisitorDto {
   cpf: string;
 
   @Expose()
-  createdAt: string;
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }

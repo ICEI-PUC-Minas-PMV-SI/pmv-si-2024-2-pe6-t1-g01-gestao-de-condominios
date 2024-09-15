@@ -20,5 +20,8 @@ export class UserDto {
   role: string;
 
   @Expose()
-  createdAt: string;
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }

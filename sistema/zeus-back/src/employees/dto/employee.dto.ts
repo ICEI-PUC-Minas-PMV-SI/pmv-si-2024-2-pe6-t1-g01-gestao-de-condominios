@@ -18,4 +18,10 @@ export class EmployeeDto {
 
   @Expose()
   role: string;
+
+  @Expose()
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }

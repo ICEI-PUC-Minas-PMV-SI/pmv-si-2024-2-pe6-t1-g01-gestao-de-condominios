@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Put,
-  Param,
-  Delete,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { JwtSessionGuard } from '../auth/guards/jwt-auth.guard';
