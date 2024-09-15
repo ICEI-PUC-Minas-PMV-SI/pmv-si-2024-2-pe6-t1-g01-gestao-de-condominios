@@ -17,39 +17,39 @@ export class EmployeesService {
   }
 
   async findOne(id: number) {
-    const resident = await this.repo.findOne({
+    const employee = await this.repo.findOne({
       where: { id, role: UserRole.PORTEIRO },
     });
 
-    if (!resident) {
+    if (!employee) {
       throw new NotFoundException('Employee not found');
     }
 
-    return resident;
+    return employee;
   }
 
   async update(id: number, body: UpdateEmployeeDto) {
-    const resident = await this.findOne(id);
+    const employee = await this.findOne(id);
 
-    if (!resident) {
+    if (!employee) {
       throw new NotFoundException('Porteiro not found');
     }
 
-    if (resident.role !== 'PORTEIRO') {
+    if (employee.role !== 'PORTEIRO') {
       throw new BadRequestException(
         'O usuário deve ser do tipo PORTEIRO para ser atualizado.',
       );
     }
 
-    Object.assign(resident, body);
-    return this.repo.save(resident);
+    Object.assign(employee, body);
+    return this.repo.save(employee);
   }
 
   async remove(id: number) {
-    const resident = await this.findOne(id);
-    if (!resident) {
+    const employee = await this.findOne(id);
+    if (!employee) {
       throw new NotFoundException('Porteiro not found');
     }
-    return this.repo.remove(resident);
+    return this.repo.remove(employee);
   }
 }

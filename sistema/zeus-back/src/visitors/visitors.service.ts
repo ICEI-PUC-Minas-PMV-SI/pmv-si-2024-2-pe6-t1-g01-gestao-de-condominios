@@ -38,6 +38,6 @@ export class VisitorsService {
     if (!visitor) {
       throw new NotFoundException('visitor not found');
     }
-    return this.repo.remove([visitor]);
+    return this.repo.remove(visitor);
   }
 }
