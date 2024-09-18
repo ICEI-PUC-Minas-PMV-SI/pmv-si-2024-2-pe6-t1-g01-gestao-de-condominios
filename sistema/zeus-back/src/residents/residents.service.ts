@@ -3,13 +3,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UpdateResidentDto } from './dto/update-resident.dto';
+import { UpdateResidentDto } from './dtos/update-resident.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserRole } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
-import { CreateEmployeeDto } from 'src/employees/dto/create-employee.dto';
+import { CreateEmployeeDto } from 'src/employees/dtos/create-employee.dto';
 
 const scrypt = promisify(_scrypt);
 

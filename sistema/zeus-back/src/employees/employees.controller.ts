@@ -1,10 +1,10 @@
 import { Controller, Get, Body, Put, Param, Delete, UseGuards, Post } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { UpdateEmployeeDto } from './dtos/update-employee.dto';
 import { JwtSessionGuard } from '../auth/guards/jwt-auth.guard';
-import { EmployeeDto } from './dto/employee.dto';
+import { EmployeeDto } from './dtos/employee.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { CreateEmployeeDto } from './dtos/create-employee.dto';
 
 @Controller('employee')
 @Serialize(EmployeeDto)

@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Apartment } from './apartment.entity';
+import { Document } from './document.entity';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -43,6 +44,9 @@ export class User {
     nullable: true,
   })
   apartment: Apartment;
+
+  @OneToMany(() => Document, (document) => document.user)
+  documents: Document[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

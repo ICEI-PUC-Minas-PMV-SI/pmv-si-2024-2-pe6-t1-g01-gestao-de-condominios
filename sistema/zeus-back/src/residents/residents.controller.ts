@@ -9,11 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { ResidentsService } from './residents.service';
-import { UpdateResidentDto } from './dto/update-resident.dto';
+import { UpdateResidentDto } from './dtos/update-resident.dto';
 import { JwtSessionGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ResidentDto } from './dto/resident.dto';
+import { ResidentDto } from './dtos/resident.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
-import { CreateResidentDto } from './dto/create-resident.dto';
+import { CreateResidentDto } from './dtos/create-resident.dto';
 
 @Controller('resident')
 @Serialize(ResidentDto)
