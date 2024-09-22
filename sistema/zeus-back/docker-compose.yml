@@ -1,0 +1,58 @@
+version: '3'
+services:
+  app:
+    container_name: zeus-nest-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - DATABASE_URL=mysql://${DB_USERNAME}:${DB_PASSWORD}@mysql:${DB_PORT}/${DB_DATABASE}
+      - JWT_SECRET=${JWT_SECRET}
+      - MINIO_BUCKET=${MINIO_BUCKET}
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+      - minio
+    networks:
+      - zeus-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: zeus-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - zeus-network
+
+  minio:
+    image: minio/minio
+    container_name: zeus-minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_REGION: us-east-1
+    command: server /data
+    volumes:
+      - minio_data:/data
+    networks:
+      - zeus-network
+
+volumes:
+  mysql_data:
+  minio_data:
+
+networks:
+  zeus-network:

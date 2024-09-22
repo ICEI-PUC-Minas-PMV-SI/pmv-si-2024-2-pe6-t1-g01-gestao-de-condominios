@@ -41,3 +41,12 @@ Assim que a primeira versão do sistema estiver disponível, deverá complementa
 # Apresentação
 
 <li><a href="presentation/README.md"> Apresentação da solução</a></li>
+
+
+# Rodar o projeto
+
+`docker-compose up --build`
+
+`docker exec -it zeus-minio sh`
+
+`mc mb myminio/zeus-bucket`

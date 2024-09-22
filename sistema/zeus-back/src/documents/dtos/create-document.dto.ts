@@ -7,7 +7,4 @@ export class CreateDocumentDto {
   @IsString()
   @IsOptional()
   description: string;
-
-  @IsString()
-  link: string;
 }
