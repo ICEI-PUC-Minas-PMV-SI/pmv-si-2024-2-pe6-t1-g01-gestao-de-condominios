@@ -42,6 +42,9 @@ Assim que a primeira versão do sistema estiver disponível, deverá complementa
 
 <li><a href="presentation/README.md"> Apresentação da solução</a></li>
 
+# Requisitos para rodar o projeto
+
+- Ter o docker instalado
 
 # Rodar o projeto
 
