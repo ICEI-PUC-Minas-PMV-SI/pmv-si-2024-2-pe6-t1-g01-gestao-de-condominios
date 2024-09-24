@@ -35,7 +35,7 @@ export class DocumentsService {
     const bucketName = this.configService.get('MINIO_BUCKET');
     const objectName = `${Date.now()}_${file.originalname}`;
 
-    await this.minioService.upload(file.buffer, bucketName, objectName);
+    await this.minioService.upload(file, bucketName, objectName);
     
     return objectName;
   }

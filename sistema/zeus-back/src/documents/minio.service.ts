@@ -22,10 +22,13 @@ export class MinioService {
     return `${useSSL ? 'https' : 'http'}://${this.configService.get('MINIO_ENDPOINT')}:${this.configService.get('MINIO_PORT')}/${this.configService.get('MINIO_BUCKET')}/`;
   }
 
-  async upload(fileBuffer: Buffer, bucket: string, object: string) {
+  async upload(file: Express.Multer.File, bucket: string, object: string) {
     await this.createBucket(this.configService.get('MINIO_BUCKET'), this.configService.get('MINIO_REGION'))
 
-    await this.minioClient.putObject(bucket, object, fileBuffer);
+    await this.minioClient.putObject(bucket, object, file.buffer, file.size, {
+      'Content-Type': file.mimetype,
+      'x-amz-acl': 'public-read',
+    });
   }
 
   async createBucket(bucketName: string, region: string): Promise<void> {
