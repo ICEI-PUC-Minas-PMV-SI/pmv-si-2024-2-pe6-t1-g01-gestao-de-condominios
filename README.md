@@ -49,7 +49,3 @@ Assim que a primeira versão do sistema estiver disponível, deverá complementa
 # Rodar o projeto
 
 `docker-compose up --build`
-
-`docker exec -it zeus-minio sh`
-
-`mc mb myminio/zeus-bucket`
