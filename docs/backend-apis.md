@@ -1,17 +1,31 @@
 # APIs e Web Services
 
-O planejamento de uma aplicação de APIS Web é uma etapa fundamental para o sucesso do projeto. Ao planejar adequadamente, você pode evitar muitos problemas e garantir que a sua API seja segura, escalável e eficiente.
-
-Aqui estão algumas etapas importantes que devem ser consideradas no planejamento de uma aplicação de APIS Web.
-
-[Inclua uma breve descrição do projeto.]
+O projeto "Zeus - Gestão Condominial" é um aplicativo voltado para melhorar a comunicação entre a administração do condomínio e os moradores. Ele busca automatizar avisos importantes, como uso de máscaras, boletos em atraso, notificações de visitas e reservas de espaços, evitando atrasos ou falta de conhecimento. Com isso, o aplicativo centraliza informações essenciais, permitindo a gestão de moradores, funcionários e visitantes, além de facilitar a comunicação entre as partes, otimizando o funcionamento e o controle dentro do condomínio.
 
 ## Objetivos da API
 
-O primeiro passo é definir os objetivos da sua API. O que você espera alcançar com ela? Você quer que ela seja usada por clientes externos ou apenas por aplicações internas? Quais são os recursos que a API deve fornecer?
+### Objetivo Geral
+Facilitar a comunicação entre o síndico e os residentes do condomínio, proporcionando um canal eficiente e automatizado de troca de informações.
 
-[Inclua os objetivos da sua api.]
+### Objetivos Específicos
 
+1. Centralizar Informações de Gestão:
+
+    • Disponibilizar e gerenciar atas de reuniões, estatutos e balancetes financeiros para  fácil acesso dos moradores e administração.
+
+2. Facilitar a Comunicação Entre Administração e Moradores:
+
+    • Criar endpoints que permitam o envio e recebimento de comunicados e notificações entre o síndico e os residentes, de forma automatizada e sem burocracia.
+
+3. Controle de Cadastro:
+
+    • Gerenciar o cadastro de moradores, funcionários e visitantes, possibilitando atualizações em tempo real e integração com os sistemas de controle de acesso do condomínio.
+
+4. Gerenciamento de Entradas e Saídas:
+
+    • Implementar funcionalidades para registrar a entrada e saída de visitantes, integrando com os sistemas de portaria para garantir maior segurança e controle no condomínio.
+
+Esses objetivos buscam centralizar as operações essenciais para o bom funcionamento do condomínio, otimizando a comunicação e o gerenciamento de pessoas e informações.
 
 ## Arquitetura
 
@@ -20,24 +34,43 @@ O primeiro passo é definir os objetivos da sua API. O que você espera alcança
 ## Modelagem da Aplicação
 [Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
 
-
 ## Fluxo de Dados
 
 [Diagrama ou descrição do fluxo de dados na aplicação.]
 
 ## Requisitos Funcionais
 
-[Liste os principais requisitos funcionais da aplicação.]
+1. O sistema deve permitir o gerenciamento de dados do morador.
+
+2. O sistema deve permitir o gerenciamento de dados de apartamento.
+
+3. O sistema deve permitir o gerenciamento de dados de usuário.
+
+4. O sistema deve permitir a autenticação de usuários.
 
 ## Requisitos Não Funcionais
 
-[Liste os principais requisitos não funcionais da aplicação, como desempenho, segurança, escalabilidade, etc.]
+1. Disponibilidade: O sistema deve ficar online 24H por dia, 7 dias na semana.
+
+2. Usabilidade: O sistema deve permitir que complete uma tarefa de cadastro em no máximo 1 minuto.
+
+3. Usabilidade: Para utilizar o sistema, é necessário ter noções básicas de tecnologia e operação de computadores.
+
+4. Segurança: O produto deve restringir o acesso por meio de senhas individuais para o usuário.
 
 ## Tecnologias Utilizadas
 
-Existem muitas tecnologias diferentes que podem ser usadas para desenvolver APIs Web. A tecnologia certa para o seu projeto dependerá dos seus objetivos, dos seus clientes e dos recursos que a API deve fornecer.
+### Aplicação Web Front-end
 
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+A aplicação web front-end será desenvolvida utilizando o framework JavaScript Vue.js, em conjunto com a biblioteca de componentes Vuetify.
+
+### Aplicação Mobile
+
+A aplicação web front-end será desenvolvida utilizando o framework JavaScript multiplataforma React Native.
+
+### Microsserviços backend
+
+Os 5 microsserviços backend serão desenvolvidos utilizando Node.js, um ambiente multiplataforma para JavaScript e MySQL como banco de dados relacional.
 
 ## API Endpoints
 
@@ -71,7 +104,7 @@ Existem muitas tecnologias diferentes que podem ser usadas para desenvolver APIs
 
 ## Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+Modelo de token utilizado na API é o JSON Web Token (JWT), ele é um padrão de segurança amplamente utilizado para autenticação em APIs. Ele permite que informações sejam transmitidas de maneira segura entre partes por meio de um token assinado digitalmente. O token é composto por três partes: header (cabeçalho), payload (dados) e signature (assinatura). A assinatura garante a integridade dos dados e autentica a identidade do usuário. JWT é usado principalmente para controlar o acesso a recursos protegidos, validando a autenticação e autorização de forma rápida e eficiente, sem a necessidade de armazenar o estado do usuário no servidor.
 
 ## Implantação
 
@@ -95,4 +128,4 @@ Existem muitas tecnologias diferentes que podem ser usadas para desenvolver APIs
 
 # Referências
 
-Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
+Documentação levantada no projeto nosso em semestres anteriores.
