@@ -45,19 +45,21 @@ export class DocumentsController {
 
   @Put(':id')
   @UseGuards(JwtSessionGuard)
-  update(@Param('id') id: string, @Body() body: UpdateDocumentDto) {
-    return this.documentsService.update(+id, body);
+  @UseInterceptors(FileInterceptor('file'))
+  update(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateDocumentDto,
+    @Req() req: Request
+  ) {
+    const currentUser = req.user as User;
+
+    return this.documentsService.update(+id, body, file, currentUser);
   }
 
   @Delete(':id')
   @UseGuards(JwtSessionGuard)
   remove(@Param('id') id: string) {
     return this.documentsService.remove(+id);
-  }
-
-  @Get('signed-url/:fileName')
-  @UseGuards(JwtSessionGuard)
-  async getSignedUrl(@Param('fileName') fileName: string) {
-    return await this.minioService.getSignedUrl(fileName);
   }
 }

@@ -8,8 +8,4 @@ export class UpdateDocumentDto {
   @IsString()
   @IsOptional()
   description: string;
-
-  @IsString()
-  @IsOptional()
-  link: string;
 }

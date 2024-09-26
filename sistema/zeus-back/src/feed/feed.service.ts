@@ -9,14 +9,14 @@ export class FeedService {
     @InjectRepository(Feed) private repo: Repository<Feed>,
   ) {}
 
-  create(number: number, block?: string) {
-    const feed = this.repo.create({
-      number,
-      block: block ?? null,
-    });
+  // create(number: number, block?: string) {
+  //   const feed = this.repo.create({
+  //     number,
+  //     block: block ?? null,
+  //   });
 
-    return this.repo.save(feed);
-  }
+  //   return this.repo.save(feed);
+  // }
 
   findAll() {
     return this.repo.find();
@@ -34,9 +34,9 @@ export class FeedService {
     return feed;
   }
 
-  findByNumber(number: number) {
-    return this.repo.find({ where: { number } });
-  }
+  // findByNumber(number: number) {
+  //   return this.repo.find({ where: { number } });
+  // }
 
   async update(id: number, attrs: Partial<Feed>) {
     const feed = await this.findOne(id);

@@ -16,8 +16,15 @@ export class DocumentsService {
     private readonly configService: ConfigService
   ) {}
 
-  findAll() {
-    return this.repo.find({ relations: ['user'] });
+  async findAll() {
+    const bucket = this.configService.get('MINIO_BUCKET');
+    const documents = await this.repo.find({ relations: ['user'] });
+    const documentsWithLinks = await Promise.all(documents.map(async document => {
+      const link = await this.minioService.getFileUrl(document.link, bucket)
+      return { ...document, link };
+    }));
+
+    return documentsWithLinks;
   }
 
   async create(body: CreateDocumentDto, file: Express.Multer.File, user: User) {
@@ -48,6 +55,8 @@ export class DocumentsService {
       where: { id },
       relations: ['user'],
     });
+
+    document.link = await this.minioService.getFileUrl(document.link, this.configService.get('MINIO_BUCKET'));
   
     if (!document) {
       throw new NotFoundException('Document not found');
@@ -56,7 +65,7 @@ export class DocumentsService {
     return document;
   }
 
-  async update(id: number, body: UpdateDocumentDto) {
+  async update(id: number, body: UpdateDocumentDto, file: Express.Multer.File, user: User) {
     const document = await this.findOne(id);
 
     if (!document) {

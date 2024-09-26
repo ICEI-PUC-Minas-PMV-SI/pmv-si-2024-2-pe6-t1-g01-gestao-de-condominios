@@ -34,20 +34,16 @@ export class MinioService {
     });
   }
 
-  getBaseUrl() {
-    return `${this.useSSL ? 'https' : 'http'}://${this.configService.get('MINIO_ENDPOINT')}:${this.port}/${this.bucketName}/`;
-  }
-
-  async upload(file: Express.Multer.File, bucket: string, object: string) {
+  async upload(file: Express.Multer.File, bucket: string, fileName: string) {
     try {
-      await this.createBucket(this.configService.get('MINIO_BUCKET'), this.configService.get('MINIO_REGION'))
-  
-      await this.minioClient.putObject(bucket, object, file.buffer, file.size, {
+      await this.createBucket(this.bucketName, this.region)
+
+      await this.minioClient.putObject(bucket, fileName, file.buffer, file.size, {
         'Content-Type': file.mimetype,
         'x-amz-acl': 'public-read',
       });
 
-      return await this.getFileUrl(bucket, object)
+      return await this.getFileUrl(fileName, bucket)
     } catch (error) {
       throw new InternalServerErrorException('Erro ao fazer upload do arquivo');
     }
@@ -69,20 +65,11 @@ export class MinioService {
     }
   }
 
-  async getFileUrl(bucket: string, object: string) {
+  async getFileUrl(fileName: string, bucket: string = this.bucketName) {
     try {
-      return await this.externalMinioClient.presignedGetObject(bucket, object);
+      return await this.externalMinioClient.presignedGetObject(bucket, fileName);
     } catch (error) {
       throw new InternalServerErrorException('Erro ao gerar URL assinada');
     }
-  }
-
-  async getSignedUrl(objectName: string): Promise<string> {
-    const bucketName = this.configService.get('MINIO_BUCKET');
-    const expiresIn = 7 * 24 * 60 * 60;
-    const useSSL = JSON.parse(this.configService.get('MINIO_USE_SSL'));
-
-    return await this.minioClient.presignedUrl('GET', bucketName, objectName, expiresIn);
-    // return await this.minioClient.presignedGetObject(bucketName, objectName, expiresIn);
   }
 }
