@@ -1,34 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Minio from 'minio';
 
 @Injectable()
 export class MinioService {
   private readonly minioClient: Minio.Client;
+  private readonly externalMinioClient: Minio.Client;
+
+  private readonly port: number = parseInt(this.configService.get('MINIO_PORT'), 10) || 9000;
+  private readonly useSSL: boolean = JSON.parse(this.configService.get('MINIO_USE_SSL')) || false;
+  private readonly accessKey: string = this.configService.get('MINIO_ROOT_USER');
+  private readonly secretKey: string = this.configService.get('MINIO_ROOT_PASSWORD');
+  private readonly region: string = this.configService.get('MINIO_REGION') || 'us-east-1';
+  private readonly bucketName: string = this.configService.get('MINIO_BUCKET') || 'zeus-bucket';
 
   constructor(private readonly configService: ConfigService) {
+    const minioClientConfig = {
+      port: this.port,
+      useSSL: this.useSSL,
+      accessKey: this.accessKey,
+      secretKey: this.secretKey,
+      region: this.region
+    }
+
     this.minioClient = new Minio.Client({
       endPoint: this.configService.get('MINIO_ENDPOINT') || 'minio',
-      port: parseInt(this.configService.get('MINIO_PORT'), 10) || 9000,
-      useSSL: JSON.parse(this.configService.get('MINIO_USE_SSL')) || false,
-      accessKey: this.configService.get('MINIO_ROOT_USER'),
-      secretKey: this.configService.get('MINIO_ROOT_PASSWORD'),
-      region: this.configService.get('MINIO_REGION') || 'us-east-1'
+      ...minioClientConfig
+    });
+
+    this.externalMinioClient = new Minio.Client({
+      endPoint: this.configService.get('APP_HOST') || '127.0.0.1',
+      ...minioClientConfig
     });
   }
-  
+
   getBaseUrl() {
-    const useSSL: boolean = JSON.parse(this.configService.get('MINIO_USE_SSL'));
-    return `${useSSL ? 'https' : 'http'}://${this.configService.get('MINIO_ENDPOINT')}:${this.configService.get('MINIO_PORT')}/${this.configService.get('MINIO_BUCKET')}/`;
+    return `${this.useSSL ? 'https' : 'http'}://${this.configService.get('MINIO_ENDPOINT')}:${this.port}/${this.bucketName}/`;
   }
 
   async upload(file: Express.Multer.File, bucket: string, object: string) {
-    await this.createBucket(this.configService.get('MINIO_BUCKET'), this.configService.get('MINIO_REGION'))
+    try {
+      await this.createBucket(this.configService.get('MINIO_BUCKET'), this.configService.get('MINIO_REGION'))
+  
+      await this.minioClient.putObject(bucket, object, file.buffer, file.size, {
+        'Content-Type': file.mimetype,
+        'x-amz-acl': 'public-read',
+      });
 
-    await this.minioClient.putObject(bucket, object, file.buffer, file.size, {
-      'Content-Type': file.mimetype,
-      'x-amz-acl': 'public-read',
-    });
+      return await this.getFileUrl(bucket, object)
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao fazer upload do arquivo');
+    }
   }
 
   async createBucket(bucketName: string, region: string): Promise<void> {
@@ -48,7 +70,11 @@ export class MinioService {
   }
 
   async getFileUrl(bucket: string, object: string) {
-    return this.minioClient.presignedGetObject(bucket, object);
+    try {
+      return await this.externalMinioClient.presignedGetObject(bucket, object);
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao gerar URL assinada');
+    }
   }
 
   async getSignedUrl(objectName: string): Promise<string> {

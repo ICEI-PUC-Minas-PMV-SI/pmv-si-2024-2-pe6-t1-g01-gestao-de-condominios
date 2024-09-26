@@ -21,23 +21,26 @@ export class DocumentsService {
   }
 
   async create(body: CreateDocumentDto, file: Express.Multer.File, user: User) {
-    const fileName = await this.uploadDocument(file);
-    const document = this.repo.create({ ...body, link: fileName, user });
+    const  { fileName, url } = await this.uploadDocument(file);
+    let document = this.repo.create({ ...body, link: fileName, user });
 
-    return this.repo.save(document);
+    document = await this.repo.save(document);
+    document.link = url
+
+    return document;
   }
 
-  private async uploadDocument(file: Express.Multer.File): Promise<string> {
+  private async uploadDocument(file: Express.Multer.File): Promise<{ fileName: string; url: string }> {
     if (!file) {
       throw new BadRequestException('File not provided');
     }
 
     const bucketName = this.configService.get('MINIO_BUCKET');
-    const objectName = `${Date.now()}_${file.originalname}`;
+    const fileName = `${Date.now()}_${file.originalname}`;
 
-    await this.minioService.upload(file, bucketName, objectName);
+    const url = await this.minioService.upload(file, bucketName, fileName);
     
-    return objectName;
+    return { fileName, url };
   }
 
   async findOne(id: number) {
