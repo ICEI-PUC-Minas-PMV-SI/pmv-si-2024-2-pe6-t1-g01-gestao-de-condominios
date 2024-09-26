@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, Up
 import { Exclude } from 'class-transformer';
 import { Apartment } from './apartment.entity';
 import { Document } from './document.entity';
+import { Visit } from './visit.entity';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -47,6 +48,9 @@ export class User {
 
   @OneToMany(() => Document, (document) => document.user)
   documents: Document[];
+
+  @OneToMany(() => Visit, (visit) => visit.resident)
+  visits: Visit[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

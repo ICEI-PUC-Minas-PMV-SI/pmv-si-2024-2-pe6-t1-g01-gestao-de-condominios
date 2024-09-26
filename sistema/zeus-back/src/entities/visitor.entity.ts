@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Visit } from './visit.entity';
 
 @Entity()
 export class Visitor {
@@ -13,6 +14,9 @@ export class Visitor {
 
   @Column()
   cpf: string;
+
+  @OneToMany(() => Visit, (visit) => visit.visitor)
+  visits: Visit[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

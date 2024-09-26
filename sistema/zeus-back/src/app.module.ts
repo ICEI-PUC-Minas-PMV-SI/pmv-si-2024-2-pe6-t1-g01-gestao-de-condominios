@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { VisitorsModule } from './visitors/visitors.module';
 import { EmployeesModule } from './employees/employees.module';
 import { DocumentsModule } from './documents/documents.module';
+import { VisitsModule } from './visits/visits.module';
 const cookieSession = require('cookie-session');
 
 @Module({
@@ -39,6 +40,7 @@ const cookieSession = require('cookie-session');
     VisitorsModule,
     EmployeesModule,
     DocumentsModule,
+    VisitsModule,
   ],
   controllers: [AppController],
   providers: [
