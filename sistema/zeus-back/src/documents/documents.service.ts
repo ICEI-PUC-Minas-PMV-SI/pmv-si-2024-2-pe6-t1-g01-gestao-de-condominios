@@ -53,15 +53,16 @@ export class DocumentsService {
   async findOne(id: number) {
     const document = await this.repo.findOne({
       where: { id },
-      relations: ['user'],
+      relations: ['user']
     });
-
-    document.link = await this.minioService.getFileUrl(document.link, this.configService.get('MINIO_BUCKET'));
   
     if (!document) {
       throw new NotFoundException('Document not found');
     }
-  
+
+    const bucketName = this.configService.get('MINIO_BUCKET');
+    document.link = await this.minioService.getFileUrl(document.link, bucketName);
+
     return document;
   }
 

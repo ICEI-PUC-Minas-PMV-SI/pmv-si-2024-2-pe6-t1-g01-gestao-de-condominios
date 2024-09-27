@@ -39,18 +39,29 @@ export class FeedService {
     return { fileName, url };
   }
 
-  findAll() {
-    return this.repo.find();
+  async findAll() {
+    const bucket = this.configService.get('MINIO_BUCKET');
+    const feeds = await this.repo.find({ relations: ['user'] });
+    const feedsWithLinks = await Promise.all(feeds.map(async feed => {
+      const link = await this.minioService.getFileUrl(feed.link, bucket)
+      return { ...feed, link };
+    }));
+
+    return feedsWithLinks;
   }
 
   async findOne(id: number) {
     const feed = await this.repo.findOne({
       where: { id },
+      relations: ['user']
     });
 
     if (!feed) {
       throw new NotFoundException('Feed não encontrado.');
     }
+
+    const bucketName = this.configService.get('MINIO_BUCKET');
+    feed.link = await this.minioService.getFileUrl(feed.link, bucketName);
 
     return feed;
   }
