@@ -3,6 +3,7 @@ import { Exclude } from 'class-transformer';
 import { Apartment } from './apartment.entity';
 import { Document } from './document.entity';
 import { Visit } from './visit.entity';
+import { Feed } from './feed.entity';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -51,6 +52,9 @@ export class User {
 
   @OneToMany(() => Visit, (visit) => visit.resident)
   visits: Visit[];
+
+  @OneToMany(() => Feed, (feed) => feed.user)
+  feeds: Feed[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

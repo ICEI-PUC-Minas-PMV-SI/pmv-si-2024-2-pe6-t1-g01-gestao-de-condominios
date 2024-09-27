@@ -6,17 +6,13 @@ import { UpdateDocumentDto } from './dtos/update-document.dto';
 import { Request } from 'express';
 import { User } from 'src/entities/user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { MinioService } from './minio.service';
 import { DocumentDto } from './dtos/document.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 @Controller('document')
 @Serialize(DocumentDto)
 export class DocumentsController {
-  constructor(
-    private readonly documentsService: DocumentsService,
-    private readonly minioService: MinioService
-  ) {}
+  constructor(private readonly documentsService: DocumentsService) {}
 
   @Get()
   @UseGuards(JwtSessionGuard)
@@ -49,7 +45,7 @@ export class DocumentsController {
   update(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: CreateDocumentDto,
+    @Body() body: UpdateDocumentDto,
     @Req() req: Request
   ) {
     const currentUser = req.user as User;

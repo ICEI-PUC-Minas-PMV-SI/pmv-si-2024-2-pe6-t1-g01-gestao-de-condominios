@@ -1,22 +1,43 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Feed } from '../entities/feed.entity';
+import { CreateFeedDto } from './dtos/create-feed.dto';
+import { User } from 'src/entities/user.entity';
+import { UpdateDocumentDto } from 'src/documents/dtos/update-document.dto';
+import { MinioService } from 'src/documents/minio.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FeedService {
   constructor(
     @InjectRepository(Feed) private repo: Repository<Feed>,
+    private minioService: MinioService,
+    private readonly configService: ConfigService
   ) {}
 
-  // create(number: number, block?: string) {
-  //   const feed = this.repo.create({
-  //     number,
-  //     block: block ?? null,
-  //   });
+  async create(body: CreateFeedDto, file: Express.Multer.File, user: User) {
+    const  { fileName, url } = await this.uploadDocument(file);
+    let feed = this.repo.create({ ...body, link: fileName, user });
 
-  //   return this.repo.save(feed);
-  // }
+    feed = await this.repo.save(feed);
+    feed.link = url
+
+    return document;
+  }
+
+  private async uploadDocument(file: Express.Multer.File): Promise<{ fileName: string; url: string }> {
+    if (!file) {
+      throw new BadRequestException('File not provided');
+    }
+
+    const bucketName = this.configService.get('MINIO_BUCKET');
+    const fileName = `${Date.now()}_${file.originalname}`;
+
+    const url = await this.minioService.upload(file, bucketName, fileName);
+    
+    return { fileName, url };
+  }
 
   findAll() {
     return this.repo.find();
@@ -34,16 +55,14 @@ export class FeedService {
     return feed;
   }
 
-  // findByNumber(number: number) {
-  //   return this.repo.find({ where: { number } });
-  // }
-
-  async update(id: number, attrs: Partial<Feed>) {
+  async update(id: number, body: UpdateDocumentDto, file: Express.Multer.File, user: User) {
     const feed = await this.findOne(id);
+
     if (!feed) {
       throw new NotFoundException('Feed de notícia não encontrado.');
     }
-    Object.assign(feed, attrs);
+
+    Object.assign(feed, body);
     return this.repo.save(feed);
   }
 

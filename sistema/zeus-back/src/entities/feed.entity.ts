@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Feed {
@@ -12,10 +13,10 @@ export class Feed {
   description: string;
 
   @Column()
-  fileRoute: string;
+  link: string;
 
-  @Column()
-  authorName: string;
+  @ManyToOne(() => User, (user) => user.feeds, { onDelete: 'CASCADE' })
+  user: User;
 
   @CreateDateColumn({ type: 'timestamp' })
   postingDate: Date;
