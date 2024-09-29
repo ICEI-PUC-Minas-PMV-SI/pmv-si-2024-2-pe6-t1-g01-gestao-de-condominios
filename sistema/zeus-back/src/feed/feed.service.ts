@@ -23,7 +23,7 @@ export class FeedService {
     feed = await this.repo.save(feed);
     feed.link = url
 
-    return document;
+    return feed;
   }
 
   private async uploadDocument(file: Express.Multer.File): Promise<{ fileName: string; url: string }> {
