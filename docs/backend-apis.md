@@ -64,13 +64,9 @@ Esses objetivos buscam centralizar as operações essenciais para o bom funciona
 
 A aplicação web front-end será desenvolvida utilizando o framework JavaScript Vue.js, em conjunto com a biblioteca de componentes Vuetify.
 
-### Aplicação Mobile
+### Back-end
 
-A aplicação web front-end será desenvolvida utilizando o framework JavaScript multiplataforma React Native.
-
-### Microsserviços backend
-
-Os 5 microsserviços backend serão desenvolvidos utilizando Node.js, um ambiente multiplataforma para JavaScript e MySQL como banco de dados relacional.
+O backend será desenvolvidos utilizando Nest.js, um ambiente multiplataforma para JavaScript e MySQL como banco de dados relacional e Minio para gerenciamento de arquivos.
 
 ## API Endpoints
 
