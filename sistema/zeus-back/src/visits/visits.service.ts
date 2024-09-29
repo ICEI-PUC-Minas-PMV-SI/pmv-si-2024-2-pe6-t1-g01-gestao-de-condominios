@@ -56,7 +56,7 @@ export class VisitsService {
     const visitor = await this.visitorsService.findOne(body.visitorId);
 
     if (!resident) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Resident not found');
     }
 
     if (!visitor) {
