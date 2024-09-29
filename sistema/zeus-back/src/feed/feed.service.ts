@@ -4,9 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Feed } from '../entities/feed.entity';
 import { CreateFeedDto } from './dtos/create-feed.dto';
 import { User } from 'src/entities/user.entity';
-import { UpdateDocumentDto } from 'src/documents/dtos/update-document.dto';
 import { MinioService } from 'src/documents/minio.service';
 import { ConfigService } from '@nestjs/config';
+import { UpdateFeedDto } from './dtos/update-feed.dto';
 
 @Injectable()
 export class FeedService {
@@ -17,7 +17,7 @@ export class FeedService {
   ) {}
 
   async create(body: CreateFeedDto, file: Express.Multer.File, user: User) {
-    const  { fileName, url } = await this.uploadDocument(file);
+    const { fileName, url } = await this.uploadDocument(file);
     let feed = this.repo.create({ ...body, link: fileName, user });
 
     feed = await this.repo.save(feed);
@@ -66,7 +66,7 @@ export class FeedService {
     return feed;
   }
 
-  async update(id: number, body: UpdateDocumentDto, file: Express.Multer.File, user: User) {
+  async update(id: number, body: UpdateFeedDto, file: Express.Multer.File, user: User) {
     const feed = await this.findOne(id);
 
     if (!feed) {

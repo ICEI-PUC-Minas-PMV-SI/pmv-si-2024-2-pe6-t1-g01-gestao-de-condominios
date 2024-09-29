@@ -3,13 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Visit } from 'src/entities/visit.entity';
 import { Repository } from 'typeorm';
 import { UpdateVisitDto } from './dtos/update-visit.dto';
+import { CreateVisitDto } from './dtos/create-visit.dto';
 
 @Injectable()
 export class VisitsService {
   constructor(@InjectRepository(Visit) private repo: Repository<Visit>) {}
 
-  create(name: string, cellphone: string, cpf: string) {
-    const visit = this.repo.create({ name, cellphone, cpf });
+  create(body: CreateVisitDto) {
+    const visit = this.repo.create(body);
     return this.repo.save(visit);
   }
 

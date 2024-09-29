@@ -4,20 +4,14 @@ import { JwtSessionGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateVisitDto } from './dtos/create-visit.dto';
 import { UpdateVisitDto } from './dtos/update-visit.dto';
 
-@Controller('visits')
+@Controller('visit')
 export class VisitsController {
   constructor(private readonly visitsService: VisitsService) {}
 
   @Post()
   @UseGuards(JwtSessionGuard)
   async create(@Body() body: CreateVisitDto) {
-    const visit = await this.visitsService.create(
-      body.name,
-      body.cellphone,
-      body.cpf,
-    );
-
-    return visit;
+    return await this.visitsService.create(body);
   }
 
   @Get()
