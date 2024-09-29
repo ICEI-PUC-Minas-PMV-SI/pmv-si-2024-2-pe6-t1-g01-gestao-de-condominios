@@ -32,11 +32,14 @@ RESUMO: "Zeus - Gestão Condominial" é um aplicativo que tem como objetivo auto
 | ETAPA 5         | [Apresentação](presentation/README.md) |
 ## Instruções de utilização
 
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
+O sistema é feito em Nest.js no back-end e Vue.js 3 no front-end. Ele pode ser configurados em servidores em núvem ou máquina local utilizando docker na versão 24.0.2 e docker-compose na versão 2.19.0.
+
+Dentro da pasta do sistema/zeus-back pode ser iniciado rodando o comando: `docker-compose up --build`
 
 # Código
 
-<li><a href="src/README.md"> Código Fonte</a></li>
+<li><a href="sistema/zeus-back"> Código Fonte Back-End</a></li>
+<li><a href="sistema/zeus-front"> Código Fonte Front-End</a></li>
 
 # Apresentação
 
