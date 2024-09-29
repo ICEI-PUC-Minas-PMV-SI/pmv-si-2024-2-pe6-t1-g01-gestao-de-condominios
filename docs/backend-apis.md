@@ -9,19 +9,19 @@ Facilitar a comunicação entre o síndico e os residentes do condomínio, propo
 
 ### Objetivos Específicos
 
-1. Centralizar Informações de Gestão:
+1. Centralizar Informações de Gestão (Principal):
 
     • Disponibilizar e gerenciar atas de reuniões, estatutos e balancetes financeiros para  fácil acesso dos moradores e administração.
 
-2. Facilitar a Comunicação Entre Administração e Moradores:
+2. Facilitar a Comunicação Entre Administração e Moradores (Principal):
 
     • Criar endpoints que permitam o envio e recebimento de comunicados e notificações entre o síndico e os residentes, de forma automatizada e sem burocracia.
 
-3. Controle de Cadastro:
+3. Controle de Cadastro (Principal):
 
     • Gerenciar o cadastro de moradores, funcionários e visitantes, possibilitando atualizações em tempo real e integração com os sistemas de controle de acesso do condomínio.
 
-4. Gerenciamento de Entradas e Saídas:
+4. Gerenciamento de Entradas e Saídas (Secundário):
 
     • Implementar funcionalidades para registrar a entrada e saída de visitantes, integrando com os sistemas de portaria para garantir maior segurança e controle no condomínio.
 
@@ -29,7 +29,16 @@ Esses objetivos buscam centralizar as operações essenciais para o bom funciona
 
 ## Arquitetura
 
-[Descrição da arquitetura das APIs, incluindo os componentes e suas interações.]
+As APIs foram desenvolvidas no padrão RESTful separado pelos seguintes módulos:
+- Auth
+- User
+- Apartment
+- Resident
+- Visitor
+- Employee
+- Document
+- Feed
+- Visit
 
 ## Modelagem da Aplicação
 [Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
