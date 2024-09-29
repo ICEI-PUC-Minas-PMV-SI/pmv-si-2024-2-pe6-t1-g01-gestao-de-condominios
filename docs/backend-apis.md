@@ -95,32 +95,51 @@ O backend será desenvolvidos utilizando Nest.js, um ambiente multiplataforma pa
 
 ## API Endpoints
 
-[Liste os principais endpoints da API, incluindo as operações disponíveis, os parâmetros esperados e as respostas retornadas.]
+Segue a lista dos endpoints do sistema:
 
-### Endpoint 1
-- Método: GET
-- URL: /endpoint1
-- Parâmetros:
-  - param1: [descrição]
-- Resposta:
-  - Sucesso (200 OK)
-    ```
-    {
-      "message": "Success",
-      "data": {
-        ...
-      }
-    }
-    ```
-  - Erro (4XX, 5XX)
-    ```
-    {
-      "message": "Error",
-      "error": {
-        ...
-      }
-    }
-    ```
+![Auth_signup](./img/Auth_signup.jpeg)
+![Auth_signin](./img/Auth_signin.jpeg)
+![Auth_signout](./img/Auth_signout.jpeg)
+![Auth_whoami](./img/Auth_whoami.jpeg)
+![User_findById](./img/User_findById.jpeg)
+![User_findByEmail](./img/User_findByEmail.jpeg)
+![User_update](./img/User_update.jpeg)
+![User_delete](./img/User_delete.jpeg)
+![Apartment_create](./img/Apartment_create.jpeg)
+![Apartment_findOne](./img/Apartment_findOne.jpeg)
+![Apartmente_findAll](./img/Apartmente_findAll.jpeg)
+![Apartment_update](./img/Apartment_update.jpeg)
+![Apartment_delete](./img/Apartment_delete.jpeg)
+![Resident_create](./img/Resident_create.jpeg)
+![Resident_findOne](./img/Resident_findOne.jpeg)
+![Resident_findAll](./img/Resident_findAll.jpeg)
+![Resident_update](./img/Resident_update.jpeg)
+![Resident_delete](./img/Resident_delete.jpeg)
+![Visitor_create](./img/Visitor_create.jpeg)
+![Visitor_findOne](./img/Visitor_findOne.jpeg)
+![Visitor_findAll](./img/Visitor_findAll.jpeg)
+![Visitor_update](./img/Visitor_update.jpeg)
+![Visitor_delete](./img/Visitor_delete.jpeg)
+![Employee_create](./img/Employee_create.jpeg)
+![Employee_findOne](./img/Employee_findOne.jpeg)
+![Employee_findAll](./img/Employee_findAll.jpeg)
+![Employee_update](./img/Employee_update.jpeg)
+![Employee_delete](./img/Employee_delete.jpeg)
+![Document_create](./img/Document_create.jpeg)
+![Document_findOne](./img/Document_findOne.jpeg)
+![Document_findAll](./img/Document_findAll.jpeg)
+![Document_update](./img/Document_update.jpeg)
+![Document_delete](./img/Document_delete.jpeg)
+![Feed_create](./img/Feed_create.jpeg)
+![Feed_findOne](./img/Feed_findOne.jpeg)
+![Feed_findAll](./img/Feed_findAll.jpeg)
+![Feed_update](./img/Feed_update.jpeg)
+![Feed_delete](./img/Feed_delete.jpeg)
+![Visit_create](./img/Visit_create.jpeg)
+![Visit_findOne](./img/Visit_findOne.jpeg)
+![Visit_findAll](./img/Visit_findAll.jpeg)
+![Visit_update](./img/Visit_update.jpeg)
+![Visit_delete](./img/Visit_delete.jpeg)
 
 
 ## Considerações de Segurança
@@ -129,7 +148,7 @@ Modelo de token utilizado na API é o JSON Web Token (JWT), ele é um padrão de
 
 ## Implantação
 
-[Instruções para implantar a aplicação distribuída em um ambiente de produção.]
+[Instruções para implantar a aplicação em um ambiente de produção.]
 
 1. Defina os requisitos de hardware e software necessários para implantar a aplicação em um ambiente de produção.
 2. Escolha uma plataforma de hospedagem adequada, como um provedor de nuvem ou um servidor dedicado.
@@ -139,13 +158,9 @@ Modelo de token utilizado na API é o JSON Web Token (JWT), ele é um padrão de
 
 ## Testes
 
-[Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
+Os únicos testes permitidos no sistema serão os manuais e de regressão através dos endpoints já mapeado presentes na Collection dentro do projeto. Para isso podem ser usado ferramentas como Postman, Insomnia, BrunoAPI, entre outros.
 
-1. Crie casos de teste para cobrir todos os requisitos funcionais e não funcionais da aplicação.
-2. Implemente testes unitários para testar unidades individuais de código, como funções e classes.
-3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
-4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
-5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+Collection: <a href="../sistema/zeus-back/Collection_APIs.json"> Collection_APIs.json</a>
 
 # Referências
 
