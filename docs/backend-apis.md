@@ -41,7 +41,23 @@ As APIs foram desenvolvidas no padrão RESTful separado pelos seguintes módulos
 - Visit
 
 ## Modelagem da Aplicação
-[Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
+
+Nossa estrutura de dados se constitui das entidades:
+- user
+- visitor
+- visit
+- feed
+- document
+- apartment
+
+Os diagramas de modelagem segue nas imagens abaixo:
+
+![user](./img/modelagem_user.jpeg)
+![visitor](./img/modelagem_visitor.jpeg)
+![visit](./img/modelagem_visit.jpeg)
+![feed](./img/modelagem_feed.jpeg)
+![document](./img/modelagem_document.jpeg)
+![apartment](./img/modelagem_apartment.jpeg)
 
 ## Fluxo de Dados
 
