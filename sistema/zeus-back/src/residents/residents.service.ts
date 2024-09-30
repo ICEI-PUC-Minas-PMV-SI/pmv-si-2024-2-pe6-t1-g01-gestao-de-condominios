@@ -74,25 +74,23 @@ export class ResidentsService {
   async update(id: number, body: UpdateResidentDto) {
     const resident = await this.findOne(id);
 
-    if (!resident) {
-      throw new NotFoundException('Morador not found');
-    }
-
     if (resident.role !== 'MORADOR') {
       throw new BadRequestException(
         'O usuário deve ser do tipo MORADOR para ser atualizado.',
       );
     }
 
+    let apartment: Apartment | null = null;
+    if (body.apartmentId) {
+      apartment = await this.apartmentsService.findOne(body.apartmentId);
+    }
+
     Object.assign(resident, body);
-    return this.repo.save(resident);
+    return this.repo.save({ ...resident, apartment});
   }
 
   async remove(id: number) {
     const resident = await this.findOne(id);
-    if (!resident) {
-      throw new NotFoundException('Morador not found');
-    }
     return this.repo.remove(resident);
   }
 }

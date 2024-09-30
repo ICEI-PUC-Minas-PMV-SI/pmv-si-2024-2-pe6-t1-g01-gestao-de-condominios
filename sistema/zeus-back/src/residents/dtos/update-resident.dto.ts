@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsOptional } from 'class-validator';
+import { IsEmail, IsString, IsOptional, IsNumber } from 'class-validator';
 import { IsResident } from '../decorators/is-resident.decorator';
 
 export class UpdateResidentDto {
@@ -20,4 +20,8 @@ export class UpdateResidentDto {
 
   @IsResident({ message: 'O tipo de usuário deve ser "MORADOR".' })
   role: string;
+
+  @IsNumber()
+  @IsOptional()
+  apartmentId: number;
 }
