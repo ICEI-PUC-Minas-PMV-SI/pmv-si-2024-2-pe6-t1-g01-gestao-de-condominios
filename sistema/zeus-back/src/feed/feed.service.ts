@@ -81,7 +81,7 @@ export class FeedService {
   async remove(id: number) {
     const feed = await this.findOne(id);
     if (!feed) {
-      throw new NotFoundException('Apartamento não encontrado.');
+      throw new NotFoundException('Feed de notícia não encontrado.');
     }
     return this.repo.remove(feed);
   }
