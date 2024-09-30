@@ -9,13 +9,18 @@ import { User, UserRole } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
-import { CreateEmployeeDto } from 'src/employees/dtos/create-employee.dto';
+import { ApartmentsService } from 'src/apartments/apartments.service';
+import { Apartment } from 'src/entities/apartment.entity';
+import { CreateResidentDto } from './dtos/create-resident.dto';
 
 const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class ResidentsService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private repo: Repository<User>,
+    private readonly apartmentsService: ApartmentsService
+  ) {}
 
   findAll() {
     return this.repo.find({ where: { role: UserRole.MORADOR } });
@@ -34,7 +39,7 @@ export class ResidentsService {
     return resident;
   }
 
-  async create(body: CreateEmployeeDto) {
+  async create(body: CreateResidentDto) {
     const users = await this.findByEmail(body.email);
     if (users.length) {
       throw new BadRequestException('email in use');
@@ -48,13 +53,17 @@ export class ResidentsService {
       throw new BadRequestException('role is invalid');
     }
 
+    let apartment: Apartment | null = null;
+    if (body.apartmentId) {
+      apartment = await this.apartmentsService.findOne(body.apartmentId);
+    }
+
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(body.password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
     body.password = result;
 
-    const user = this.repo.create(body);
-
+    const user = this.repo.create({ ...body, apartment });
     return this.repo.save(user);
   }
 

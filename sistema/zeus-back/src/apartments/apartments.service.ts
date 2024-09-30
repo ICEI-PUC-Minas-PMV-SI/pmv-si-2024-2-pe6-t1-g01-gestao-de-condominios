@@ -23,10 +23,7 @@ export class ApartmentsService {
   }
 
   async findOne(id: number) {
-    const apartment = await this.repo.findOne({
-      where: { id },
-      // relations: ['visitors']
-    });
+    const apartment = await this.repo.findOne({ where: { id } });
 
     if (!apartment) {
       throw new NotFoundException('Apartamento não encontrado.');
@@ -41,18 +38,14 @@ export class ApartmentsService {
 
   async update(id: number, attrs: Partial<Apartment>) {
     const apartment = await this.findOne(id);
-    if (!apartment) {
-      throw new NotFoundException('Apartamento não encontrado.');
-    }
+
     Object.assign(apartment, attrs);
     return this.repo.save(apartment);
   }
 
   async remove(id: number) {
     const apartment = await this.findOne(id);
-    if (!apartment) {
-      throw new NotFoundException('Apartamento não encontrado.');
-    }
+
     return this.repo.remove(apartment);
   }
 }

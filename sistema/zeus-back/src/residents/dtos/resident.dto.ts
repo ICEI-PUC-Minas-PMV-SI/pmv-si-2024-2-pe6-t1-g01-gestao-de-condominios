@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { ApartmentDto } from 'src/apartments/dtos/apartment.dto';
 import { Apartment } from 'src/entities/apartment.entity';
 
 export class ResidentDto {
@@ -21,10 +22,11 @@ export class ResidentDto {
   role: string;
 
   @Expose()
-  apartmentId: string;
+  apartmentId: number;
 
   @Expose()
-  apartment: Apartment;
+  @Type(() => ApartmentDto)
+  apartment: ApartmentDto;
 
   @Expose()
   createdAt: Date;
