@@ -164,4 +164,6 @@ Collection: <a href="../sistema/zeus-back/Collection_APIs.json"> Collection_APIs
 
 # Referências
 
-Documentação levantada no projeto nosso em semestres anteriores.
+Documentação levantada no projeto nosso em semestres anteriores conforme o link abaixo:
+
+<a href="https://docs.google.com/document/d/1DjpDkHZf0630EwuFNUmLxaGB0QGOzr13_3GeTDPsa5U/edit?usp=sharing"> Documentação do Projeto</a>
