@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { VisitDto } from 'src/visits/dtos/visit.dto';
 
 export class VisitorDto {
   @Expose()
@@ -12,6 +13,10 @@ export class VisitorDto {
 
   @Expose()
   cpf: string;
+
+  @Expose()
+  @Type(() => VisitDto)
+  visits: VisitDto[];
 
   @Expose()
   createdAt: Date;

@@ -14,14 +14,14 @@ export class VisitorsService {
   }
 
   findAll() {
-    return this.repo.find();
+    return this.repo.find({ relations: ['visits'] });
   }
 
   findOne(id: number) {
     if (!id) {
       return null;
     }
-    return this.repo.findOne({ where: { id } });
+    return this.repo.findOne({ where: { id }, relations: ['visits'] });
   }
 
   async update(id: number, body: UpdateVisitorsDto) {
