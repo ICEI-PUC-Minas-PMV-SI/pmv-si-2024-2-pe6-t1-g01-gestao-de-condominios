@@ -79,9 +79,7 @@ Os diagramas de modelagem segue nas imagens abaixo:
 
 2. Usabilidade: O sistema deve permitir que complete uma tarefa de cadastro em no máximo 1 minuto.
 
-3. Usabilidade: Para utilizar o sistema, é necessário ter noções básicas de tecnologia e operação de computadores.
-
-4. Segurança: O produto deve restringir o acesso por meio de senhas individuais para o usuário.
+3. Segurança: O produto deve restringir o acesso por meio de senhas individuais para o usuário.
 
 ## Tecnologias Utilizadas
 
