@@ -1,7 +1,5 @@
 import { Expose, Type } from 'class-transformer';
 import { ApartmentDto } from 'src/apartments/dtos/apartment.dto';
-import { Apartment } from 'src/entities/apartment.entity';
-
 export class ResidentDto {
   @Expose()
   id: number;

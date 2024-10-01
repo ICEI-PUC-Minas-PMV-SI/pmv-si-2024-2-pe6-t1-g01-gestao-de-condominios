@@ -3,8 +3,11 @@ import { VisitsService } from './visits.service';
 import { JwtSessionGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateVisitDto } from './dtos/create-visit.dto';
 import { UpdateVisitDto } from './dtos/update-visit.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { VisitDto } from './dtos/visit.dto';
 
 @Controller('visit')
+@Serialize(VisitDto)
 export class VisitsController {
   constructor(private readonly visitsService: VisitsService) {}
 

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Visit } from 'src/entities/visit.entity';
 import { Repository } from 'typeorm';
@@ -36,28 +36,30 @@ export class VisitsService {
   }
 
   findAll() {
-    return this.repo.find();
+    return this.repo.find({ relations: ['visitor', 'resident'] });
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     if (!id) {
-      return null;
+      throw new BadRequestException('id is required and must be bigger than zero.');
     }
-    return this.repo.findOne({ where: { id } });
-  }
 
-  async update(id: number, body: UpdateVisitDto) {
-    const visit = await this.findOne(id);
+    const visit = await this.repo.findOne({
+      where: { id },
+      relations: ['visitor', 'resident']
+    });
+
     if (!visit) {
       throw new NotFoundException('Visit not found');
     }
 
+    return visit;
+  }
+
+  async update(id: number, body: UpdateVisitDto) {
+    const visit = await this.findOne(id);
     const resident = await this.residentsService.findOne(body.userId);
     const visitor = await this.visitorsService.findOne(body.visitorId);
-
-    if (!resident) {
-      throw new NotFoundException('Resident not found');
-    }
 
     if (!visitor) {
       throw new NotFoundException('Visitor not found');
@@ -73,9 +75,6 @@ export class VisitsService {
 
   async remove(id: number) {
     const visit = await this.findOne(id);
-    if (!visit) {
-      throw new NotFoundException('visit not found');
-    }
     return this.repo.remove(visit);
   }
 }

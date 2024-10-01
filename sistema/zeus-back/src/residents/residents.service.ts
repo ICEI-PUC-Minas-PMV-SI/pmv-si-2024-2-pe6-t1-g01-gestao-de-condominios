@@ -23,13 +23,16 @@ export class ResidentsService {
   ) {}
 
   findAll() {
-    return this.repo.find({ where: { role: UserRole.MORADOR } });
+    return this.repo.find({
+      where: { role: UserRole.MORADOR },
+      relations: ['apartment', 'visits']
+    });
   }
 
   async findOne(id: number) {
     const resident = await this.repo.findOne({
       where: { id, role: UserRole.MORADOR },
-      relations: ['apartment'],
+      relations: ['apartment', 'visits'],
     });
 
     if (!resident) {
