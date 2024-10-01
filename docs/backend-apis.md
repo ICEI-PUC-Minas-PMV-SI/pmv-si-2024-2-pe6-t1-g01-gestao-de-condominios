@@ -81,7 +81,7 @@ Os diagramas de modelagem segue nas imagens abaixo:
 
 1. Disponibilidade: O sistema deve ficar online 24H por dia, 7 dias na semana.
 
-2. Usabilidade: O sistema deve permitir que complete uma tarefa de cadastro em no máximo 1 minuto.
+2. Desempenho: O sistema deve permitir que complete uma requisição de no máximo 3 segundos.
 
 3. Segurança: O produto deve restringir o acesso por meio de senhas individuais para o usuário.
 
