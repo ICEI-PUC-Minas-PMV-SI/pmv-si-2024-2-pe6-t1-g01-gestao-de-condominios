@@ -71,7 +71,11 @@ Os diagramas de modelagem segue nas imagens abaixo:
 
 3. O sistema deve permitir o gerenciamento de dados de usuário.
 
-4. O sistema deve permitir a autenticação de usuários.
+4. O sistema deve permitir o gerenciamento de dados de funcionários.
+
+5. O sistema deve permitir o gerenciamento de dados de quadro de avisos.
+
+6. O sistema deve permitir a autenticação de usuários.
 
 ## Requisitos Não Funcionais
 
