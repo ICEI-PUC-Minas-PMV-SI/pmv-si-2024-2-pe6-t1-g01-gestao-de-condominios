@@ -87,10 +87,6 @@ Os diagramas de modelagem segue nas imagens abaixo:
 
 ## Tecnologias Utilizadas
 
-### Aplicação Web Front-end
-
-A aplicação web front-end será desenvolvida utilizando o framework JavaScript Vue.js, em conjunto com a biblioteca de componentes Vuetify.
-
 ### Back-end
 
 O backend será desenvolvidos utilizando Nest.js, um ambiente multiplataforma para JavaScript e MySQL como banco de dados relacional e Minio para gerenciamento de arquivos.
