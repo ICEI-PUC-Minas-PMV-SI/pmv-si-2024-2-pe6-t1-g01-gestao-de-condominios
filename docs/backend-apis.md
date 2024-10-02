@@ -95,49 +95,418 @@ O backend será desenvolvidos utilizando Nest.js, um ambiente multiplataforma pa
 
 Segue a lista dos endpoints do sistema:
 
-![Auth_signup](./img/Auth_signup.jpeg)
-![Auth_signin](./img/Auth_signin.jpeg)
-![Auth_signout](./img/Auth_signout.jpeg)
-![Auth_whoami](./img/Auth_whoami.jpeg)
-![User_findById](./img/User_findById.jpeg)
-![User_findByEmail](./img/User_findByEmail.jpeg)
-![User_update](./img/User_update.jpeg)
-![User_delete](./img/User_delete.jpeg)
-![Apartment_create](./img/Apartment_create.jpeg)
-![Apartment_findOne](./img/Apartment_findOne.jpeg)
-![Apartmente_findAll](./img/Apartmente_findAll.jpeg)
-![Apartment_update](./img/Apartment_update.jpeg)
-![Apartment_delete](./img/Apartment_delete.jpeg)
-![Resident_create](./img/Resident_create.jpeg)
-![Resident_findOne](./img/Resident_findOne.jpeg)
-![Resident_findAll](./img/Resident_findAll.jpeg)
-![Resident_update](./img/Resident_update.jpeg)
-![Resident_delete](./img/Resident_delete.jpeg)
-![Visitor_create](./img/Visitor_create.jpeg)
-![Visitor_findOne](./img/Visitor_findOne.jpeg)
-![Visitor_findAll](./img/Visitor_findAll.jpeg)
-![Visitor_update](./img/Visitor_update.jpeg)
-![Visitor_delete](./img/Visitor_delete.jpeg)
-![Employee_create](./img/Employee_create.jpeg)
-![Employee_findOne](./img/Employee_findOne.jpeg)
-![Employee_findAll](./img/Employee_findAll.jpeg)
-![Employee_update](./img/Employee_update.jpeg)
-![Employee_delete](./img/Employee_delete.jpeg)
-![Document_create](./img/Document_create.jpeg)
-![Document_findOne](./img/Document_findOne.jpeg)
-![Document_findAll](./img/Document_findAll.jpeg)
-![Document_update](./img/Document_update.jpeg)
-![Document_delete](./img/Document_delete.jpeg)
-![Feed_create](./img/Feed_create.jpeg)
-![Feed_findOne](./img/Feed_findOne.jpeg)
-![Feed_findAll](./img/Feed_findAll.jpeg)
-![Feed_update](./img/Feed_update.jpeg)
-![Feed_delete](./img/Feed_delete.jpeg)
-![Visit_create](./img/Visit_create.jpeg)
-![Visit_findOne](./img/Visit_findOne.jpeg)
-![Visit_findAll](./img/Visit_findAll.jpeg)
-![Visit_update](./img/Visit_update.jpeg)
-![Visit_delete](./img/Visit_delete.jpeg)
+- Fazer login
+
+`{base_url}/auth/signup`
+
+POST 
+
+```
+{
+	"email": "teste10@teste.com",
+	"password": "Teste123#",
+	"role": "ADMIN"
+}
+```
+
+
+- Fazer login
+
+`{base_url}/auth/signin`
+
+POST 
+
+```
+{
+	"email": "teste@teste.com",
+	"password": "Teste123#"
+}
+```
+
+- Fazer Logout
+
+`{base_url}/auth/signout`
+
+POST
+
+- Verificar dados do usuário logado
+
+`{base_url}/auth/whoami`
+
+GET
+
+- Buscar usuário pelo id
+
+`{base_url}/user/{id}`
+
+GET
+
+- Buscar usuário pelo e-mail
+
+`{base_url}/user?email={email}`
+
+GET
+
+- Atualização de usuário
+
+`{base_url}/user/{id}`
+
+PUT 
+
+```
+{
+    "name": "Sandro Souza",
+    "email": "teste@teste.com",
+    "cellphone": "31998136678",
+    "cpf": "01619398133",
+    "password": "Teste123#"
+}
+```
+
+- Deletar usuário
+
+`{base_url}/user/{id}`
+
+DELETE
+
+- Criar apartamento
+
+`{base_url}/apartment`
+
+POST 
+
+```
+{
+	"number": 104,
+	"block": "A"
+}
+```
+
+- Buscar apartamento pelo id
+
+`{base_url}/apartment/{id}`
+
+GET 
+
+- Buscar todos apartamentos
+
+`{base_url}/apartment`
+
+GET 
+
+- Atualizar apartamento
+
+`{base_url}/apartment/{id}`
+
+PUT 
+
+```
+{
+	"number": 101,
+	"block": "B"
+}
+```
+
+- Deletar apartamento
+
+`{base_url}/apartment/{id}`
+
+DELETE
+
+- Criar morador
+
+`{base_url}/resident/`
+
+POST 
+
+```
+{
+	"email": "teste9@resident.com",
+	"password": "Teste123#",
+	"name": "Prof. Kleber",
+	"cellphone": "65435742573",
+	"cpf": "7457645643563",
+	"role": "MORADOR",
+	"apartmentId": 4
+}
+```
+
+- Buscar morador por id
+
+`{base_url}/resident/{id}`
+
+GET 
+
+- Buscar todos moradores
+
+`{base_url}/resident`
+
+GET 
+
+- Atualizar morador
+
+`{base_url}/resident/{id}`
+
+PUT
+
+```
+{
+	"name": "Eduardo Monteiro",
+	"email": "teste4@resident.com",
+	"cellphone": "93984756478",
+	"cpf": "48473625475",
+	"role": "MORADOR",
+	"apartmentId": 3
+}
+```
+
+- Deletar morador
+
+`{base_url}/resident/{id}`
+
+DELETE
+
+- Criar visitante
+
+`{base_url}/visitor`
+
+POST
+
+```
+{
+	"name": "Prof. Kleber",
+	"cellphone": "7664839048",
+	"cpf": "984783684"
+}
+```
+
+- Buscar visitante por id
+
+`{base_url}/visitor/{id}`
+
+GET
+
+- Buscar todos visitantes
+
+`{base_url}/visitor`
+
+GET
+
+- Atualizar visitante
+
+`{base_url}/visitor/{id}`
+
+PUT
+
+```
+{
+	"name": "Teste Kleber",
+	"cellphone": "7664839048",
+	"cpf": "984783684"
+}
+```
+
+- Deletar visitante
+
+`{base_url}/visitor/{id}`
+
+DELETE
+
+- Criar funcionário
+
+`{base_url}/employee`
+
+POST
+
+```
+{
+	"email": "teste@employee.com",
+	"password": "Teste123#",
+	"name": "Tarcisio de Amaral",
+	"cellphone": "43545342434",
+	"cpf": "0384289374573",
+	"role": "PORTEIRO"
+}
+```
+
+- Buscar funcionário por id
+
+`{base_url}/employee/{id}`
+
+GET
+
+- Buscar todos funcionários
+
+`{base_url}/employee`
+
+GET
+
+- Atualizar funcionário
+
+`{base_url}/employee/{id}`
+
+PUT
+
+```
+{
+	"email": "teste@employee.com",
+	"password": "Teste123#",
+	"name": "Tarcisio de Amaral Teste",
+	"cellphone": "43545342434",
+	"cpf": "0384289374573",
+	"role": "PORTEIRO"
+}
+```
+
+- Deletar funcionário
+
+`{base_url}/employee/{id}`
+
+DELETE
+
+- Criar documento
+
+`{base_url}/document`
+
+POST
+
+```
+formData - Multipart
+{
+	"name": "Arquivo teste",
+	"description": "teste teste teste",
+	"file": File.pdf (File)
+}
+```
+
+- Buscar documento por id
+
+`{base_url}/document/{id}`
+
+GET
+
+- Buscar todos documentos
+
+`{base_url}/document`
+
+GET
+
+- Atualizar documentos
+
+`{base_url}/document/{id}`
+
+PUT
+
+```
+formData - Multipart
+{
+	"name": "Arquivo teste teste",
+	"description": "teste teste teste edit",
+	"file": File2.pdf (File)
+}
+```
+
+- Deletar documentos
+
+`{base_url}/document`
+
+DELETE
+
+- Criar feed de notícia
+
+`{base_url}/feed`
+
+POST
+
+```
+formData - Multipart
+{
+	"title": "Detetização",
+	"description": "Prepara que vem ai",
+	"file": Img.png (File)
+}
+```
+
+- Buscar feed de notícia por id
+
+`{base_url}/feed/{id}`
+
+GET
+
+- Buscar todos feed de notícias
+
+`{base_url}/feed`
+
+GET
+
+- Atualizar feed de notícias
+
+`{base_url}/feed/{id}`
+
+PUT
+
+```
+formData - Multipart
+{
+	"title": "Detetização edit",
+	"description": "Prepara que vem ai",
+	"file": Img2.png (File)
+}
+```
+
+- Deletar feed de notícias
+
+`{base_url}/feed/{id}`
+
+DELETE
+
+- Criar visita
+
+`{base_url}/visit`
+
+POST
+
+```
+{
+	"visitorId": 1,
+	"userId": 2,
+	"status": "PENDING",
+	"visitedAt": "2024-09-29 14:30"
+}
+```
+
+- Buscar visita por id
+
+`{base_url}/visit/{id}`
+
+GET
+
+- Buscar todas visitas
+
+`{base_url}/visit`
+
+GET
+
+- Atualizar visita
+
+`{base_url}/visit/{id}`
+
+PUT
+
+```
+{
+	"visitorId": 1,
+	"userId": 2,
+	"status": "APPROVED",
+	"visitedAt": "2024-09-29 14:30"
+}
+```
+
+- Deletar visita
+
+`{base_url}/visit/{id}`
+
+DELETE
 
 
 ## Considerações de Segurança
@@ -159,6 +528,136 @@ Modelo de token utilizado na API é o JSON Web Token (JWT), ele é um padrão de
 Os únicos testes permitidos no sistema serão os manuais e de regressão através dos endpoints já mapeado presentes na Collection dentro do projeto. Para isso podem ser usado ferramentas como Postman, Insomnia, BrunoAPI, entre outros.
 
 Collection: <a href="../sistema/zeus-back/Collection_APIs.json"> Collection_APIs.json</a>
+
+Casos de Teste:
+- Criar conta
+![Auth_signup](./img/Auth_signup.jpeg)
+
+- Fazer login
+![Auth_signin](./img/Auth_signin.jpeg)
+
+- Fazer Logout
+![Auth_signout](./img/Auth_signout.jpeg)
+
+- Verificar dados do usuário logado
+![Auth_whoami](./img/Auth_whoami.jpeg)
+
+- Buscar usuário pelo id
+![User_findById](./img/User_findById.jpeg)
+
+- Buscar usuário pelo e-mail
+![User_findByEmail](./img/User_findByEmail.jpeg)
+
+- Atualização de usuário
+![User_update](./img/User_update.jpeg)
+
+- Deletar usuário
+![User_delete](./img/User_delete.jpeg)
+
+- Criar apartamento
+![Apartment_create](./img/Apartment_create.jpeg)
+
+- Buscar apartamento pelo id
+![Apartment_findOne](./img/Apartment_findOne.jpeg)
+
+- Buscar todos apartamentos
+![Apartmente_findAll](./img/Apartmente_findAll.jpeg)
+
+- Atualizar apartamento
+![Apartment_update](./img/Apartment_update.jpeg)
+
+- Deletar apartamento
+![Apartment_delete](./img/Apartment_delete.jpeg)
+
+- Criar morador
+![Resident_create](./img/Resident_create.jpeg)
+
+- Buscar morador por id
+![Resident_findOne](./img/Resident_findOne.jpeg)
+
+- Buscar todos moradores
+![Resident_findAll](./img/Resident_findAll.jpeg)
+
+- Atualizar morador
+![Resident_update](./img/Resident_update.jpeg)
+
+- Deletar morador
+![Resident_delete](./img/Resident_delete.jpeg)
+
+- Criar visitante
+![Visitor_create](./img/Visitor_create.jpeg)
+
+- Buscar visitante por id
+![Visitor_findOne](./img/Visitor_findOne.jpeg)
+
+- Buscar todos visitantes
+![Visitor_findAll](./img/Visitor_findAll.jpeg)
+
+- Atualizar visitante
+![Visitor_update](./img/Visitor_update.jpeg)
+
+- Deletar visitante
+![Visitor_delete](./img/Visitor_delete.jpeg)
+
+- Criar funcionário
+![Employee_create](./img/Employee_create.jpeg)
+
+- Buscar funcionário por id
+![Employee_findOne](./img/Employee_findOne.jpeg)
+
+- Buscar todos funcionários
+![Employee_findAll](./img/Employee_findAll.jpeg)
+
+- Atualizar funcionário
+![Employee_update](./img/Employee_update.jpeg)
+
+- Deletar funcionário
+![Employee_delete](./img/Employee_delete.jpeg)
+
+- Criar documento
+![Document_create](./img/Document_create.jpeg)
+
+- Buscar documento por id
+![Document_findOne](./img/Document_findOne.jpeg)
+
+- Buscar todos documentos
+![Document_findAll](./img/Document_findAll.jpeg)
+
+- Atualizar documentos
+![Document_update](./img/Document_update.jpeg)
+
+- Deletar documentos
+![Document_delete](./img/Document_delete.jpeg)
+
+- Criar feed de notícia
+![Feed_create](./img/Feed_create.jpeg)
+
+- Buscar feed de notícia por id
+![Feed_findOne](./img/Feed_findOne.jpeg)
+
+- Buscar todos feed de notícias
+![Feed_findAll](./img/Feed_findAll.jpeg)
+
+- Atualizar feed de notícias
+![Feed_update](./img/Feed_update.jpeg)
+
+- Deletar feed de notícias
+![Feed_delete](./img/Feed_delete.jpeg)
+
+- Criar visita
+![Visit_create](./img/Visit_create.jpeg)
+
+- Buscar visita por id
+![Visit_findOne](./img/Visit_findOne.jpeg)
+
+- Buscar todas visitas
+![Visit_findAll](./img/Visit_findAll.jpeg)
+
+- Atualizar visita
+![Visit_update](./img/Visit_update.jpeg)
+
+- Deletar visita
+![Visit_delete](./img/Visit_delete.jpeg)
 
 # Referências
 
