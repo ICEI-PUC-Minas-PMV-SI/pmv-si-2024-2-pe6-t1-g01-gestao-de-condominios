@@ -56,3 +56,4 @@ volumes:
 
 networks:
   zeus-network:
+    name: zeus-network
