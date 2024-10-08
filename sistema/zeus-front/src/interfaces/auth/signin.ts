@@ -1,4 +1,4 @@
-import type UserDto from '../userDto';
+import type UserDto from '../user/userDto';
 
 export interface SigninForm {
   email: string | null,

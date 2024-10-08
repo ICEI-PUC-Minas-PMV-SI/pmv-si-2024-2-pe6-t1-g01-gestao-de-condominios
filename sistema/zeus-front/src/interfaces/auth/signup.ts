@@ -1,4 +1,4 @@
-import type UserDto from '../userDto';
+import type UserDto from '../user/userDto';
 
 export default interface SignupResponse {
   user: UserDto,

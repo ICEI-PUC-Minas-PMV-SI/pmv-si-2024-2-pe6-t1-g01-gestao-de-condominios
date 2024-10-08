@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import type User from '@/interfaces/user';
+import type User from '@/interfaces/user/user';
 import axios from '@/services/axiosInstace';
 import type SignupResponse from '@/interfaces/auth/signup';
 
@@ -26,7 +26,9 @@ async function signup() {
   try {
     const { data }: { data: SignupResponse } = await axios.post('/auth/signup', user.value);
     localStorage.setItem('zeus_accessToken', data.accessToken);
+    localStorage.setItem('zeus_user', JSON.stringify(data.user));
     useUserStore().setIsAutenticated(true)
+    useUserStore().setUser(data.user)
     router.push('/feed-de-noticias')
   } catch (err) {
     console.error('Erro ao fazer cadastro', err);

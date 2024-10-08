@@ -21,7 +21,9 @@ async function login() {
   try {
     const { data }: { data: SigninResponse } = await axios.post('/auth/signup', signinForm.value);
     localStorage.setItem('zeus_accessToken', data.accessToken);
+    localStorage.setItem('zeus_user', JSON.stringify(data.user));
     useUserStore().setIsAutenticated(true)
+    useUserStore().setUser(data.user)
     router.push('/feed-de-noticias')
   } catch (err) {
     console.error('Erro ao fazer cadastro', err);

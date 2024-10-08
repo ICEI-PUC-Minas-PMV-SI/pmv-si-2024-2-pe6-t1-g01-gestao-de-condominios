@@ -31,3 +31,9 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Rodar o projeto
+
+```sh
+docker-compose up --build 
+```
