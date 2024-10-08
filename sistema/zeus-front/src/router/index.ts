@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import('@/views/Site/Login.vue')
     },
     {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('@/views/Site/CreateAccount.vue')
+    },
+    {
       path: '/feed-de-noticias',
       name: 'Feed de Notícias',
       component: () => import('@/views/System/NewsFeed.vue')

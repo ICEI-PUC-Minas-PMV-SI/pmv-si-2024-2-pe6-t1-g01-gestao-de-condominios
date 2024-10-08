@@ -1,25 +1,30 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/stores/user'
+import type User from '@/interfaces/user';
 import axios from '@/services/axiosInstace';
-import {
-  type SigninResponse,
-  type SigninForm
-} from '@/interfaces/auth/signin';
+import type SignupResponse from '@/interfaces/auth/signup';
 
 const router = useRouter();
 
 const visible = ref(false)
 
-const signinForm = ref<SigninForm>({
+const options = ref([
+  {title: 'MORADOR', value: 'MORADOR'},
+  {title: 'SÍNDICO', value: 'SINDICO'},
+  {title: 'FUNCIONÁRIO', value: 'PORTEIRO'}
+]);
+
+const user = ref<User>({
+  role: 'MORADOR',
   email: null,
   password: null
 });
 
-async function login() {
+async function signup() {
   try {
-    const { data }: { data: SigninResponse } = await axios.post('/auth/signup', signinForm.value);
+    const { data }: { data: SignupResponse } = await axios.post('/auth/signup', user.value);
     localStorage.setItem('zeus_accessToken', data.accessToken);
     useUserStore().setIsAutenticated(true)
     router.push('/feed-de-noticias')
@@ -38,10 +43,18 @@ async function login() {
       min-width="376"
       rounded="lg"
     >
+      <div class="text-subtitle-1 text-medium-emphasis">Tipo de usuário</div>
+
+      <v-select
+        v-model="user.role"
+        :items="options"
+        variant="outlined"
+      ></v-select>
+
       <div class="text-subtitle-1 text-medium-emphasis">E-mail</div>
 
       <v-text-field
-        v-model="signinForm.email"
+        v-model="user.email"
         density="compact"
         placeholder="Endereço de E-mail"
         prepend-inner-icon="mdi-email-outline"
@@ -50,18 +63,10 @@ async function login() {
 
       <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
         Senha
-
-        <!-- <v-btn
-          class="text-caption text-decoration-none text-blue"
-          variant="text"
-          density="compact"
-        >
-          Esqueci minha senha?
-        </v-btn> -->
       </div>
 
       <v-text-field
-        v-model="signinForm.password"
+        v-model="user.email"
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         :type="visible ? 'text' : 'password'"
         density="compact"
@@ -77,19 +82,19 @@ async function login() {
         size="large"
         variant="tonal"
         block
-        @click="login"
+        @click="signup"
       >
-        Log In
+        Cadastrar-se
       </v-btn>
 
       <v-card-text class="text-center">
-        <p>Ainda não tem uma conta?</p>
+        <p>Já tem uma conta?</p>
         <div class="mt-3">
           <v-btn
             class="text-blue text-decoration-none"
             variant="text"
           >
-            Cadastre-se agora <v-icon icon="mdi-chevron-right"></v-icon>
+            <v-icon icon="mdi-chevron-left"></v-icon> Sign In
         </v-btn>
         </div>
       </v-card-text>

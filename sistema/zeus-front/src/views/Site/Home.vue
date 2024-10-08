@@ -57,7 +57,7 @@ const services = ref([
           <div>
             <h2 class="mb-5">E isso tudo em um só lugar, começe agora!</h2>
             <div class="d-flex justify-center">
-              <v-btn :class="appLoginColor,hoverBtnColor" color="flex-grow-1">
+              <v-btn to="/signup" :style="{ textTransform: 'none' }" :class="appLoginColor,hoverBtnColor" color="flex-grow-1">
                 Criar conta
               </v-btn>
             </div>
