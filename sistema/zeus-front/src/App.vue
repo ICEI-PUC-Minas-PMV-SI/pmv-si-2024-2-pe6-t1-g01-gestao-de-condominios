@@ -3,6 +3,8 @@ import SiteLayout from '@/components/Site/SiteLayout.vue'
 import SystemLayout from '@/components/System/SystemLayout.vue'
 import { useThemeStore } from '@/stores/theme';
 import { useUserStore } from '@/stores/user';
+
+console.log(useUserStore().user)
 </script>
 
 <template>

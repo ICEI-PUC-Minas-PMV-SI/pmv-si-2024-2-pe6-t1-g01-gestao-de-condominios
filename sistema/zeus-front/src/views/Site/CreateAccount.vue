@@ -68,7 +68,7 @@ async function signup() {
       </div>
 
       <v-text-field
-        v-model="user.email"
+        v-model="user.password"
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         :type="visible ? 'text' : 'password'"
         density="compact"

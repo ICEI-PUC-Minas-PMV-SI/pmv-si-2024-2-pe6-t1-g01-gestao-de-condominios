@@ -58,6 +58,12 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+### Rodar o projeto
+
+```sh
+docker-compose up --build
+```
+
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:
