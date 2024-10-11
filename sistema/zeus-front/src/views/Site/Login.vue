@@ -19,7 +19,7 @@ const signinForm = ref<SigninForm>({
 
 async function login() {
   try {
-    const { data }: { data: SigninResponse } = await axios.post('/auth/signup', signinForm.value);
+    const { data }: { data: SigninResponse } = await axios.post('/auth/signin', signinForm.value);
     localStorage.setItem('zeus_accessToken', data.accessToken);
     localStorage.setItem('zeus_user', JSON.stringify(data.user));
     useUserStore().setIsAutenticated(true)
