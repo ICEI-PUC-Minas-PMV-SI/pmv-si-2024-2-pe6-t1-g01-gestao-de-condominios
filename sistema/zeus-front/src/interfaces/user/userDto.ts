@@ -1,10 +1,10 @@
 export default interface UserDto {
+  id: number,
   email: string,
   role: 'MORADOR' | 'SINDICO' | 'PORTEIRO',
   name: string,
   cellphone: string,
   cpf: string,
-  id: number,
   createdAt: Date,
   updatedAt: Date
 }

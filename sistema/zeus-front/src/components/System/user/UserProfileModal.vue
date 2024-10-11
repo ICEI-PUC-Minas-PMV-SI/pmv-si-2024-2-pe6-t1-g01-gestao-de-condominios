@@ -4,6 +4,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useThemeStore } from '@/stores/theme'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from "pinia"
+import axios from '@/services/axiosInstace';
+import type UserUpdateResponse from '@/interfaces/user/userUpdateResponse';
 
 const props = defineProps<{
   showModal: boolean;
@@ -30,8 +32,15 @@ const userProfileForm = ref<UserProfileForm>({
   password: null
 });
 
-function save() {
-  emit('close');
+async function save() {
+  try {
+    const { data }: { data: UserUpdateResponse } = await axios.put(`/user/${user.value?.id}`, userProfileForm.value);
+    localStorage.setItem('zeus_user', JSON.stringify(data));
+    useUserStore().setUser(data)
+    emit('close');
+  } catch (err) {
+    console.error('Erro ao fazer atualização de usuário', err);
+  }
 }
 
 onMounted(() => {
