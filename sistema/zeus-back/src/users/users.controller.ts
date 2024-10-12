@@ -36,15 +36,15 @@ export class UsersController {
     return this.usersService.findByEmail(email);
   }
 
-  @Delete('/:id')
-  @UseGuards(JwtSessionGuard)
-  async removeUser(@Param('id') id: string) {
-    return this.usersService.remove(parseInt(id));
-  }
-
   @Put('/:id')
   @UseGuards(JwtSessionGuard)
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(parseInt(id), body);
+  }
+
+  @Delete('/:id')
+  @UseGuards(JwtSessionGuard)
+  async removeUser(@Param('id') id: string) {
+    return this.usersService.remove(parseInt(id));
   }
 }

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserRole, type UserRelations } from '../entities/user.entity';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 const scrypt = promisify(_scrypt);
 
@@ -40,20 +41,22 @@ export class UsersService {
     return this.repo.find({ where: { email } });
   }
 
-  async update(id: number, attrs: Partial<User>) {
+  async update(id: number, body: UpdateUserDto) {
     const user = await this.findOne(id);
 
     if (!user) {
       throw new NotFoundException('user not found');
     }
 
-    if (attrs.password) {
+    if (body.password) {
       const salt = randomBytes(8).toString('hex');
-      const hash = (await scrypt(attrs.password, salt, 32)) as Buffer;
-      attrs.password = salt + '.' + hash.toString('hex');
+      const hash = (await scrypt(body.password, salt, 32)) as Buffer;
+      body.password = salt + '.' + hash.toString('hex');
+    } else {
+      delete body.password
     }
 
-    Object.assign(user, attrs);
+    Object.assign(user, body);
     return this.repo.save(user);
   }
 
