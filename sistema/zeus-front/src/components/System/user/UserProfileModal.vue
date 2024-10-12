@@ -7,9 +7,7 @@ import { storeToRefs } from "pinia"
 import axios from '@/services/axiosInstace';
 import type UserUpdateResponse from '@/interfaces/user/userUpdateResponse';
 
-const props = defineProps<{
-  showModal: boolean;
-}>();
+const props = defineProps<{ showModal: boolean }>();
 const emit = defineEmits<{ (e: 'close'): void }>();
 
 const { theme } = storeToRefs(useThemeStore());
@@ -32,14 +30,19 @@ const userProfileForm = ref<UserProfileForm>({
   password: null
 });
 
+const loading = ref(false);
+
 async function save() {
   try {
+    loading.value = true
     const { data }: { data: UserUpdateResponse } = await axios.put(`/user/${user.value?.id}`, userProfileForm.value);
     localStorage.setItem('zeus_user', JSON.stringify(data));
     useUserStore().setUser(data)
     emit('close');
   } catch (err) {
     console.error('Erro ao fazer atualização de usuário', err);
+  } finally {
+    loading.value = false
   }
 }
 
@@ -57,6 +60,7 @@ onMounted(() => {
     width="auto"
   >
     <v-card
+      :loading="loading"
       max-width="500"
       text="Aqui você pode atualizar os seus dados de perfil, eles serão acessíveis pelos demais usuários."
       title="Perfil do usuário"

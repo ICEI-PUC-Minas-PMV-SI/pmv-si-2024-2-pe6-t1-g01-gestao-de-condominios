@@ -51,6 +51,7 @@ async function signup() {
         v-model="user.role"
         :items="options"
         variant="outlined"
+        density="compact"
       ></v-select>
 
       <div class="text-subtitle-1 text-medium-emphasis">E-mail</div>

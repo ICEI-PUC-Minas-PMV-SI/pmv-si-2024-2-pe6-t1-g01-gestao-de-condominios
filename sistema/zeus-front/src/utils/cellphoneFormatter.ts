@@ -1,4 +1,6 @@
-export default function formatPhoneNumber(phone: string) {
+export default function formatPhoneNumber(phone: string | null) {
+  if(!phone) return phone;
+
   const cleaned = phone.replace(/\D/g, '');
 
   switch (cleaned.length) {
