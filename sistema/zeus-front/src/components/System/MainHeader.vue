@@ -18,7 +18,7 @@ const capitalizedRouteName = computed(() => {
 <template>
   <div class="d-flex justify-space-between">
     <h1>{{ capitalizedRouteName }}</h1>
-    <v-breadcrumbs :items="['Feed de Notícias']"></v-breadcrumbs>
+    <!-- <v-breadcrumbs :items="['Feed de Notícias']"></v-breadcrumbs> -->
   </div>
   
 </template>

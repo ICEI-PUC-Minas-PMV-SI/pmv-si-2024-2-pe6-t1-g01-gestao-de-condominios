@@ -27,6 +27,36 @@ const router = createRouter({
       path: '/feed-de-noticias',
       name: 'Feed de Notícias',
       component: () => import('@/views/System/NewsFeed.vue')
+    },
+    {
+      path: '/moradores',
+      name: 'Moradores',
+      component: () => import('@/views/System/Residents.vue')
+    },
+    {
+      path: '/documentos',
+      name: 'Documentos',
+      component: () => import('@/views/System/NewsFeed.vue')
+    },
+    {
+      path: '/visitantes',
+      name: 'Visitantes',
+      component: () => import('@/views/System/NewsFeed.vue')
+    },
+    {
+      path: '/visitas',
+      name: 'Visitas',
+      component: () => import('@/views/System/NewsFeed.vue')
+    },
+    {
+      path: '/funcionarios',
+      name: 'Funcionários',
+      component: () => import('@/views/System/NewsFeed.vue')
+    },
+    {
+      path: '/apartamentos',
+      name: 'Apartamentos',
+      component: () => import('@/views/System/NewsFeed.vue')
     }
   ]
 })
