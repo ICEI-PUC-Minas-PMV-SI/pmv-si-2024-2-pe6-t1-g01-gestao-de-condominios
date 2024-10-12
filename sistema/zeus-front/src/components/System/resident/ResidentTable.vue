@@ -3,6 +3,11 @@ import { ref } from 'vue';
 import cellphoneFormatter from '@/utils/cellphoneFormatter'
 import type ResidentDto from '@/interfaces/resident/residentDto';
 import ResidentModal from './ResidentModal.vue';
+import axios from '@/services/axiosInstace';
+import { useResidentStore } from '@/stores/resident'
+import { storeToRefs } from 'pinia';
+
+const { residents } = storeToRefs(useResidentStore());
 
 const headers = ref([
   { title: 'Nome', key: 'name', align: 'start' as const },
@@ -12,8 +17,6 @@ const headers = ref([
   { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const },
 ]);
 
-const residents = ref<ResidentDto[]>([]);
-
 const loading = ref(false);
 const showModal = ref(false);
 const search = ref<string | null>();
@@ -22,6 +25,20 @@ function getColor(value: string) {
   if(value === 'A') return 'green-darken-4'
   else return 'orange-darken-4'
 }
+
+async function getResidents() {
+  try {
+    loading.value = true;
+    const { data }: { data: ResidentDto[] } = await axios.get('/resident');
+    useResidentStore().setResidents(data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+}
+
+getResidents();
 </script>
 
 <template>
@@ -76,7 +93,7 @@ function getColor(value: string) {
       {{ value }}
     </template>
     <template v-slot:item.apartment="{ value }">
-      <v-chip :color="getColor(value.block)">
+      <v-chip v-if="value" :color="getColor(value.block)">
         {{ value.number }} / {{ value.block }}
       </v-chip>
     </template>
