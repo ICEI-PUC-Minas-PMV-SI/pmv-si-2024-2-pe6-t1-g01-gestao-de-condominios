@@ -3,12 +3,26 @@ import SiteLayout from '@/components/Site/SiteLayout.vue'
 import SystemLayout from '@/components/System/SystemLayout.vue'
 import { useThemeStore } from '@/stores/theme';
 import { useUserStore } from '@/stores/user';
+import SnackbarQueue from './components/SnackbarQueue.vue';
+import { ref } from 'vue';
+
+const snackbarQueueRef = ref<InstanceType<typeof SnackbarQueue> | null>(null);
+
+function showSnackbar(message: string, color: string) {
+  console.log('teste', snackbarQueueRef, snackbarQueueRef.value)
+  if (snackbarQueueRef.value) {
+    snackbarQueueRef.value.showSnackbar(message, color);
+  }
+}
+
+defineExpose({ showSnackbar });
 </script>
 
 <template>
   <v-app :theme="useThemeStore().theme">
     <SiteLayout v-if="!useUserStore().isAuthenticated" />
     <SystemLayout v-else />
+    <SnackbarQueue ref="snackbarQueue" />
   </v-app>
 </template>
 

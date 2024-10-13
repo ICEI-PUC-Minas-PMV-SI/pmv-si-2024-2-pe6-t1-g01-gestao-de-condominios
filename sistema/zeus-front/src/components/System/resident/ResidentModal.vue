@@ -24,17 +24,22 @@ const resident = ref<ResidentForm>({
 });
 const apartments = ref<ApartmentDto[]>([]);
 
+const snackbarMessage = ref<string>('');
+const snackbarToast = ref<boolean>(false);
+const snackbarType = ref<'info' | 'warning' | 'success' | 'error'>('info');
+const snackbarTimerColor = ref<'blue' | 'yellow' | 'green' | 'red'>('blue');
+
 watch(() => props.mode, (newMode) => {
   if (newMode === 'create') {
     useResidentStore().resetResident();
   } else if (newMode === 'update') {
-    resident.value = useResidentStore().resident
+    resident.value = useResidentStore().resident;
   } else if (newMode === 'view') {
-    resident.value = useResidentStore().resident
+    resident.value = useResidentStore().resident;
   }
 });
 
-const visible = ref(false)
+const visible = ref(false);
 const loading = ref(false);
 
 const title = computed(() => {
@@ -47,20 +52,38 @@ const title = computed(() => {
 
 function close() {
   useResidentStore().resetResident();
-  resident.value = useResidentStore().resident
+  resident.value = useResidentStore().resident;
   emit('close');
 }
 
+function showSnackbar(type: 'info' | 'warning' | 'success' | 'error', timerColor: 'blue' | 'yellow' | 'green' | 'red', message: string = '') {
+  snackbarType.value = type;
+  snackbarTimerColor.value = timerColor;
+  snackbarMessage.value = message || (type === 'success' ? 'Operação realizada com sucesso.' : 'Erro ao realizar operação.');
+  snackbarToast.value = true;
+}
+
 async function save() {
+  if(props.mode === 'view' || !props.mode) return;
+
   try {
     loading.value = true
-    const { data }: { data: ResidentDto } = await axios.post('/resident', resident.value);
-    useResidentStore().addResident(data)
-    close()
+    const id = resident.value.id;
+    const message = !id ? 'Morador cadastrado com sucesso.' : 'Morador atualizado com sucesso.';
+    const { data }: { data: ResidentDto } = !id
+      ? await axios.post('/resident', resident.value)
+      : await axios.put(`/resident/${id}`, resident.value);
+
+    if(!id) useResidentStore().addResident(data);
+    else useResidentStore().updateResident(data);
+
+    close();
+    showSnackbar('success', 'green', message);
   } catch (err) {
-    console.error(err)
+    console.error(err);
+    showSnackbar('error', 'red', 'Erro ao cadastrar morador.');
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>
@@ -177,4 +200,13 @@ async function save() {
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-snackbar
+    v-model="snackbarToast"
+    :timeout="3000"
+    :color="snackbarType"
+    location="top right"
+    :timer="`${snackbarTimerColor}-darken-2`"
+  >
+    {{ snackbarMessage }}
+  </v-snackbar>
 </template>

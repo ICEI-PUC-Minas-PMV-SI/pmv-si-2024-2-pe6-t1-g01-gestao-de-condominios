@@ -45,6 +45,13 @@ export const useResidentStore = defineStore('resident', {
     },
     addResident(value: ResidentDto) {
       this.residents.push(value);
+    },
+    updateResident(value: ResidentDto) {
+      const resident = this.residents.find(x => x.id === value.id);
+      if(resident) {
+        const index = this.residents.indexOf(resident);
+        this.residents.splice(index, 1, value);
+      }
     }
   }
 })
