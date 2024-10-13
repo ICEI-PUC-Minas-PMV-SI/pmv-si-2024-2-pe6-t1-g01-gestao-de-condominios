@@ -19,11 +19,34 @@ const headers = ref([
 
 const loading = ref(false);
 const showModal = ref(false);
+const modalMode = ref<'view' | 'update' | 'create' | null>(null);
 const search = ref<string | null>();
 
 function getColor(value: string) {
   if(value === 'A') return 'green-darken-4'
   else return 'orange-darken-4'
+}
+
+function create() {
+  modalMode.value = 'create';
+  showModal.value = true
+}
+
+function view(resident: ResidentDto) {
+  useResidentStore().setResident(resident);
+  modalMode.value = 'view';
+  showModal.value = true;
+}
+
+function update(resident: ResidentDto) {
+  useResidentStore().setResident(resident);
+  modalMode.value = 'update';
+  showModal.value = true;
+}
+
+function closeModal() {
+  showModal.value = false;
+  modalMode.value = null;
 }
 
 async function getResidents() {
@@ -70,12 +93,16 @@ getResidents();
         <v-btn
           color="primary"
           dark
-          @click="showModal = true"
+          @click="create"
         >
           <v-icon icon="mdi-plus" />
           Novo Morador
         </v-btn>
-        <ResidentModal :showModal="showModal" @close="showModal = false" />
+        <ResidentModal
+          :mode="modalMode"
+          :showModal="showModal"
+          @close="closeModal"
+        />
 
       </v-toolbar>
     </template>
@@ -102,22 +129,21 @@ getResidents();
         class="me-2"
         size="small"
         color="blue-darken-1"
-      >
-        mdi-eye
-      </v-icon>
+        icon="mdi-eye"
+        @click="view(item)"
+      />
       <v-icon
         class="me-2"
         size="small"
         color="yellow-darken-3"
-      >
-        mdi-pencil
-      </v-icon>
+        icon="mdi-pencil"
+        @click="update(item)"
+      />
       <v-icon
         size="small"
         color="red-darken-2"
-      >
-        mdi-delete
-      </v-icon>
+        icon="mdi-delete"
+      />
     </template>
   </v-data-table>
 </template>

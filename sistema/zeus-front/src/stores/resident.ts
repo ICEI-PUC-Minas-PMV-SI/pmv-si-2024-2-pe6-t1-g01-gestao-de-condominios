@@ -21,8 +21,15 @@ export const useResidentStore = defineStore('resident', {
     setResidents(value: ResidentDto[]) {
       this.residents = value;
     },
-    setResident(value: ResidentForm) {
-      this.resident = value;
+    setResident(value: ResidentDto) {
+      this.resident.id = value.id
+      this.resident.name = value.name
+      this.resident.email = value.email
+      this.resident.password = null
+      this.resident.cellphone = value.cellphone
+      this.resident.cpf = value.cpf
+      this.resident.role = 'MORADOR'
+      this.resident.apartmentId = value.apartment ? value.apartment.id : null
     },
     resetResident() {
       this.resident = {

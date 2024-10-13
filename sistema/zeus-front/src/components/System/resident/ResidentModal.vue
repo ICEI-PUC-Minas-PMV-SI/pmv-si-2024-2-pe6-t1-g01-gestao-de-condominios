@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type ResidentForm from '@/interfaces/resident/residentForm';
 import axios from '@/services/axiosInstace';
 import { useResidentStore } from '@/stores/resident'
 import type ResidentDto from '@/interfaces/resident/residentDto';
 import type ApartmentDto from '@/interfaces/apartment/apartmentDto';
 
-const props = defineProps<{ showModal: boolean }>();
+const props = defineProps<{
+  showModal: boolean,
+  mode: 'view' | 'update' | 'create' | null
+}>();
 const emit = defineEmits<{ (e: 'close'): void }>();
 
 const resident = ref<ResidentForm>({
@@ -21,11 +24,30 @@ const resident = ref<ResidentForm>({
 });
 const apartments = ref<ApartmentDto[]>([]);
 
+watch(() => props.mode, (newMode) => {
+  if (newMode === 'create') {
+    useResidentStore().resetResident();
+  } else if (newMode === 'update') {
+    resident.value = useResidentStore().resident
+  } else if (newMode === 'view') {
+    resident.value = useResidentStore().resident
+  }
+});
+
 const visible = ref(false)
 const loading = ref(false);
 
+const title = computed(() => {
+  switch (props.mode) {
+    case 'create': return 'Novo Morador';
+    case 'update': return 'Atualizar Morador';
+    case 'view': return 'Visualizar Morador';
+  }
+})
+
 function close() {
   useResidentStore().resetResident();
+  resident.value = useResidentStore().resident
   emit('close');
 }
 
@@ -50,7 +72,7 @@ async function save() {
   >
     <v-card :loading="loading">
       <v-card-title>
-        <span class="text-h5">Novo Morador</span>
+        <span class="text-h5">{{ title }}</span>
       </v-card-title>
 
       <v-card-text>
@@ -64,6 +86,7 @@ async function save() {
                 placeholder="Seu nome"
                 prepend-inner-icon="mdi-account-outline"
                 variant="outlined"
+                :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6" sm="12">
@@ -74,6 +97,7 @@ async function save() {
                 placeholder="Endereço de E-mail"
                 prepend-inner-icon="mdi-email-outline"
                 variant="outlined"
+                :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6" sm="12">
@@ -84,6 +108,7 @@ async function save() {
                 placeholder="Seu telefone"
                 prepend-inner-icon="mdi-phone-outline"
                 variant="outlined"
+                :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="6" sm="12">
@@ -94,17 +119,19 @@ async function save() {
                 placeholder="Seu CPF"
                 prepend-inner-icon="mdi-card-account-details-outline"
                 variant="outlined"
+                :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="12" sm="12">
               <div class="text-subtitle-1 text-medium-emphasis">Apartamento</div>
               <v-select
-                label="Selecione"
                 :items="apartments"
+                placeholder="Selecione"
                 variant="outlined"
                 item-title="number"
                 item-value="id"
                 density="compact"
+                :disabled="props.mode === 'view'"
               >
                 <template v-slot:item="{ props, item }">
                   <v-list-item v-bind="props" :subtitle="item.raw.block || ''"/>
@@ -123,6 +150,7 @@ async function save() {
                 placeholder="Insira sua senha"
                 prepend-inner-icon="mdi-lock-outline"
                 variant="outlined"
+                :disabled="props.mode === 'view'"
                 @click:append-inner="visible = !visible"
               ></v-text-field>
             </v-col>
