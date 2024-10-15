@@ -41,7 +41,7 @@ const router = createRouter({
     {
       path: '/visitantes',
       name: 'Visitantes',
-      component: () => import('@/views/System/NewsFeed.vue')
+      component: () => import('@/views/System/Visitors.vue')
     },
     {
       path: '/visitas',
