@@ -68,7 +68,7 @@ async function save() {
   try {
     loading.value = true
     const id = visitor.value.id;
-    const message = !id ? 'Morador cadastrado com sucesso.' : 'Morador atualizado com sucesso.';
+    const message = !id ? 'Visitante cadastrado com sucesso.' : 'Visitante atualizado com sucesso.';
     const { data }: { data: VisitorDto } = !id
       ? await axios.post('/visitor', visitor.value)
       : await axios.put(`/visitor/${id}`, visitor.value);
@@ -80,7 +80,7 @@ async function save() {
     showSnackbar('success', 'green', message);
   } catch (err) {
     console.error(err);
-    showSnackbar('error', 'red', 'Erro ao cadastrar morador.');
+    showSnackbar('error', 'red', 'Erro ao cadastrar visitante.');
   } finally {
     loading.value = false;
   }
