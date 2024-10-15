@@ -1,5 +1,4 @@
 import type ResidentDto from '@/interfaces/resident/residentDto';
-import type ResidentForm from '@/interfaces/resident/residentForm';
 import type ResidentState from '@/interfaces/resident/residentState';
 import { defineStore } from 'pinia'
 
@@ -52,6 +51,9 @@ export const useResidentStore = defineStore('resident', {
         const index = this.residents.indexOf(resident);
         this.residents.splice(index, 1, value);
       }
+    },
+    deleteResident(value: ResidentDto) {
+      this.residents = this.residents.filter(x => x.id !== value.id)
     }
   }
 })
