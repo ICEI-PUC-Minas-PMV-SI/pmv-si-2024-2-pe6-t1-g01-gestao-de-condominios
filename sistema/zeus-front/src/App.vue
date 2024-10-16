@@ -2,27 +2,26 @@
 import SiteLayout from '@/components/Site/SiteLayout.vue'
 import SystemLayout from '@/components/System/SystemLayout.vue'
 import { useThemeStore } from '@/stores/theme';
+import { useToastStore } from '@/stores/toast';
 import { useUserStore } from '@/stores/user';
-import SnackbarQueue from './components/SnackbarQueue.vue';
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const snackbarQueueRef = ref<InstanceType<typeof SnackbarQueue> | null>(null);
-
-function showSnackbar(message: string, color: string) {
-  console.log('teste', snackbarQueueRef, snackbarQueueRef.value)
-  if (snackbarQueueRef.value) {
-    snackbarQueueRef.value.showSnackbar(message, color);
-  }
-}
-
-defineExpose({ showSnackbar });
+const { activate, message, type, color } = storeToRefs(useToastStore());
 </script>
 
 <template>
   <v-app :theme="useThemeStore().theme">
     <SiteLayout v-if="!useUserStore().isAuthenticated" />
     <SystemLayout v-else />
-    <SnackbarQueue ref="snackbarQueue" />
+    <v-snackbar
+      v-model="activate"
+      :timeout="3000"
+      :color="type"
+      location="top right"
+      :timer="`${color}-darken-2`"
+    >
+      {{ message }}
+    </v-snackbar>
   </v-app>
 </template>
 

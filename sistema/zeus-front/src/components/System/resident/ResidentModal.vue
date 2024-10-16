@@ -5,6 +5,7 @@ import axios from '@/services/axiosInstace';
 import { useResidentStore } from '@/stores/resident'
 import type ResidentDto from '@/interfaces/resident/residentDto';
 import type ApartmentDto from '@/interfaces/apartment/apartmentDto';
+import { useToastStore } from '@/stores/toast';
 
 const props = defineProps<{
   showModal: boolean,
@@ -23,11 +24,6 @@ const resident = ref<ResidentForm>({
   apartmentId: null
 });
 const apartments = ref<ApartmentDto[]>([]);
-
-const snackbarMessage = ref<string>('');
-const snackbarToast = ref<boolean>(false);
-const snackbarType = ref<'info' | 'warning' | 'success' | 'error'>('info');
-const snackbarTimerColor = ref<'blue' | 'yellow' | 'green' | 'red'>('blue');
 
 watch(() => props.mode, (newMode) => {
   if (newMode === 'create') {
@@ -56,13 +52,6 @@ function close() {
   emit('close');
 }
 
-function showSnackbar(type: 'info' | 'warning' | 'success' | 'error', timerColor: 'blue' | 'yellow' | 'green' | 'red', message: string = '') {
-  snackbarType.value = type;
-  snackbarTimerColor.value = timerColor;
-  snackbarMessage.value = message || (type === 'success' ? 'Operação realizada com sucesso.' : 'Erro ao realizar operação.');
-  snackbarToast.value = true;
-}
-
 async function save() {
   if(props.mode === 'view' || !props.mode) return;
 
@@ -78,10 +67,10 @@ async function save() {
     else useResidentStore().updateResident(data);
 
     close();
-    showSnackbar('success', 'green', message);
+    useToastStore().showToast({message, type: 'success', color: 'green'});
   } catch (err) {
     console.error(err);
-    showSnackbar('error', 'red', 'Erro ao cadastrar morador.');
+    useToastStore().showToast({message: 'Erro ao cadastrar morador.', type: 'error', color: 'red'});
   } finally {
     loading.value = false;
   }
@@ -200,13 +189,4 @@ async function save() {
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-snackbar
-    v-model="snackbarToast"
-    :timeout="3000"
-    :color="snackbarType"
-    location="top right"
-    :timer="`${snackbarTimerColor}-darken-2`"
-  >
-    {{ snackbarMessage }}
-  </v-snackbar>
 </template>

@@ -6,6 +6,7 @@ import ResidentModal from './ResidentModal.vue';
 import axios from '@/services/axiosInstace';
 import { useResidentStore } from '@/stores/resident'
 import { storeToRefs } from 'pinia';
+import { useToastStore } from '@/stores/toast';
 
 const { residents } = storeToRefs(useResidentStore());
 
@@ -44,27 +45,15 @@ function update(resident: ResidentDto) {
   showModal.value = true;
 }
 
-const snackbarMessage = ref<string>('');
-const snackbarToast = ref<boolean>(false);
-const snackbarType = ref<'info' | 'warning' | 'success' | 'error'>('info');
-const snackbarTimerColor = ref<'blue' | 'yellow' | 'green' | 'red'>('blue');
-
-function showSnackbar(type: 'info' | 'warning' | 'success' | 'error', timerColor: 'blue' | 'yellow' | 'green' | 'red', message: string = '') {
-  snackbarType.value = type;
-  snackbarTimerColor.value = timerColor;
-  snackbarMessage.value = message || (type === 'success' ? 'Operação realizada com sucesso.' : 'Erro ao realizar operação.');
-  snackbarToast.value = true;
-}
-
 async function remove(resident: ResidentDto) {
   try {
     loading.value = true;
     await axios.delete(`/resident/${resident.id}`);
     useResidentStore().deleteResident(resident);
-    showSnackbar('success', 'green', 'Morador deletado com sucesso.');
+    useToastStore().showToast({message: 'Morador deletado com sucesso.', type: 'success', color: 'green'});
   } catch (err) {
     console.error(err);
-    showSnackbar('error', 'red', 'Erro ao deletar morador.');
+    useToastStore().showToast({message: 'Erro ao deletar morador.', type: 'error', color: 'red'});
   } finally {
     loading.value = false;
   }
@@ -173,13 +162,4 @@ getResidents();
       />
     </template>
   </v-data-table>
-  <v-snackbar
-    v-model="snackbarToast"
-    :timeout="3000"
-    :color="snackbarType"
-    location="top right"
-    :timer="`${snackbarTimerColor}-darken-2`"
-  >
-    {{ snackbarMessage }}
-  </v-snackbar>
 </template>
