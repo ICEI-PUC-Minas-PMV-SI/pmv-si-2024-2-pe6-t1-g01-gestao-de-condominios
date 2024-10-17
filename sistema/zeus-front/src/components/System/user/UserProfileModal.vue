@@ -6,6 +6,7 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from "pinia"
 import axios from '@/services/axiosInstace';
 import type UserUpdateResponse from '@/interfaces/user/userUpdateResponse';
+import { useToastStore } from '@/stores/toast';
 
 const props = defineProps<{ showModal: boolean }>();
 const emit = defineEmits<{ (e: 'close'): void }>();
@@ -38,9 +39,19 @@ async function save() {
     const { data }: { data: UserUpdateResponse } = await axios.put(`/user/${user.value?.id}`, userProfileForm.value);
     localStorage.setItem('zeus_user', JSON.stringify(data));
     useUserStore().setUser(data)
+    useToastStore().showToast({
+      message: 'Usuário atualizado com sucesso',
+      type: 'success',
+      color: 'green'
+    })
     emit('close');
   } catch (err) {
     console.error('Erro ao fazer atualização de usuário', err);
+    useToastStore().showToast({
+      message: 'Erro ao fazer atualização de usuário',
+      type: 'error',
+      color: 'red'
+    })
   } finally {
     loading.value = false
   }
