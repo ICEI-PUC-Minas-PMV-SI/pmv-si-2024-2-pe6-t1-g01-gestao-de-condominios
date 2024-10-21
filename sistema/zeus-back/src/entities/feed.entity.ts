@@ -12,7 +12,7 @@ export class Feed {
   @Column()
   description: string;
 
-  @Column()
+  @Column('text')
   link: string;
 
   @ManyToOne(() => User, (user) => user.feeds, { onDelete: 'CASCADE' })

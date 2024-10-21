@@ -74,7 +74,7 @@ export class FeedService {
     }
 
     Object.assign(feed, body);
-    feed.link = file.originalname;
+    if(file) feed.link = file.originalname;
     return this.repo.save(feed);
   }
 

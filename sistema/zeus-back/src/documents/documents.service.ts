@@ -74,8 +74,7 @@ export class DocumentsService {
     }
 
     Object.assign(document, body);
-    document.link = file.originalname;
-
+    if(file) document.link = file.originalname;
     return this.repo.save(document);
   }
 

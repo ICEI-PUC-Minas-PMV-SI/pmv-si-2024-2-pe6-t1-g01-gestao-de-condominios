@@ -12,7 +12,7 @@ export class Document {
   @Column()
   description: string;
 
-  @Column()
+  @Column('text')
   link: string;
 
   @ManyToOne(() => User, (user) => user.documents, { onDelete: 'CASCADE' })
