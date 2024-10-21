@@ -57,3 +57,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # env
 .env
+
+# Apple system files
+._*
+.DS_Store
