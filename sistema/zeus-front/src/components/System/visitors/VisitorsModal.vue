@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import type VisitorsForm from '@/interfaces/visitors/visitorsForm';
+import cellphoneFormatter from '@/utils/cellphoneFormatter'
+import cpfFormatter from '@/utils/cpfFormatter'
 import axios from '@/services/axiosInstace';
-import { useVisitorsStore } from '@/stores/visitor'
+import { useVisitorsStore } from '@/stores/visitor';
 import type VisitorDto from '@/interfaces/visitors/visitorsDto';
 import type ApartmentDto from '@/interfaces/apartment/apartmentDto';
 
@@ -28,13 +30,30 @@ const snackbarToast = ref<boolean>(false);
 const snackbarType = ref<'info' | 'warning' | 'success' | 'error'>('info');
 const snackbarTimerColor = ref<'blue' | 'yellow' | 'green' | 'red'>('blue');
 
+// Resetar o visitante quando o modal é aberto
+watch(() => props.showModal, (newVal) => {
+  if (newVal) {
+    visitor.value = {
+      id: null,
+      name: null,
+      cellphone: null,
+      cpf: null,
+      visits: null,
+      createdAt: null,
+      updatedAt: null
+    };
+    // Resetar snackbar quando o modal é aberto
+    snackbarMessage.value = '';
+    snackbarToast.value = false;
+  }
+});
+
 watch(() => props.mode, (newMode) => {
+  const store = useVisitorsStore();
   if (newMode === 'create') {
-    useVisitorsStore().resetVisitor();
-  } else if (newMode === 'update') {
-    visitor.value = useVisitorsStore().visitor;
-  } else if (newMode === 'view') {
-    visitor.value = useVisitorsStore().visitor;
+    store.resetVisitor();
+  } else if (newMode === 'update' || newMode === 'view') {
+    visitor.value = store.visitor;
   }
 });
 
@@ -47,12 +66,11 @@ const title = computed(() => {
     case 'update': return 'Atualizar Visitante';
     case 'view': return 'Visualizar Visitante';
   }
-})
+});
 
 function close() {
-    useVisitorsStore().resetVisitor();
-    visitor.value = useVisitorsStore().visitor;
-    emit('close');
+  // useVisitorsStore().resetVisitor();
+  emit('close');
 }
 
 function showSnackbar(type: 'info' | 'warning' | 'success' | 'error', timerColor: 'blue' | 'yellow' | 'green' | 'red', message: string = '') {
@@ -63,17 +81,17 @@ function showSnackbar(type: 'info' | 'warning' | 'success' | 'error', timerColor
 }
 
 async function save() {
-  if(props.mode === 'view' || !props.mode) return;
+  if (props.mode === 'view' || !props.mode) return;
 
   try {
-    loading.value = true
+    loading.value = true;
     const id = visitor.value.id;
     const message = !id ? 'Visitante cadastrado com sucesso.' : 'Visitante atualizado com sucesso.';
     const { data }: { data: VisitorDto } = !id
       ? await axios.post('/visitor', visitor.value)
       : await axios.put(`/visitor/${id}`, visitor.value);
 
-    if(!id) useVisitorsStore().addVisitor(data);
+    if (!id) useVisitorsStore().addVisitor(data);
     else useVisitorsStore().updateVisitor(data);
 
     close();
@@ -85,6 +103,19 @@ async function save() {
     loading.value = false;
   }
 }
+
+// Watchers para formatar automaticamente os campos
+watch(() => visitor.value.cpf, (newValue) => {
+  if (newValue !== null) {
+    visitor.value.cpf = cpfFormatter(newValue);
+  }
+});
+
+watch(() => visitor.value.cellphone, (newValue) => {
+  if (newValue !== null) {
+  visitor.value.cellphone = cellphoneFormatter(newValue);
+  }
+});
 </script>
 
 <template>
@@ -155,14 +186,14 @@ async function save() {
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-snackbar
+      v-model="snackbarToast"
+      :timeout="3000"
+      :color="snackbarType"
+      location="top right"
+      :timer="`${snackbarTimerColor}-darken-2`"
+    >
+      {{ snackbarMessage }}
+    </v-snackbar>
   </v-dialog>
-  <v-snackbar
-    v-model="snackbarToast"
-    :timeout="3000"
-    :color="snackbarType"
-    location="top right"
-    :timer="`${snackbarTimerColor}-darken-2`"
-  >
-    {{ snackbarMessage }}
-  </v-snackbar>
 </template>

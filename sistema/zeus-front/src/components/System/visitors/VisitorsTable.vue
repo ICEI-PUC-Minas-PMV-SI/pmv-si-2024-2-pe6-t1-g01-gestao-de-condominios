@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import cellphoneFormatter from '@/utils/cellphoneFormatter'
+import cpfFormatter from '@/utils/cpfFormatter'
+import dataFormatter from '@/utils/dataFormatter'
 import type VisitorDto from '@/interfaces/visitors/visitorsDto';
 import VisitorsModal from './VisitorsModal.vue';
 import axios from '@/services/axiosInstace'; 
 import { useVisitorsStore } from '@/stores/visitor'; 
 import { storeToRefs } from 'pinia';    
+import { useToastStore } from '@/stores/toast';
 
 const { visitors } = storeToRefs(useVisitorsStore());
 
 const headers = ref([
   { title: 'Nome', key: 'name', align: 'start' as const },
   { title: 'CPF', key: 'cpf', align: 'start' as const },
-  { title: 'Data de cadastro', key: 'createdAt', align: 'start' as const },
+  { title: 'Data de cadastro', key: 'creatAt', align: 'start' as const },
   { title: 'Alterada', key: 'updatedAt', align: 'end' as const },
   { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const },
 ]);
@@ -37,6 +40,20 @@ function update(visitor: VisitorDto) {
     useVisitorsStore().setVisitor(visitor);
     modalMode.value = 'update';
     showModal.value = true;
+}
+
+async function remove(visitor: VisitorDto) {
+  try {
+    loading.value = true;
+    await axios.delete(`/visitor/${visitor.id}`);
+    useVisitorsStore().deleteVisitor(visitor);
+    useToastStore().showToast({message: 'Visitante deletado com sucesso.', type: 'success', color: 'green'});
+  } catch (err) {
+    console.error(err);
+    useToastStore().showToast({message: 'Erro ao deletar visitante.', type: 'error', color: 'red'});
+  } finally {
+    loading.value = false;
+  }
 }
 
 function closeModal() {
@@ -108,11 +125,14 @@ getVisitors();
       {{ item.name }} <br>
       <small>{{ cellphoneFormatter(item.cellphone) }}</small>
     </template>
-    <template v-slot:item.cpf="{ value }">
-      {{ value }}
+    <template v-slot:item.cpf="{ item }">
+      {{ cpfFormatter(item.cpf) }}
     </template>
-    <template v-slot:item.creatAt="{ value }">
-      {{ value }}
+    <template v-slot:item.creatAt="{ item }">
+      {{ dataFormatter(item.createdAt) }} 
+    </template>
+    <template v-slot:item.updatedAt="{ item }">
+      {{ dataFormatter(item.updatedAt) }} 
     </template>
     <template v-slot:item.actions="{ item }">
       <v-icon
@@ -133,6 +153,7 @@ getVisitors();
         size="small"
         color="red-darken-2"
         icon="mdi-delete"
+        @click="remove(item)"
       />
     </template>
   </v-data-table>
