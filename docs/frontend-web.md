@@ -25,31 +25,49 @@ A interface web do sistema de gestão de condomínios é projetada com foco na u
 ### Layout das Páginas
 1.	Página de Login
 •	Inclui campos de usuário e senha, com validação básica de campos vazios e botões estilizados para "Entrar" e "Esqueci minha senha".
+
 •	Feedback visual de erros ou sucessos ao tentar logar.
+
 •	Redirecionamento para a página inicial do sistema após o login.
 
-2.	Dashboard Principal
+
+3.	Dashboard Principal
 •	Quadro de avisos e notificações: Central na página inicial, onde o síndico ou administradores podem publicar informações relevantes para todos os moradores, como notícias ou eventos importantes. Cada notificação tem um título, breve descrição, e data.
+
 •	Menus laterais: Dispostos verticalmente, oferecendo links de navegação rápida para as principais áreas do sistema: "Cadastro de Moradores", "Cadastro de Funcionários", "Controle de Visitantes", "Relatórios" e "Configurações".
 
-3.	Páginas de Cadastro (Moradores, Funcionários, Visitas)
+
+5.	Páginas de Cadastro (Moradores, Funcionários, Visitas)
 •	Formulários organizados de maneira clara, com campos de entrada validados para dados essenciais como nome, CPF, e-mail e unidade.
+
 •	Botões de ação (Salvar, Cancelar) posicionados ao final dos formulários, com feedback visual de sucesso ou erro após cada operação.
+
 •	Funcionalidade de busca em tempo real na lista de cadastrados, permitindo filtrar por nome ou unidade.
 
-4.	Controle de Acesso de Visitantes
+
+7.	Controle de Acesso de Visitantes
 •	Tela para registro de entradas e saídas de visitantes, com integração visual aos sistemas de portaria.
+
 •	Campos para o cadastro de visitantes em tempo real, integrados com dispositivos de controle de acesso (como portões ou catracas).
+
 •	Indicadores visuais para status de visitantes (entradas registradas ou aguardando confirmação).
+
 
 ### Interações do Usuário
 •	Notificações em tempo real: Sempre que um morador ou síndico adiciona uma nova notificação ou atualização no quadro de avisos, todos os usuários conectados recebem uma notificação visual em tempo real.
+
 •	Feedback visual: O sistema oferece feedback imediato nas ações do usuário, como salvar ou excluir dados, seja por meio de animações suaves, notificações contextuais (pop-ups) ou mudanças de cor nos botões (verde para sucesso, vermelho para erro).
+
 •	Menus de navegação: Responsivos e colapsáveis em dispositivos móveis, permitindo uma navegação fácil com o toque.
 Outros Aspectos Relevantes
+
 •	Segurança: A aplicação possui autenticação via JWT (JSON Web Token) para garantir que o acesso seja seguro e as sessões sejam gerenciadas com proteção.
+
 •	Acessibilidade: Implementação de práticas de acessibilidade web (WCAG), como contraste de cores adequado, navegação por teclado e textos alternativos em imagens para garantir que a aplicação seja utilizável por todos os usuários.
+
 •	API para Integração: O sistema interage com o backend por meio de uma API REST, permitindo uma comunicação eficiente entre o front-end e o servidor para operações de CRUD (Create, Read, Update, Delete).
+
+
 Este design visa proporcionar uma experiência fluida e eficiente, permitindo que os administradores e moradores gerenciem facilmente suas tarefas diárias relacionadas ao condomínio.
 
 
