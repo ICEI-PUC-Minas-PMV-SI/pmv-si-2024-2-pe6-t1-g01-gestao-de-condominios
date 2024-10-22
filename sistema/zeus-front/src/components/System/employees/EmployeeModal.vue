@@ -67,7 +67,7 @@ async function save() {
     useToastStore().showToast({message, type: 'success', color: 'green'});
   } catch (err) {
     console.error(err);
-    useToastStore().showToast({message: 'Erro ao cadastrar morador.', type: 'error', color: 'red'});
+    useToastStore().showToast({message: 'Erro ao cadastrar funcionário.', type: 'error', color: 'red'});
   } finally {
     loading.value = false;
   }
