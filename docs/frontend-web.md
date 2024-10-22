@@ -23,7 +23,8 @@ A interface web do sistema de gestão de condomínios é projetada com foco na u
 •	Responsividade: Todas as páginas são desenvolvidas com um design mobile-first, utilizando técnicas de CSS Flexbox e Grid para garantir que o layout se ajuste dinamicamente a diferentes resoluções de tela, desde smartphones até monitores de desktop.
 
 ### Layout das Páginas
-1.	Página de Login
+- Página de Login:
+
 •	Inclui campos de usuário e senha, com validação básica de campos vazios e botões estilizados para "Entrar" e "Esqueci minha senha".
 
 •	Feedback visual de erros ou sucessos ao tentar logar.
@@ -31,21 +32,22 @@ A interface web do sistema de gestão de condomínios é projetada com foco na u
 •	Redirecionamento para a página inicial do sistema após o login.
 
 
-3.	Dashboard Principal
+- Dashboard Principal:
+
 •	Quadro de avisos e notificações: Central na página inicial, onde o síndico ou administradores podem publicar informações relevantes para todos os moradores, como notícias ou eventos importantes. Cada notificação tem um título, breve descrição, e data.
 
 •	Menus laterais: Dispostos verticalmente, oferecendo links de navegação rápida para as principais áreas do sistema: "Cadastro de Moradores", "Cadastro de Funcionários", "Controle de Visitantes", "Relatórios" e "Configurações".
 
+- Páginas de Cadastro (Moradores, Funcionários, Visitas):
 
-5.	Páginas de Cadastro (Moradores, Funcionários, Visitas)
 •	Formulários organizados de maneira clara, com campos de entrada validados para dados essenciais como nome, CPF, e-mail e unidade.
 
 •	Botões de ação (Salvar, Cancelar) posicionados ao final dos formulários, com feedback visual de sucesso ou erro após cada operação.
 
 •	Funcionalidade de busca em tempo real na lista de cadastrados, permitindo filtrar por nome ou unidade.
 
+- Controle de Acesso de Visitantes:
 
-7.	Controle de Acesso de Visitantes
 •	Tela para registro de entradas e saídas de visitantes, com integração visual aos sistemas de portaria.
 
 •	Campos para o cadastro de visitantes em tempo real, integrados com dispositivos de controle de acesso (como portões ou catracas).
