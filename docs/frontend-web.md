@@ -24,23 +24,23 @@ A interface web do sistema de gestão de condomínios é projetada com foco na u
 
 ### Layout das Páginas
 1.	Página de Login
-o	Inclui campos de usuário e senha, com validação básica de campos vazios e botões estilizados para "Entrar" e "Esqueci minha senha".
-o	Feedback visual de erros ou sucessos ao tentar logar.
-o	Redirecionamento para a página inicial do sistema após o login.
+•	Inclui campos de usuário e senha, com validação básica de campos vazios e botões estilizados para "Entrar" e "Esqueci minha senha".
+•	Feedback visual de erros ou sucessos ao tentar logar.
+•	Redirecionamento para a página inicial do sistema após o login.
 
 2.	Dashboard Principal
-o	Quadro de avisos e notificações: Central na página inicial, onde o síndico ou administradores podem publicar informações relevantes para todos os moradores, como notícias ou eventos importantes. Cada notificação tem um título, breve descrição, e data.
-o	Menus laterais: Dispostos verticalmente, oferecendo links de navegação rápida para as principais áreas do sistema: "Cadastro de Moradores", "Cadastro de Funcionários", "Controle de Visitantes", "Relatórios" e "Configurações".
+•	Quadro de avisos e notificações: Central na página inicial, onde o síndico ou administradores podem publicar informações relevantes para todos os moradores, como notícias ou eventos importantes. Cada notificação tem um título, breve descrição, e data.
+•	Menus laterais: Dispostos verticalmente, oferecendo links de navegação rápida para as principais áreas do sistema: "Cadastro de Moradores", "Cadastro de Funcionários", "Controle de Visitantes", "Relatórios" e "Configurações".
 
 3.	Páginas de Cadastro (Moradores, Funcionários, Visitas)
-o	Formulários organizados de maneira clara, com campos de entrada validados para dados essenciais como nome, CPF, e-mail e unidade.
-o	Botões de ação (Salvar, Cancelar) posicionados ao final dos formulários, com feedback visual de sucesso ou erro após cada operação.
-o	Funcionalidade de busca em tempo real na lista de cadastrados, permitindo filtrar por nome ou unidade.
+•	Formulários organizados de maneira clara, com campos de entrada validados para dados essenciais como nome, CPF, e-mail e unidade.
+•	Botões de ação (Salvar, Cancelar) posicionados ao final dos formulários, com feedback visual de sucesso ou erro após cada operação.
+•	Funcionalidade de busca em tempo real na lista de cadastrados, permitindo filtrar por nome ou unidade.
 
 4.	Controle de Acesso de Visitantes
-o	Tela para registro de entradas e saídas de visitantes, com integração visual aos sistemas de portaria.
-o	Campos para o cadastro de visitantes em tempo real, integrados com dispositivos de controle de acesso (como portões ou catracas).
-o	Indicadores visuais para status de visitantes (entradas registradas ou aguardando confirmação).
+•	Tela para registro de entradas e saídas de visitantes, com integração visual aos sistemas de portaria.
+•	Campos para o cadastro de visitantes em tempo real, integrados com dispositivos de controle de acesso (como portões ou catracas).
+•	Indicadores visuais para status de visitantes (entradas registradas ou aguardando confirmação).
 
 ### Interações do Usuário
 •	Notificações em tempo real: Sempre que um morador ou síndico adiciona uma nova notificação ou atualização no quadro de avisos, todos os usuários conectados recebem uma notificação visual em tempo real.
