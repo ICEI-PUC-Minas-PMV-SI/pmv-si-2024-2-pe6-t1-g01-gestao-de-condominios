@@ -1,0 +1,60 @@
+<script setup lang="ts">
+
+</script>
+
+<template>
+  <v-list
+    density="compact"
+    nav
+  >
+    <v-list-item
+      link
+      prepend-icon="mdi-newspaper"
+      title="Feed de Notícias"
+      value="feed-de-noticias"
+      to="feed-de-noticias"
+    />
+    <v-list-item
+      link
+      prepend-icon="mdi-home-group"
+      title="Moradores"
+      value="moradores"
+      to="moradores"
+    />
+    <v-list-item
+      link
+      prepend-icon="mdi-file-document-multiple"
+      title="Documentos"
+      value="documentos"
+      to="documentos"
+    />
+    <v-list-item
+      link
+      prepend-icon="mdi-camera-front-variant"
+      title="Visitantes"
+      value="visitantes"
+      to="visitantes"
+    />
+    <v-list-item
+      link
+      prepend-icon="mdi-home-clock-outline"
+      title="Visitas"
+      value="visitas"
+      to="visitas"
+    />
+    <v-list-item
+      link
+      prepend-icon="mdi-account-hard-hat"
+      title="Funcionários"
+      value="funcionarios"
+      to="funcionarios"
+    />
+    <v-list-item
+      link
+      prepend-icon="mdi-office-building"
+      title="Apartamentos"
+      value="apartamentos"
+      to="apartamentos"
+    />
+  </v-list>
+</template>
