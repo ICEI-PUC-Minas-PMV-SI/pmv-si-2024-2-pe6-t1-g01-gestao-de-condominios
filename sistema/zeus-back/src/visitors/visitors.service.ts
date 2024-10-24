@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateVisitorsDto } from './dtos/update-visitor.dto';
+import { UpdateVisitorDto } from './dtos/update-visitor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Visitor } from 'src/entities/visitor.entity';
@@ -24,7 +24,7 @@ export class VisitorsService {
     return this.repo.findOne({ where: { id }, relations: ['visits'] });
   }
 
-  async update(id: number, body: UpdateVisitorsDto) {
+  async update(id: number, body: UpdateVisitorDto) {
     const visitor = await this.findOne(id);
     if (!visitor) {
       throw new NotFoundException('visitor not found');

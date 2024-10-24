@@ -1,7 +1,7 @@
-import type VisitorsDto from './visitorsDto';
+import type VisitorDto from './visitorDto';
 import type VisitorsForm from './visitorsForm';
 
 export default interface VisitorsState {
-  visitors: VisitorsDto[],
+  visitors: VisitorDto[],
   visitor: VisitorsForm
 }

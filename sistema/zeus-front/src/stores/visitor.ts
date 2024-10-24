@@ -1,4 +1,4 @@
-import type visitorsDto from '@/interfaces/visitors/visitorsDto';
+import type VisitorDto from '@/interfaces/visitors/visitorDto';
 import type visitorsForm from '@/interfaces/visitors/visitorsForm';
 import type visitorsState from '@/interfaces/visitors/visitorsState';
 import { defineStore } from 'pinia'
@@ -17,10 +17,10 @@ export const useVisitorsStore = defineStore('visitor', {
     }
   }),
   actions: {
-    setVisitors(value: visitorsDto[]) {
+    setVisitors(value: VisitorDto[]) {
       this.visitors = value;
     },
-    setVisitor(value: visitorsDto) {
+    setVisitor(value: VisitorDto) {
       this.visitor.id = value.id
       this.visitor.name = value.name
       this.visitor.cellphone = value.cellphone
@@ -39,10 +39,10 @@ export const useVisitorsStore = defineStore('visitor', {
         updatedAt: null,
       };
     },
-    addVisitor(value: visitorsDto) {
+    addVisitor(value: VisitorDto) {
       this.visitors.push(value);  
     },
-    updateVisitor(value: visitorsDto) {
+    updateVisitor(value: VisitorDto) {
       const visitor = this.visitors.find(x => x.id === value.id);
       if(visitor) {
         const index = this.visitors.indexOf(visitor);

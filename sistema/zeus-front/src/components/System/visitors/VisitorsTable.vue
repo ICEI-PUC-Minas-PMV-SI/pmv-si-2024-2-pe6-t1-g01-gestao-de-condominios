@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import cellphoneFormatter from '@/utils/cellphoneFormatter'
-import type VisitorDto from '@/interfaces/visitors/visitorsDto';
+import type VisitorDto from '@/interfaces/visitors/visitorDto';
 import VisitorsModal from './VisitorsModal.vue';
 import axios from '@/services/axiosInstace'; 
 import { useVisitorsStore } from '@/stores/visitor'; 

@@ -18,6 +18,9 @@ export class VisitDto {
   status: string;
 
   @Expose()
+  visitedAt: Date;
+
+  @Expose()
   createdAt: Date;
 
   @Expose()

@@ -46,7 +46,7 @@ const router = createRouter({
     {
       path: '/visitas',
       name: 'Visitas',
-      component: () => import('@/views/System/NewsFeed.vue')
+      component: () => import('@/views/System/Visits.vue')
     },
     {
       path: '/funcionarios',

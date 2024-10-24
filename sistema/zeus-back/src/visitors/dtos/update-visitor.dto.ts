@@ -1,6 +1,6 @@
 import { IsString, IsOptional } from 'class-validator';
 
-export class UpdateVisitorsDto {
+export class UpdateVisitorDto {
   @IsString()
   @IsOptional()
   name: string;

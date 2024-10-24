@@ -1,6 +1,6 @@
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CreateVisitorDto } from './dtos/create-visitor.dto';
-import { UpdateVisitorsDto } from './dtos/update-visitor.dto';
+import { UpdateVisitorDto } from './dtos/update-visitor.dto';
 import { VisitorsService } from './visitors.service';
 import { Body, Controller, Delete, Get, Param, Put, Post, UseGuards } from '@nestjs/common';
 import { VisitorDto } from './dtos/visitor.dto';
@@ -37,7 +37,7 @@ export class VisitorsController {
 
   @Put(':id')
   @UseGuards(JwtSessionGuard)
-  update(@Param('id') id: string, @Body() body: UpdateVisitorsDto) {
+  update(@Param('id') id: string, @Body() body: UpdateVisitorDto) {
     return this.visitorsService.update(+id, body);
   }
 

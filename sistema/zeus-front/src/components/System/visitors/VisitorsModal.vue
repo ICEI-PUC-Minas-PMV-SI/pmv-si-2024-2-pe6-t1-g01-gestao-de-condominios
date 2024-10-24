@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import type VisitorsForm from '@/interfaces/visitors/visitorsForm';
 import axios from '@/services/axiosInstace';
 import { useVisitorsStore } from '@/stores/visitor'
-import type VisitorDto from '@/interfaces/visitors/visitorsDto';
+import type VisitorDto from '@/interfaces/visitors/visitorDto';
 import type ApartmentDto from '@/interfaces/apartment/apartmentDto';
 
 const props = defineProps<{
