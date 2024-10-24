@@ -12,15 +12,15 @@ export class Feed {
   @Column()
   description: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   link: string;
 
   @ManyToOne(() => User, (user) => user.feeds, { onDelete: 'CASCADE' })
   user: User;
 
   @CreateDateColumn({ type: 'timestamp' })
-  postingDate: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedDate: Date;
+  updatedAt: Date;
 }

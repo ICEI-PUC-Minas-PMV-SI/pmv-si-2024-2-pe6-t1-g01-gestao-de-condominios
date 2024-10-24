@@ -18,7 +18,11 @@ export class DocumentsService {
 
   async findAll() {
     const bucket = this.configService.get('MINIO_BUCKET');
-    const documents = await this.repo.find({ relations: ['user'] });
+    const documents = await this.repo.find({
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+    });
+
     const documentsWithLinks = await Promise.all(documents.map(async document => {
       const link = await this.minioService.getFileUrl(document.link, bucket)
       return { ...document, link };
@@ -28,7 +32,7 @@ export class DocumentsService {
   }
 
   async create(body: CreateDocumentDto, file: Express.Multer.File, user: User) {
-    const  { fileName, url } = await this.uploadDocument(file);
+    const { fileName, url } = await this.uploadDocument(file);
     let document = this.repo.create({ ...body, link: fileName, user });
 
     document = await this.repo.save(document);
@@ -68,14 +72,25 @@ export class DocumentsService {
 
   async update(id: number, body: UpdateDocumentDto, file: Express.Multer.File, user: User) {
     const document = await this.findOne(id);
-
     if (!document) {
       throw new NotFoundException('Document not found');
     }
 
-    Object.assign(document, body);
-    if(file) document.link = file.originalname;
-    return this.repo.save(document);
+    let documentUrl: string = document.link;
+    let documentEdited = {...body, link: documentUrl};
+
+    if (file) {
+      const { fileName, url } = await this.uploadDocument(file);
+      documentUrl = url;
+      documentEdited.link = fileName;
+    }
+
+    Object.assign(document, documentEdited);
+    const documentSaved = await this.repo.save(document);
+
+    documentSaved.link = documentUrl;
+
+    return documentSaved;
   }
 
   async remove(id: number) {

@@ -48,9 +48,6 @@ export const useVisitorsStore = defineStore('visitor', {
         const index = this.visitors.indexOf(visitor);
         this.visitors.splice(index, 1, value);
       }
-    },
-    deleteVisitor(value: visitorsDto) {
-      this.visitors = this.visitors.filter(x => x.id !== value.id)
     }
-  } 
+  }
 })

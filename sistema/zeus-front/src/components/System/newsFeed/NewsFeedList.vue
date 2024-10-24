@@ -193,13 +193,13 @@ watch(newsFeeds, (newValue, oldValue) => {
           </v-avatar>
         </template>
 
-        <v-list-item-title>Evan You</v-list-item-title>
+        <v-list-item-title>{{ newsFeed.user.name }}</v-list-item-title>
 
-        <v-list-item-subtitle>Vue Creator</v-list-item-subtitle>
+        <v-list-item-subtitle>{{ newsFeed.user.email }}</v-list-item-subtitle>
 
         <template v-slot:append>
           <div class="justify-self-end custom-margin">
-            <span class="text-subtitle-2 opacity-60">24 de abril de 2024</span>
+            <span class="text-subtitle-2 opacity-60">{{ newsFeed.updatedAt }}</span>
           </div>
         </template>
       </v-list-item>

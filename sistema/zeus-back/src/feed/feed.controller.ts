@@ -16,9 +16,9 @@ export class FeedController {
 
   @Post()
   @UseGuards(JwtSessionGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10 * 1024 * 1024 } }))
   async create(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File | undefined,
     @Body() body: CreateFeedDto,
     @Req() req: Request
   ) {
@@ -44,7 +44,7 @@ export class FeedController {
   @UseInterceptors(FileInterceptor('file'))
   update(
     @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File | undefined,
     @Body() body: UpdateFeedDto,
     @Req() req: Request
   ) {

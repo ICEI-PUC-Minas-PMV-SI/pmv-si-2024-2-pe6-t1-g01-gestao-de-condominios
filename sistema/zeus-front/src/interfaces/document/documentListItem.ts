@@ -1,10 +1,10 @@
 import type UserDto from '../user/userDto';
 
-export default interface NewsFeedListItem {
+export default interface DocumentListItem {
   id: number,
-  title: string,
+  name: string,
   description: string,
-  link: string | null,
+  link: string,
   file: File | null,
   user: UserDto,
   createdAt: Date,

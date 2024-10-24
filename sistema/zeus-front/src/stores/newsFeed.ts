@@ -16,7 +16,7 @@ export const useNewsFeedStore = defineStore('newsFeed', {
       this.newsFeeds = value
     },
     addNewsFeed(value: NewsFeedDto) {
-      this.newsFeeds.push(value);
+      this.newsFeeds.unshift(value);
     },
     updateNewsFeed({ oldValue, newValue }: { oldValue: NewsFeedDto, newValue: NewsFeedDto }) {
       const index = this.newsFeeds.indexOf(oldValue);

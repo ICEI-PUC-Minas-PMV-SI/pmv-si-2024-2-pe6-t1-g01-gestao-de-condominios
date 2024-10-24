@@ -16,12 +16,18 @@ export class FeedService {
     private readonly configService: ConfigService
   ) {}
 
-  async create(body: CreateFeedDto, file: Express.Multer.File, user: User) {
-    const { fileName, url } = await this.uploadDocument(file);
-    let feed = this.repo.create({ ...body, link: fileName, user });
-
+  async create(body: CreateFeedDto, file: Express.Multer.File | undefined, user: User) {
+    let feedFileName: string | null = null;
+    let feedUrl: string | null = null;
+    if (file) {
+      const { fileName, url } = await this.uploadDocument(file);
+      feedFileName = fileName;
+      feedUrl = url;
+    }
+    
+    let feed = this.repo.create({ ...body, link: feedFileName, user });
     feed = await this.repo.save(feed);
-    feed.link = url
+    feed.link = feedUrl
 
     return feed;
   }
@@ -41,9 +47,14 @@ export class FeedService {
 
   async findAll() {
     const bucket = this.configService.get('MINIO_BUCKET');
-    const feeds = await this.repo.find({ relations: ['user'] });
+  
+    const feeds = await this.repo.find({
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+    });
+  
     const feedsWithLinks = await Promise.all(feeds.map(async feed => {
-      const link = await this.minioService.getFileUrl(feed.link, bucket)
+      const link = feed.link ? await this.minioService.getFileUrl(feed.link, bucket) : null;
       return { ...feed, link };
     }));
 
@@ -66,7 +77,7 @@ export class FeedService {
     return feed;
   }
 
-  async update(id: number, body: UpdateFeedDto, file: Express.Multer.File, user: User) {
+  async update(id: number, body: UpdateFeedDto, file: Express.Multer.File | undefined, user: User) {
     const feed = await this.findOne(id);
 
     if (!feed) {

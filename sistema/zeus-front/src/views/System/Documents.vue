@@ -2,17 +2,17 @@
 import { computed, ref } from 'vue';
 import { useThemeStore } from '@/stores/theme'
 import { storeToRefs } from 'pinia';
-import NewsFeedList from '@/components/System/newsFeed/NewsFeedList.vue';
+import DocumentList from '@/components/System/document/DocumentList.vue';
 import axios from '@/services/axiosInstace';
-import type NewsFeedDto from '@/interfaces/newsFeed/newsFeedDto';
-import { useNewsFeedStore } from '@/stores/newsFeed';
+import type DocumentDto from '@/interfaces/document/documentDto';
+import { useDocumentStore } from '@/stores/document';
 import { useToastStore } from '@/stores/toast';
-import type NewsFeedPayload from '@/interfaces/newsFeed/newsFeedPayload';
+import type DocumentPayload from '@/interfaces/document/documentPayload';
 
 const { theme } = storeToRefs(useThemeStore());
 
-const newsFeed = ref<NewsFeedPayload>({
-  title: null,
+const document = ref<DocumentPayload>({
+  name: null,
   description: null,
   file: null
 })
@@ -28,18 +28,18 @@ async function create() {
   try {
     const formData = new FormData();
 
-    if (newsFeed.value.title) formData.append('title', newsFeed.value.title);
-    if (newsFeed.value.description) formData.append('description', newsFeed.value.description);
-    if (newsFeed.value.file) formData.append('file', newsFeed.value.file);
+    if (document.value.name) formData.append('name', document.value.name);
+    if (document.value.description) formData.append('description', document.value.description);
+    if (document.value.file) formData.append('file', document.value.file);
 
-    const { data }: { data: NewsFeedDto } = await axios.post('/feed', formData, {
+    const { data }: { data: DocumentDto } = await axios.post('/document', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    useNewsFeedStore().addNewsFeed(data);
-    newsFeed.value = { title: null, description: null, file: null };
+    useDocumentStore().addDocument(data);
+    document.value = { name: null, description: null, file: null };
 
     useToastStore().showToast({
       message: 'Notícia cadastrada com sucesso.',
@@ -63,7 +63,7 @@ async function create() {
       <div class="w-100 mr-3">
         <div>
           <v-text-field
-            v-model="newsFeed.title"
+            v-model="document.name"
             density="compact"
             placeholder="Compartilhe uma nova notícia com o seu condomínio"
             variant="outlined"
@@ -71,7 +71,7 @@ async function create() {
         </div>
         <div>
           <v-textarea
-            v-model="newsFeed.description"
+            v-model="document.description"
             density="compact"
             placeholder="Coloque aqui uma descrição mais detalhada do assunto"
             variant="outlined"
@@ -80,7 +80,7 @@ async function create() {
         </div>
         <div>
           <v-file-input
-          v-model="newsFeed.file"
+          v-model="document.file"
           class="w-50"
           density="compact"
           variant="outlined"
@@ -99,7 +99,7 @@ async function create() {
       </div>
     </v-card>
 
-    <NewsFeedList />
+    <DocumentList />
 
   </v-container>
 </template>
