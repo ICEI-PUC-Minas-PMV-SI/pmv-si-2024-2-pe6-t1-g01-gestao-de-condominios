@@ -1,0 +1,18 @@
+version: '3'
+services:
+  zeus-vue-app:
+    container_name: zeus-vue-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5173:5173'  # Mapeia a porta do Vite
+    volumes:
+      - .:/app  # Monta o diretório atual no container
+      - /app/node_modules  # Evita conflitos de dependências
+    networks:
+      - zeus-network
+
+networks:
+  zeus-network:
+    external: true
