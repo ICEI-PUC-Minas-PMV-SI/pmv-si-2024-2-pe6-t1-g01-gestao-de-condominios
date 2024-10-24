@@ -18,12 +18,15 @@ export class ApartmentsService {
     return this.repo.save(apartment);
   }
 
-  findAll() {
-    return this.repo.find();
+  async findAll() {
+    return this.repo.find({ relations: ['residents'] });
   }
 
   async findOne(id: number) {
-    const apartment = await this.repo.findOne({ where: { id } });
+    const apartment = await this.repo.findOne({
+      where: { id },
+      relations: ['residents']
+    });
 
     if (!apartment) {
       throw new NotFoundException('Apartamento não encontrado.');

@@ -6,6 +6,10 @@ import { useResidentStore } from '@/stores/resident'
 import type ResidentDto from '@/interfaces/resident/residentDto';
 import type ApartmentDto from '@/interfaces/apartment/apartmentDto';
 import { useToastStore } from '@/stores/toast';
+import { useApartmentStore } from '@/stores/apartment';
+import { storeToRefs } from 'pinia';
+
+const { apartments } = storeToRefs(useApartmentStore());
 
 const props = defineProps<{
   showModal: boolean,
@@ -23,7 +27,6 @@ const resident = ref<ResidentForm>({
   role: 'MORADOR',
   apartmentId: null
 });
-const apartments = ref<ApartmentDto[]>([]);
 
 watch(() => props.mode, (newMode) => {
   if (newMode === 'create') {
@@ -75,6 +78,28 @@ async function save() {
     loading.value = false;
   }
 }
+
+function apartmentProps(apartment: ApartmentDto) {
+  return {
+    title: 'Número: ' + apartment.number,
+    subtitle: 'Bloco: ' + apartment.block,
+  }
+}
+
+async function getApartments() {
+  try {
+    loading.value = true;
+    const { data }: { data: ApartmentDto[] } = await axios.get('/apartment');
+    useApartmentStore().setApartments(data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+}
+
+
+getApartments();
 </script>
 
 <template>
@@ -90,7 +115,7 @@ async function save() {
       <v-card-text>
         <v-container>
           <v-row>
-            <v-col cols="12" md="6" sm="12">
+            <v-col class="py-0" cols="12" md="6" sm="12">
               <div class="text-subtitle-1 text-medium-emphasis">Nome</div>
               <v-text-field
                 v-model="resident.name"
@@ -101,7 +126,7 @@ async function save() {
                 :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="6" sm="12">
+            <v-col class="py-0" cols="12" md="6" sm="12">
               <div class="text-subtitle-1 text-medium-emphasis">E-mail</div>
               <v-text-field
                 v-model="resident.email"
@@ -112,7 +137,7 @@ async function save() {
                 :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="6" sm="12">
+            <v-col class="py-0" cols="12" md="6" sm="12">
               <div class="text-subtitle-1 text-medium-emphasis">Telefone</div>
               <v-text-field
                 v-model="resident.cellphone"
@@ -123,7 +148,7 @@ async function save() {
                 :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="6" sm="12">
+            <v-col class="py-0" cols="12" md="6" sm="12">
               <div class="text-subtitle-1 text-medium-emphasis">CPF</div>
               <v-text-field
                 v-model="resident.cpf"
@@ -134,23 +159,21 @@ async function save() {
                 :disabled="props.mode === 'view'"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="12" sm="12">
+            <v-col class="py-0" cols="12" md="12" sm="12">
               <div class="text-subtitle-1 text-medium-emphasis">Apartamento</div>
               <v-select
+                v-model="resident.apartmentId"
                 :items="apartments"
                 placeholder="Selecione"
                 variant="outlined"
                 item-title="number"
                 item-value="id"
+                :item-props="apartmentProps"
                 density="compact"
                 :disabled="props.mode === 'view'"
-              >
-                <template v-slot:item="{ props, item }">
-                  <v-list-item v-bind="props" :subtitle="item.raw.block || ''"/>
-                </template>
-              </v-select>
+              ></v-select>
             </v-col>
-            <v-col cols="12" md="12" sm="12">
+            <v-col class="py-0" cols="12" md="12" sm="12">
               <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
                 Senha
               </div>

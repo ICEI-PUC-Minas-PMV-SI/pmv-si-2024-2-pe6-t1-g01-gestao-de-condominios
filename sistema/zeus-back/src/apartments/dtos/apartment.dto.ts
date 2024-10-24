@@ -1,5 +1,5 @@
-import { Expose } from 'class-transformer';
-import { User } from 'src/entities/user.entity';
+import { Expose, Type } from 'class-transformer';
+import { UserDto } from 'src/users/dtos/user.dto';
 
 export class ApartmentDto {
   @Expose()
@@ -12,7 +12,8 @@ export class ApartmentDto {
   block: string;
 
   @Expose()
-  users: User[];
+  @Type(() => UserDto)
+  residents: UserDto[];
 
   @Expose()
   createdAt: Date;

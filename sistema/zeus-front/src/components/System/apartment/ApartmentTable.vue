@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import cellphoneFormatter from '@/utils/cellphoneFormatter'
-import type ResidentDto from '@/interfaces/resident/residentDto';
-import ResidentModal from './ResidentModal.vue';
+import type ApartmentDto from '@/interfaces/apartment/apartmentDto';
+import ApartmentModal from '@/components/System/apartment/ApartmentModal.vue';
 import axios from '@/services/axiosInstace';
-import { useResidentStore } from '@/stores/resident'
 import { storeToRefs } from 'pinia';
 import { useToastStore } from '@/stores/toast';
+import { useApartmentStore } from '@/stores/apartment';
 
-const { residents } = storeToRefs(useResidentStore());
+const { apartments } = storeToRefs(useApartmentStore());
 
 const headers = ref([
-  { title: 'Nome', key: 'name', align: 'start' as const },
-  { title: 'E-mail', key: 'email', align: 'start' as const },
-  { title: 'CPF', key: 'cpf', align: 'start' as const },
-  { title: 'Apto/Bloco', key: 'apartment', align: 'start' as const },
+  { title: 'Número', key: 'number', align: 'start' as const },
+  { title: 'Bloco', key: 'block', align: 'start' as const },
+  { title: 'Moradores', key: 'residents', align: 'start' as const },
   { title: 'Ações', key: 'actions', sortable: false, align: 'end' as const },
 ]);
 
@@ -32,27 +30,35 @@ function create() {
   showModal.value = true
 }
 
-function view(resident: ResidentDto) {
-  useResidentStore().setResident(resident);
+function view(apartment: ApartmentDto) {
+  useApartmentStore().setApartment(apartment);
   modalMode.value = 'view';
   showModal.value = true;
 }
 
-function update(resident: ResidentDto) {
-  useResidentStore().setResident(resident);
+function update(apartment: ApartmentDto) {
+  useApartmentStore().setApartment(apartment);
   modalMode.value = 'update';
   showModal.value = true;
 }
 
-async function remove(resident: ResidentDto) {
+async function remove(apartment: ApartmentDto) {
   try {
     loading.value = true;
-    await axios.delete(`/resident/${resident.id}`);
-    useResidentStore().deleteResident(resident);
-    useToastStore().showToast({message: 'Morador deletado com sucesso.', type: 'success', color: 'green'});
+    await axios.delete(`/apartment/${apartment.id}`);
+    useApartmentStore().deleteApartment(apartment);
+    useToastStore().showToast({
+      message: 'Apartamento deletado com sucesso.',
+      type: 'success',
+      color: 'green'
+    });
   } catch (err) {
     console.error(err);
-    useToastStore().showToast({message: 'Erro ao deletar morador.', type: 'error', color: 'red'});
+    useToastStore().showToast({
+      message: 'Erro ao deletar apartamento.',
+      type: 'error',
+      color: 'red'
+    });
   } finally {
     loading.value = false;
   }
@@ -63,11 +69,11 @@ function closeModal() {
   modalMode.value = null;
 }
 
-async function getResidents() {
+async function getApartments() {
   try {
     loading.value = true;
-    const { data }: { data: ResidentDto[] } = await axios.get('/resident');
-    useResidentStore().setResidents(data);
+    const { data }: { data: ApartmentDto[] } = await axios.get('/apartment');
+    useApartmentStore().setApartments(data);
   } catch (err) {
     console.error(err);
   } finally {
@@ -75,13 +81,13 @@ async function getResidents() {
   }
 }
 
-getResidents();
+getApartments();
 </script>
 
 <template>
   <v-data-table
     :headers="headers"
-    :items="residents"
+    :items="apartments"
     :loading="loading"
   >
     <template v-slot:top>
@@ -110,9 +116,9 @@ getResidents();
           @click="create"
         >
           <v-icon icon="mdi-plus" />
-          Novo Morador
+          Novo Apartamento
         </v-btn>
-        <ResidentModal
+        <ApartmentModal
           :mode="modalMode"
           :showModal="showModal"
           @close="closeModal"
@@ -123,19 +129,15 @@ getResidents();
     <template v-slot:loading>
       <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
     </template>
-    <template v-slot:item.name="{ item }">
-      {{ item.name }} <br>
-      <small>{{ cellphoneFormatter(item.cellphone) }}</small>
-    </template>
-    <template v-slot:item.email="{ value }">
+    <template v-slot:item.number="{ value }">
       {{ value }}
     </template>
-    <template v-slot:item.cpf="{ value }">
+    <template v-slot:item.block="{ value }">
       {{ value }}
     </template>
-    <template v-slot:item.apartment="{ value }">
-      <v-chip v-if="value" :color="getColor(value.block)">
-        {{ value.number }} / {{ value.block }}
+    <template v-slot:item.residents="{ value }">
+      <v-chip v-for="resident in value" :color="getColor(value.block)">
+        {{ resident.name }}
       </v-chip>
     </template>
     <template v-slot:item.actions="{ item }">
