@@ -3,14 +3,54 @@
 O projeto front-end do sistema "Zeus - Gestão Condominial" tem como objetivo principal facilitar a comunicação entre o síndico e os moradores, centralizando informações de gestão e automatizando a troca de notificações. Ele oferece funcionalidades como um quadro de comunicação e notícias do condomínio, além de um controle eficiente de cadastro de moradores, funcionários e visitantes. Também permite o registro de visitantes para controle de acesso, proporcionando maior segurança e facilidade na administração do condomínio.
 
 ## Tecnologias Utilizadas
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+ - Typescript
+ - Vue.js 3
+ - Docker
+ - Pinia
+ - Axios
+ - Vuetify
+ - Vue Router
+
 
 ## Arquitetura
 
-[Descrição da arquitetura das aplicação web, incluindo os componentes e suas interações.]
+O Vue possui uma estrutura base com as view, router, components, com renderização de componentes no modelo o SPA (Single Page Aplication) com SCR (Side Client Rendering).
+
+As view principais foram divididas entre a Site e Sistema, sendo o Sistema com diversas views relacionadas aos nossos serviços e cada serviço com seus respectivos componentes auxiliares para consumo das APIs realizando o CRUD de cada um, como Modais, Tabelas, Formulários e etc.
+
+Também conta com uma pasta de interface referente a cada serviço do sistema para melhor controle de tipagem.
+
+E por fim, utiliza o Pinia para fazer controle central de estado das variaveis reutilizadas por diversos componentes, separado por modulos referentes aos serviços disponíveis no sistema.
+
+Serviços:
+- Auth
+- User
+- Apartment
+- Resident
+- Visitor
+- Employee
+- Document
+- Feed
+- Visit
 
 ## Modelagem da Aplicação
-[Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
+
+Nossa estrutura de dados se constitui das entidades:
+- user
+- visitor
+- visit
+- feed
+- document
+- apartment
+
+Os diagramas de modelagem segue nas imagens abaixo:
+
+![user](./img/modelagem_user.jpeg)
+![visitor](./img/modelagem_visitor.jpeg)
+![visit](./img/modelagem_visit.jpeg)
+![feed](./img/modelagem_feed.jpeg)
+![document](./img/modelagem_document.jpeg)
+![apartment](./img/modelagem_apartment.jpeg)
 
 ## Projeto da Interface Web
 A interface web do sistema de gestão de condomínios é projetada com foco na usabilidade, responsividade e experiência do usuário, permitindo fácil navegação em diferentes dispositivos.
@@ -56,7 +96,7 @@ A interface web do sistema de gestão de condomínios é projetada com foco na u
 
 
 ### Interações do Usuário
-•	Notificações em tempo real: Sempre que um morador ou síndico adiciona uma nova notificação ou atualização no quadro de avisos, todos os usuários conectados recebem uma notificação visual em tempo real.
+•	Atualização em tempo real: Sempre que um morador ou síndico adiciona uma nova notificação ou atualização no quadro de avisos, todos os usuários conectados conseguem visualizar essa notificação ao acessar a listagem de Feed de Notícias.
 
 •	Feedback visual: O sistema oferece feedback imediato nas ações do usuário, como salvar ou excluir dados, seja por meio de animações suaves, notificações contextuais (pop-ups) ou mudanças de cor nos botões (verde para sucesso, vermelho para erro).
 
@@ -69,25 +109,44 @@ Outros Aspectos Relevantes
 
 •	API para Integração: O sistema interage com o backend por meio de uma API REST, permitindo uma comunicação eficiente entre o front-end e o servidor para operações de CRUD (Create, Read, Update, Delete).
 
-
 Este design visa proporcionar uma experiência fluida e eficiente, permitindo que os administradores e moradores gerenciem facilmente suas tarefas diárias relacionadas ao condomínio.
 
 
-### Wireframes
-[Inclua os wireframes das páginas principais da interface, mostrando a disposição dos elementos na página.]
+### Wireframes / Protótipo
+
+Link para o figma: https://www.figma.com/design/jkSJWbD4UvI20gUb0WUTpQ/ZEUS?node-id=49-2&node-type=frame&t=EPjWwMMsoZFrOGdI-0
 
 ### Design Visual
-[Descreva o estilo visual da interface, incluindo paleta de cores, tipografia, ícones e outros elementos gráficos.]
+Utilizamos componentes visuais do Vuetify, com a paleta de cores deles para auxiliar:
+
+thema light: 
+- azul escuro: #01579B
+- laranja claro: #FB8C00
+- fundo claro: branco
+
+thema dark:
+- cinza escuro: #263238
+- laranja escuro: #F57C00
+- fundo escuro: preto
+
 
 ### Layout Responsivo
-[Discuta como a interface será adaptada para diferentes tamanhos de tela e dispositivos.]
+O sistema é responsivo para diversos tipos de monitores e aparelhos como tablets.
 
 ### Interações do Usuário
-[Descreva as interações do usuário na interface, como animações, transições entre páginas e outras interações.]
+O sistema permitirá as seguintes interações do usuário:
+- Clicar nos nossos botões disponíveis no sistema para, criar conta, logar, acessar um item no menu, abrir e fechar modais, submeter formulários, etc.
+- Escrolar as listagens das nossas tabelas.
+- Preencher os campos de formulário.
 
 ## Fluxo de Dados
+Para autenticação guardamos no localStorage os dados do usuário logado, incluindo o token JWT, e sempre que atualizar os dados de perfil os dados são atualizados no localStorage, seria um fluxo de dados do tipo:
 
-[Diagrama ou descrição do fluxo de dados na aplicação.]
+Cliente <---> Cliente
+
+O fluxo de principal de dados é feito por APIs com requisições e resposta e é do tipo:
+
+Cliente <---> Servidor
 
 ## Requisitos Funcionais
 
@@ -113,7 +172,7 @@ Este design visa proporcionar uma experiência fluida e eficiente, permitindo qu
 
 ## Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+O sistema só deve permitir criar contas de ADMIN diretamente via banco de dados manualmente.
 
 ## Implantação
 
@@ -127,14 +186,18 @@ Este design visa proporcionar uma experiência fluida e eficiente, permitindo qu
 
 ## Testes
 
-[Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
+Serão testados os fluxos referentes aos endpoints do back-end do sistema. Será feito um vídeo e anexado seu link mostrando o funcionamento.
 
-1. Crie casos de teste para cobrir todos os requisitos funcionais e não funcionais da aplicação.
-2. Implemente testes unitários para testar unidades individuais de código, como funções e classes.
-3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
-4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
-5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+Link:
 
 # Referências
 
-Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
+[Documentação Vue](https://vuejs.org/guide/introduction.html)
+
+[Documentação Vuetify.](https://vuetifyjs.com/en/introduction/why-vuetify/#what-is-vuetify3f)
+
+[Documentação Axios](https://axios-http.com/ptbr/docs/intro)
+
+[Documentação Pinia](https://pinia.vuejs.org/introduction.html)
+
+[Documentação Docker](https://docs.docker.com/get-started/)
