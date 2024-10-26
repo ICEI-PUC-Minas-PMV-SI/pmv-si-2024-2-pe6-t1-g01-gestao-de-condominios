@@ -19,8 +19,12 @@ export const useNewsFeedStore = defineStore('newsFeed', {
       this.newsFeeds.unshift(value);
     },
     updateNewsFeed({ oldValue, newValue }: { oldValue: NewsFeedDto, newValue: NewsFeedDto }) {
-      const index = this.newsFeeds.indexOf(oldValue);
-      this.newsFeeds.splice(index, 1, newValue);
+      const cleanObject = Object.assign({}, oldValue)
+      const oldItem = this.newsFeeds.find(x => x.id === cleanObject.id)
+      if(oldItem) {
+        const index = this.newsFeeds.indexOf(oldItem);
+        this.newsFeeds.splice(index, 1, newValue);
+      }
     },
     deleteNewsFeed(id: number) {
       this.newsFeeds = this.newsFeeds.filter(x => x.id !== id);
