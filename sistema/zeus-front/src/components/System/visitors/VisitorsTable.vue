@@ -7,6 +7,7 @@ import axios from '@/services/axiosInstace';
 import { useVisitorsStore } from '@/stores/visitor';
 import { storeToRefs } from 'pinia';
 import dateTimeFormatter from '@/utils/dateTimeFormatter';
+import { useToastStore } from '@/stores/toast';
 
 const { visitors } = storeToRefs(useVisitorsStore());
 
@@ -43,6 +44,28 @@ function update(visitor: VisitorDto) {
 function closeModal() {
   showModal.value = false;
   modalMode.value = null;
+}
+
+async function remove(visitor: VisitorDto) {
+  try {
+    loading.value = true;
+    await axios.delete(`/visitor/${visitor.id}`);
+    useVisitorsStore().deleteVisitor(visitor);
+    useToastStore().showToast({
+      message: 'Visitante deletado com sucesso.',
+      type: 'success',
+      color: 'green'
+    });
+  } catch (err) {
+    console.error(err);
+    useToastStore().showToast({
+      message: 'Erro ao deletar visitante.',
+      type: 'error',
+      color: 'red'
+    });
+  } finally {
+    loading.value = false;
+  }
 }
 
 async function getVisitors() {
@@ -112,7 +135,7 @@ getVisitors();
     <template v-slot:item.cpf="{ value }">
       {{ value }}
     </template>
-    <template v-slot:item.creatAt="{ value }">
+    <template v-slot:item.createdAt="{ value }">
       {{ dateTimeFormatter(value) }}
     </template>
     <template v-slot:item.updatedAt="{ value }">
@@ -137,6 +160,7 @@ getVisitors();
         size="small"
         color="red-darken-2"
         icon="mdi-delete"
+        @click="remove(item)"
       />
     </template>
   </v-data-table>
