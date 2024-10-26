@@ -58,6 +58,8 @@ export class FeedService {
       return { ...feed, link };
     }));
 
+    console.log(feedsWithLinks)
+
     return feedsWithLinks;
   }
 
@@ -79,6 +81,16 @@ export class FeedService {
     return feed;
   }
 
+  async findOneFileName(id: number) {
+    const feed = await this.repo.findOne({ where: { id }});
+
+    if (!feed) {
+      throw new NotFoundException('Feed não encontrado.');
+    }
+
+    return feed.link;
+  }
+
   async update(id: number, body: UpdateFeedDto, file: Express.Multer.File | undefined, user: User) {
     const feed = await this.findOne(id);
     if (!feed) {
@@ -86,7 +98,7 @@ export class FeedService {
     }
 
     let feedUrl: string = feed.link;
-    let feedEdited = {...body, link: feedUrl};
+    let feedEdited = {...body, link: await this.findOneFileName(id)};
 
     if (file) {
       const { fileName, url } = await this.uploadDocument(file);
@@ -96,7 +108,6 @@ export class FeedService {
 
     Object.assign(feed, feedEdited);
     const feedSaved = await this.repo.save(feed);
-
     feedSaved.link = feedUrl;
 
     return feedSaved;
