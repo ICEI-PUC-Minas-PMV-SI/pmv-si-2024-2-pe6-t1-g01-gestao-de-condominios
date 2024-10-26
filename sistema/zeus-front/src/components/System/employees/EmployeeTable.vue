@@ -47,7 +47,7 @@ function update(resident: EmployeeDto) {
 async function remove(resident: EmployeeDto) {
   try {
     loading.value = true;
-    await axios.delete(`/resident/${resident.id}`);
+    await axios.delete(`/employee/${resident.id}`);
     useEmployeeStore().deleteEmployee(resident);
     useToastStore().showToast({message: 'Funcionário deletado com sucesso.', type: 'success', color: 'green'});
   } catch (err) {
