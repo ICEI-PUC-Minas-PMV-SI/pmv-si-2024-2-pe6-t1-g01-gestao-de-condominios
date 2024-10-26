@@ -71,22 +71,35 @@ export class FeedService {
       throw new NotFoundException('Feed não encontrado.');
     }
 
-    const bucketName = this.configService.get('MINIO_BUCKET');
-    feed.link = await this.minioService.getFileUrl(feed.link, bucketName);
+    if(feed.link) {
+      const bucketName = this.configService.get('MINIO_BUCKET');
+      feed.link = await this.minioService.getFileUrl(feed.link, bucketName);
+    }
 
     return feed;
   }
 
   async update(id: number, body: UpdateFeedDto, file: Express.Multer.File | undefined, user: User) {
     const feed = await this.findOne(id);
-
     if (!feed) {
       throw new NotFoundException('Feed de notícia não encontrado.');
     }
 
-    Object.assign(feed, body);
-    if(file) feed.link = file.originalname;
-    return this.repo.save(feed);
+    let feedUrl: string = feed.link;
+    let feedEdited = {...body, link: feedUrl};
+
+    if (file) {
+      const { fileName, url } = await this.uploadDocument(file);
+      feedUrl = url;
+      feedEdited.link = fileName;
+    }
+
+    Object.assign(feed, feedEdited);
+    const feedSaved = await this.repo.save(feed);
+
+    feedSaved.link = feedUrl;
+
+    return feedSaved;
   }
 
   async remove(id: number) {
