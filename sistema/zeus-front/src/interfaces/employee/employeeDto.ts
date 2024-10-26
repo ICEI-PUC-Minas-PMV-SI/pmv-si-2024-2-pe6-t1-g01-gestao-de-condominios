@@ -1,4 +1,4 @@
-export default interface ResidentDto {
+export default interface EmployeeDto {
   id: number;
   name: string | null;
   email: string;

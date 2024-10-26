@@ -1,4 +1,4 @@
-export default interface ResidentForm {
+export default interface EmployeeForm {
   id: number | null;
   name: string | null;
   email: string | null;

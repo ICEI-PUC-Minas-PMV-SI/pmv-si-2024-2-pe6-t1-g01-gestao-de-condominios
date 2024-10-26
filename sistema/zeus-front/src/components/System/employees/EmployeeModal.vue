@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import type ResidentForm from '@/interfaces/employee/employeeForm';
+import type EmployeeForm from '@/interfaces/employee/employeeForm';
 import axios from '@/services/axiosInstace';
 import { useEmployeeStore } from '@/stores/employee'
-import type ResidentDto from '@/interfaces/employee/employeeDto';
+import type EmployeeDto from '@/interfaces/employee/employeeDto';
 import { useToastStore } from '@/stores/toast';
 
 const props = defineProps<{
@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'close'): void }>();
 
-const employee = ref<ResidentForm>({
+const employee = ref<EmployeeForm>({
   id: null,
   name: null,
   email: null,
@@ -52,11 +52,11 @@ function close() {
 
 async function save() {
   if(props.mode === 'view' || !props.mode) return;
+  const id = employee.value.id;
   try {
     loading.value = true
-    const id = employee.value.id;
     const message = !id ? 'Funcionário cadastrado com sucesso.' : 'Funcionário atualizado com sucesso.';
-    const { data }: { data: ResidentDto } = !id
+    const { data }: { data: EmployeeDto } = !id
       ? await axios.post('/employee', employee.value)
       : await axios.put(`/employee/${id}`, employee.value);
     if(!id) useEmployeeStore().addEmployee(data);
@@ -65,7 +65,7 @@ async function save() {
     useToastStore().showToast({message, type: 'success', color: 'green'});
   } catch (err) {
     console.error(err);
-    useToastStore().showToast({message: 'Erro ao cadastrar morador.', type: 'error', color: 'red'});
+    useToastStore().showToast({message: `Erro ao ${!id ? "cadastrar" : "atualizar"} funcionário.`, type: 'error', color: 'red'});
   } finally {
     loading.value = false;
   }
