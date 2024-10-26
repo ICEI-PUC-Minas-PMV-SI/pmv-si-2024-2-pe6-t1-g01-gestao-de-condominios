@@ -228,6 +228,7 @@ getVisitors();
                   :active="isActive"
                   variant="outlined"
                   density="compact"
+                  :disabled="props.mode === 'view'"
                 ></v-text-field>
               </template>
 

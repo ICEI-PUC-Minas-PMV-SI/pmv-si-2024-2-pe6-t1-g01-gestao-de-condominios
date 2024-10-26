@@ -188,7 +188,7 @@ O sistema só deve permitir criar contas de ADMIN diretamente via banco de dados
 
 Serão testados os fluxos referentes aos endpoints do back-end do sistema. Será feito um vídeo e anexado seu link mostrando o funcionamento.
 
-Link:
+Link: [Prova de Testes](https://vimeo.com/1023564185/3cfc407501?share=copy)
 
 # Referências
 
