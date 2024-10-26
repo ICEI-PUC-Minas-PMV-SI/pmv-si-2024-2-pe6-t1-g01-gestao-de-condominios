@@ -176,13 +176,57 @@ O sistema só deve permitir criar contas de ADMIN diretamente via banco de dados
 
 ## Implantação
 
-[Instruções para implantar a aplicação distribuída em um ambiente de produção.]
+Estas instruções ajudam a configurar e implantar a aplicação em um ambiente de produção de forma segura e escalável.
 
-1. Defina os requisitos de hardware e software necessários para implantar a aplicação em um ambiente de produção.
-2. Escolha uma plataforma de hospedagem adequada, como um provedor de nuvem ou um servidor dedicado.
-3. Configure o ambiente de implantação, incluindo a instalação de dependências e configuração de variáveis de ambiente.
-4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
-5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
+1. Requisitos de Hardware e Software
+
+Hardware:
+- Recomenda-se um servidor com, no mínimo, 2 vCPUs e 4 GB de RAM para a aplicação e banco de dados de porte médio. Ajuste conforme a demanda.
+
+Software:
+- Node.js: Versão LTS (16.x ou superior)
+- Docker e Docker Compose: Para empacotar e orquestrar os serviços (Nest.js, MySQL, MinIO)
+- MySQL: Usado como banco de dados relacional; pode ser executado em contêiner ou como serviço separado na infraestrutura de produção.
+- MinIO: Serviço de armazenamento de arquivos; recomenda-se configurar para SSL em produção.
+- Nginx: Como proxy reverso para gerenciar melhor o tráfego e garantir segurança.
+
+2. Plataforma de Hospedagem
+Selecione uma plataforma que ofereça suporte para contêineres e escalabilidade, como:
+
+- Amazon Web Services (AWS): Usando ECS (Elastic Container Service) ou EC2 para instâncias de contêiner ou servidor.
+
+3. Configuração do Ambiente de Produção
+
+Instalação de Dependências:
+- Configurar o servidor com o Docker e Docker Compose.
+- Instalar o Nginx para servir o backend através de um proxy reverso.
+
+Configuração das Variáveis de Ambiente:
+- Criar um arquivo .env com as variáveis de produção, incluindo:
+- Banco de dados (MySQL): Host, usuário, senha e nome do banco de dados.
+- MinIO: Credenciais de acesso (chave de acesso, chave secreta, endpoint com SSL habilitado).
+- NestJS: Configurações como porta de execução, chave de assinatura JWT e URL base para o MinIO.
+
+4. Implantação da Aplicação
+
+Subir os Contêineres com Docker Compose:
+- No servidor, navegue até a pasta onde estão os arquivos do projeto e o docker-compose.yml.
+- Execute docker-compose up -d --build para criar e iniciar os contêineres em segundo plano.
+
+Configurar Nginx para o Proxy Reverso:
+- Configure o Nginx para redirecionar o tráfego para os contêineres de frontend e backend:
+- Certifique-se de configurar redirecionamento para https se SSL estiver habilitado, incluindo certificados no Nginx.
+
+Configuração de Segurança:
+- Configure um firewall para permitir apenas portas necessárias (como 80 e 443 para HTTP/HTTPS e a porta do MySQL, se externa).
+- Configure SSL para o domínio da aplicação.
+
+5. Testes e Verificação de Funcionamento
+
+- Testes de API: Usar ferramentas como Postman para testar endpoints críticos do NestJS.
+- Teste do Frontend: Acesse a aplicação Vue.js no navegador e verifique o funcionamento das principais funcionalidades.
+- Validação de Uploads no MinIO: Verifique se o MinIO está armazenando e servindo arquivos corretamente.
+- Monitoramento e Logs: Verifique os logs dos contêineres com docker-compose logs -f [service_name] para detectar erros.
 
 ## Testes
 
