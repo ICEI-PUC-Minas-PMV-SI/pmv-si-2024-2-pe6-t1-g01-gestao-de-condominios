@@ -28,7 +28,6 @@ export const useApartmentStore = defineStore('apartment', {
       };
     },
     addApartment(value: ApartmentDto) {
-      console.log(value)
       this.apartments.unshift(value);
     },
     updateApartment(value: ApartmentDto) {

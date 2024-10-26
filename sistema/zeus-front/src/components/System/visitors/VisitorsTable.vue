@@ -3,9 +3,10 @@ import { ref } from 'vue';
 import cellphoneFormatter from '@/utils/cellphoneFormatter'
 import type VisitorDto from '@/interfaces/visitors/visitorDto';
 import VisitorsModal from './VisitorsModal.vue';
-import axios from '@/services/axiosInstace'; 
-import { useVisitorsStore } from '@/stores/visitor'; 
-import { storeToRefs } from 'pinia';    
+import axios from '@/services/axiosInstace';
+import { useVisitorsStore } from '@/stores/visitor';
+import { storeToRefs } from 'pinia';
+import dateTimeFormatter from '@/utils/dateTimeFormatter';
 
 const { visitors } = storeToRefs(useVisitorsStore());
 
@@ -112,7 +113,10 @@ getVisitors();
       {{ value }}
     </template>
     <template v-slot:item.creatAt="{ value }">
-      {{ value }}
+      {{ dateTimeFormatter(value) }}
+    </template>
+    <template v-slot:item.updatedAt="{ value }">
+      {{ dateTimeFormatter(value) }}
     </template>
     <template v-slot:item.actions="{ item }">
       <v-icon

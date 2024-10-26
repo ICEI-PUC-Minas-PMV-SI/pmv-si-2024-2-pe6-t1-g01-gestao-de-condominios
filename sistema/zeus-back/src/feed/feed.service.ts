@@ -58,8 +58,6 @@ export class FeedService {
       return { ...feed, link };
     }));
 
-    console.log(feedsWithLinks)
-
     return feedsWithLinks;
   }
 
