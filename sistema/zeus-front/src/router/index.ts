@@ -51,7 +51,7 @@ const router = createRouter({
     {
       path: '/funcionarios',
       name: 'Funcionários',
-      component: () => import('@/views/System/NewsFeed.vue')
+      component: () => import('@/views/System/Employees.vue')
     },
     {
       path: '/apartamentos',
