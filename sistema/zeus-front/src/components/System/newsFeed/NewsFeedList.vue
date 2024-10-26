@@ -12,7 +12,16 @@ import { useToastStore } from '@/stores/toast';
 
 const { user } = storeToRefs(useUserStore());
 const { newsFeeds } = storeToRefs(useNewsFeedStore());
-const { initials, color } = avatarInitials(user.value?.name);
+
+function avatarConfigInitials(userName) {
+  const { initials } = avatarInitials(userName);
+  return initials;
+}
+
+function avatarConfigColor(userName) {
+  const { color } = avatarInitials(userName);
+  return color;
+}
 
 const loading = ref(false);
 const newsFeedsList = ref<NewsFeedListItem[]>()
@@ -188,8 +197,8 @@ watch(newsFeeds, (newValue, oldValue) => {
 
       <v-list-item class="w-100 ma-2">
         <template v-slot:prepend>
-          <v-avatar :color="color">
-            <span class="text-h5">{{ initials }}</span>
+          <v-avatar :color="avatarConfigColor(newsFeed.user.name)">
+            <span class="text-h5">{{ avatarConfigInitials(newsFeed.user.name) }}</span>
           </v-avatar>
         </template>
 
