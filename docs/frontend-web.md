@@ -96,6 +96,11 @@ A interface web do sistema de gestão de condomínios é projetada com foco na u
 
 
 ### Interações do Usuário
+O sistema permitirá as seguintes interações do usuário:
+- Clicar nos nossos botões disponíveis no sistema para, criar conta, logar, acessar um item no menu, abrir e fechar modais, submeter formulários, etc.
+- Escrolar as listagens das nossas tabelas.
+- Preencher os campos de formulário.
+
 •	Atualização em tempo real: Sempre que um morador ou síndico adiciona uma nova notificação ou atualização no quadro de avisos, todos os usuários conectados conseguem visualizar essa notificação ao acessar a listagem de Feed de Notícias.
 
 •	Feedback visual: O sistema oferece feedback imediato nas ações do usuário, como salvar ou excluir dados, seja por meio de animações suaves, notificações contextuais (pop-ups) ou mudanças de cor nos botões (verde para sucesso, vermelho para erro).
@@ -124,20 +129,16 @@ thema light:
 - laranja claro: #FB8C00
 - fundo claro: branco
 
-thema dark:
-- cinza escuro: #263238
-- laranja escuro: #F57C00
-- fundo escuro: preto
+Algumas telas do sistema:
 
+![apartment](./img/print_apartamentos.jpeg.jpeg)
+![apartment](./img/print_documentos.jpeg.jpeg)
+![apartment](./img/print_feed.jpeg.jpeg)
+![apartment](./img/print_moradores.jpeg.jpeg)
+![apartment](./img/print_tela_inicial.jpeg.jpeg)
 
 ### Layout Responsivo
 O sistema é responsivo para diversos tipos de monitores e aparelhos como tablets.
-
-### Interações do Usuário
-O sistema permitirá as seguintes interações do usuário:
-- Clicar nos nossos botões disponíveis no sistema para, criar conta, logar, acessar um item no menu, abrir e fechar modais, submeter formulários, etc.
-- Escrolar as listagens das nossas tabelas.
-- Preencher os campos de formulário.
 
 ## Fluxo de Dados
 Para autenticação guardamos no localStorage os dados do usuário logado, incluindo o token JWT, e sempre que atualizar os dados de perfil os dados são atualizados no localStorage, seria um fluxo de dados do tipo:
