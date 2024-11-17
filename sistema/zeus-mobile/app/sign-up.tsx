@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { TextInput, Button } from 'react-native';
-
+import { TextInput, Button, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -14,7 +13,18 @@ export default function SignUpScreen() {
 
   const handleSignUp = async () => {
     try {
-      await createUser(email, password);
+      const responseData = await createUser(email, password);
+
+      if (responseData) {
+        await AsyncStorage.setItem(
+          'zeus_accessToken',
+          responseData.accessToken,
+        );
+        await AsyncStorage.setItem(
+          'zeus_user',
+          JSON.stringify(responseData.user),
+        );
+      }
     } catch (error) {
       console.error('Failed to sign up:', error);
     }
