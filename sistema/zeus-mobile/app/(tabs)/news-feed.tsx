@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { getNewsFeed } from '@/services/zeus-backend';
 import { NewsFeedDto } from '@/services/zeus-backend/types';
 
-export default function TabTwoScreen() {
+export default function NewsFeedScreen() {
   const [newsFeedData, setNewsFeedData] = useState<NewsFeedDto[]>([]);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function TabTwoScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={
-        <Ionicons size={310} name="code-slash" style={styles.headerImage} />
+        <Ionicons size={310} name="newspaper" style={styles.headerImage} />
       }
     >
       <ThemedView style={styles.titleContainer}>

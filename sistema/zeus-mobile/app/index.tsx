@@ -1,12 +1,22 @@
-import { Image, StyleSheet, Platform, View, Button } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Link, Stack } from 'expo-router';
+import { Link, router, Stack } from 'expo-router';
+import { useUserData } from '@/hooks/useUserData';
+import { useEffect } from 'react';
 
 export default function HomeScreen() {
+  const userData = useUserData();
+
+  useEffect(() => {
+    if (userData) {
+      router.replace('/news-feed');
+    }
+  }, [userData]);
+
   return (
     <>
       <Stack.Screen options={{ title: 'Home' }} />
@@ -29,12 +39,12 @@ export default function HomeScreen() {
           </ThemedText>
         </ThemedView>
         <View style={styles.buttonsContainer}>
-          <Link href="/sign-up">
-            <Button title="Criar conta" />
+          <Link push href="/sign-up">
+            <ThemedText>Criar conta</ThemedText>
           </Link>
 
-          <Link href="/sign-in">
-            <Button title="Login" />
+          <Link push href="/sign-in">
+            <ThemedText>Login</ThemedText>
           </Link>
         </View>
       </ParallaxScrollView>

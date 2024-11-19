@@ -6,8 +6,11 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUserData } from '@/hooks/useUserData';
 
 export default function ProfileScreen() {
+  const userData = useUserData();
+
   const handleLogout = async () => {
     await AsyncStorage.removeItem('zeus_accessToken');
     await AsyncStorage.removeItem('zeus_user');
@@ -18,7 +21,7 @@ export default function ProfileScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={
-        <Ionicons size={310} name="code-slash" style={styles.headerImage} />
+        <Ionicons size={310} name="person" style={styles.headerImage} />
       }
     >
       <ThemedView style={styles.titleContainer}>
@@ -28,6 +31,8 @@ export default function ProfileScreen() {
       <View>
         <ThemedText>Página de perfil</ThemedText>
       </View>
+      <ThemedText>Nome: {userData?.name}</ThemedText>
+      <ThemedText>Email: {userData?.email}</ThemedText>
       <Pressable onPress={handleLogout}>
         <ThemedText type="link">Deslogar</ThemedText>
       </Pressable>
