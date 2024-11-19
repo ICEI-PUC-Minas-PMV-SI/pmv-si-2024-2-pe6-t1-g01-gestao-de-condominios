@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TextInput, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Link, Stack } from 'expo-router';
+import { Link, Stack, router } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -15,7 +15,7 @@ export default function SignInScreen() {
     try {
       const responseData = await login(email, password);
 
-      if (responseData) {
+      if (responseData?.accessToken) {
         await AsyncStorage.setItem(
           'zeus_accessToken',
           responseData.accessToken,
@@ -24,6 +24,7 @@ export default function SignInScreen() {
           'zeus_user',
           JSON.stringify(responseData.user),
         );
+        router.replace('/news-feed');
       }
     } catch (error) {
       console.error('Failed to sign in:', error);

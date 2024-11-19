@@ -1,7 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
@@ -30,7 +29,7 @@ export default function TabTwoScreen() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Feed de notícia</ThemedText>
+        <ThemedText type="title">Feed de notícias</ThemedText>
       </ThemedView>
 
       {!newsFeedData.length && (
@@ -38,14 +37,15 @@ export default function TabTwoScreen() {
       )}
 
       {newsFeedData.map((newsFeed) => (
-        <Collapsible key={newsFeed.id} title={newsFeed.title}>
+        <View key={newsFeed.id}>
+          <ThemedText>{newsFeed.title}</ThemedText>
           <ThemedText>{newsFeed.description}</ThemedText>
           {newsFeed.link && (
             <ExternalLink href={newsFeed.link}>
               <ThemedText type="link">Ver mais</ThemedText>
             </ExternalLink>
           )}
-        </Collapsible>
+        </View>
       ))}
     </ParallaxScrollView>
   );
