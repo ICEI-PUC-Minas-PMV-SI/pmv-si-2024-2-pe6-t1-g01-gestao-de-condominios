@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewsFeedDto, AuthRequestResponse, UserRole } from './types';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -34,12 +35,16 @@ export const createUser = async (email: string, password: string) => {
 };
 
 export const getNewsFeed = async () => {
+  const token = await AsyncStorage.getItem('zeus_accessToken');
+
   const response = await fetch(`${API_URL}/feed`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
   });
+
   return response.json() as Promise<NewsFeedDto[]>;
 };
