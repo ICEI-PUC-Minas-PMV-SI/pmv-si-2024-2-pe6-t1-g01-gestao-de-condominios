@@ -6,14 +6,11 @@ export const useUserData = () => {
   const [user, setUser] = useState<UserDto | null>(null);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const user = await AsyncStorage.getItem('zeus_user');
+    AsyncStorage.getItem('zeus_user').then((user) => {
       if (user) {
         setUser(JSON.parse(user));
       }
-    };
-
-    fetchUserInfo();
+    });
   }, []);
 
   return user;
