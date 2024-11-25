@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { useEffect, useState } from 'react';
 import { getNewsFeed } from '@/services/zeus-backend';
 import { NewsFeedDto } from '@/services/zeus-backend/types';
+import { Image } from 'react-native';
 
 export default function NewsFeedScreen() {
   const [newsFeedData, setNewsFeedData] = useState<NewsFeedDto[]>([]);
@@ -41,9 +42,10 @@ export default function NewsFeedScreen() {
           <ThemedText>{newsFeed.title}</ThemedText>
           <ThemedText>{newsFeed.description}</ThemedText>
           {newsFeed.link && (
-            <ExternalLink href={newsFeed.link}>
-              <ThemedText type="link">Ver mais</ThemedText>
-            </ExternalLink>
+            <Image
+              source={{ uri: newsFeed.link }} 
+              style={{ width: 200, height: 200 }}
+            />
           )}
         </View>
       ))}
