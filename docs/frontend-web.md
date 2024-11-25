@@ -131,11 +131,11 @@ thema light:
 
 Algumas telas do sistema:
 
-![apartment](./img/print_apartamentos.jpeg.jpeg)
-![apartment](./img/print_documentos.jpeg.jpeg)
-![apartment](./img/print_feed.jpeg.jpeg)
-![apartment](./img/print_moradores.jpeg.jpeg)
-![apartment](./img/print_tela_inicial.jpeg.jpeg)
+![apartment](./img/print_apartamentos.jpeg)
+![apartment](./img/print_documentos.jpeg)
+![apartment](./img/print_feed.jpeg)
+![apartment](./img/print_moradores.jpeg)
+![apartment](./img/print_tela_inicial.jpeg)
 
 ### Layout Responsivo
 O sistema é responsivo para diversos tipos de monitores e aparelhos como tablets.
