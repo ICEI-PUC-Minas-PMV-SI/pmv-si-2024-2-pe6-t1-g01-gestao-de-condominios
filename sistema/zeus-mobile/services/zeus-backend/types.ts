@@ -12,8 +12,8 @@ export type UserDto = {
   name: string;
   cellphone: string | null;
   cpf: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type NewsFeedDto = {
@@ -22,8 +22,8 @@ export type NewsFeedDto = {
   description: string;
   link: string | null;
   user: UserDto;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type AuthRequestResponse = {
@@ -36,8 +36,8 @@ export type ApartmentDto = {
   number: number;
   block: string;
   residents: UserDto[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ResidentDto = {
@@ -49,19 +49,8 @@ export type ResidentDto = {
   role: string;
   apartmentId: number;
   apartment: ApartmentDto;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-
-export type VisitDto = {
-  id: number;
-  visitor: VisitorDto;
-  resident: ResidentDto;
-  status: string;
-  visitedAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type VisitorDto = {
@@ -70,6 +59,16 @@ export type VisitorDto = {
   cellphone: string;
   cpf: string;
   visits: VisitDto[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type VisitDto = {
+  id: number;
+  visitor: VisitorDto;
+  resident: ResidentDto;
+  status: string;
+  visitedAt: string;
+  createdAt: string;
+  updatedAt: string;
 };

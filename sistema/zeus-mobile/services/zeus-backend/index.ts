@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NewsFeedDto, AuthRequestResponse, UserRole, VisitorDto } from './types';
+import { NewsFeedDto, AuthRequestResponse, UserRole, VisitDto } from './types';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -98,10 +98,10 @@ export const deleteNewsFeed = async (id) => {
   return response.json();
 };
 
-export const getVisitors = async () => {
+export const getVisits = async () => {
   const token = await AsyncStorage.getItem('zeus_accessToken');
 
-  const response = await fetch(`${API_URL}/visitor`, {
+  const response = await fetch(`${API_URL}/visit`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -110,60 +110,28 @@ export const getVisitors = async () => {
     },
   });
 
-  return response.json() as Promise<VisitorDto[]>;
+  return response.json() as Promise<VisitDto[]>;
 };
 
-export const createVisitors = async (name: string, cellphone: string, cpf: string) => {
+export const updateVisit = async (data: VisitDto) => {
   const token = await AsyncStorage.getItem('zeus_accessToken');
 
-  const response = await fetch(`${API_URL}/visitor`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      name,
-      cellphone,
-      cpf,
-    }),
-  });
+  const updateVisitData = {
+    visitorId: data.visitor.id,
+    userId: data.resident.id,
+    status: data.status,
+    visitedAt: data.visitedAt,
+  };
 
-  return response.json() as Promise<VisitorDto[]>;
-};
-
-export const updateVisitors = async (name: string, cellphone: string, cpf: string, id: number) => {
-  const token = await AsyncStorage.getItem('zeus_accessToken');
-
-  const response = await fetch(`${API_URL}/visitor/${id}`, {
+  const response = await fetch(`${API_URL}/visit/${data.id}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      name,
-      cellphone,
-      cpf,
-    }),
+    body: JSON.stringify(updateVisitData),
   });
 
-  return response.json() as Promise<VisitorDto[]>;
-};
-
-export const deleteVisitors = async (id: number) => {
-  const token = await AsyncStorage.getItem('zeus_accessToken');
-
-  const response = await fetch(`${API_URL}/visitor/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.json() as Promise<VisitorDto[]>;
+  return response.json() as Promise<VisitDto[]>;
 };
