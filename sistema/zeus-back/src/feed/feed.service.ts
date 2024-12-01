@@ -19,12 +19,13 @@ export class FeedService {
   async create(body: CreateFeedDto, file: Express.Multer.File | undefined, user: User) {
     let feedFileName: string | null = null;
     let feedUrl: string | null = null;
+
     if (file) {
       const { fileName, url } = await this.uploadDocument(file);
       feedFileName = fileName;
       feedUrl = url;
     }
-    
+
     let feed = this.repo.create({ ...body, link: feedFileName, user });
     feed = await this.repo.save(feed);
     feed.link = feedUrl

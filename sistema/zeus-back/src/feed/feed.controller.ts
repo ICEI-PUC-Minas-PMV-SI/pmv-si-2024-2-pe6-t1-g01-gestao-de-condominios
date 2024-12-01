@@ -16,7 +16,15 @@ export class FeedController {
 
   @Post()
   @UseGuards(JwtSessionGuard)
-  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10 * 1024 * 1024 } }))
+  @UseInterceptors(FileInterceptor('file', {
+    limits: { fileSize: 10 * 1024 * 1024 },
+    fileFilter: (req, file, callback) => {
+      if (!file.mimetype.match(/^image\//)) {
+        return callback(new Error('Invalid file type'), false);
+      }
+      callback(null, true);
+    }
+  }))
   async create(
     @UploadedFile() file: Express.Multer.File | undefined,
     @Body() body: CreateFeedDto,

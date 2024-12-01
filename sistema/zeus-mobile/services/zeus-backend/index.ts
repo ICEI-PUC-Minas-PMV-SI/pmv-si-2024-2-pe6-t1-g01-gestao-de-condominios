@@ -49,34 +49,53 @@ export const getNewsFeed = async () => {
   return response.json() as Promise<NewsFeedDto[]>;
 };
 
-export const createNewsFeedPost = async ({
+export const createNewsFeed = async ({
   title,
   description,
   file,
 }: {
   title: string;
   description: string;
-  file: File;
+  file?: File;
 }) => {
   const token = await AsyncStorage.getItem('zeus_accessToken');
 
   const formData = new FormData();
-
   if (title) formData.append('title', title);
   if (description) formData.append('description', description);
-  if (file) formData.append('file', file);
+
+  if (file) {
+    formData.append('file', file as File);
+  }
 
   const response = await fetch(`${API_URL}/feed`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     },
     body: formData,
   });
 
   return response.json() as Promise<NewsFeedDto>;
+};
+
+export const updateNewsFeed = async (id, data) => {
+  const response = await fetch(`${API_URL}/news/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+};
+
+export const deleteNewsFeed = async (id) => {
+  const response = await fetch(`${API_URL}/news/${id}`, {
+    method: 'DELETE',
+  });
+  return response.json();
 };
 
 export const getVisitors = async () => {
