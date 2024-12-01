@@ -53,6 +53,15 @@ export type ResidentDto = {
   updatedAt: Date;
 };
 
+export type VisitorDto = {
+  id: number;
+  name: string;
+  cellphone: string;
+  cpf: string;
+  visits: VisitDto[];
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export type VisitDto = {
   id: number;
@@ -60,16 +69,6 @@ export type VisitDto = {
   resident: ResidentDto;
   status: string;
   visitedAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type VisitorDto = {
-  id: number;
-  name: string;
-  cellphone: string;
-  cpf: string;
-  visits: VisitDto[];
   createdAt: Date;
   updatedAt: Date;
 };
