@@ -94,26 +94,24 @@ export const getVisits = async () => {
   return response.json() as Promise<VisitDto[]>;
 };
 
-export const updateVisitors = async (
-  name: string,
-  cellphone: string,
-  cpf: string,
-  id: number,
-) => {
+export const updateVisit = async (data: VisitDto) => {
   const token = await AsyncStorage.getItem('zeus_accessToken');
 
-  const response = await fetch(`${API_URL}/visitor/${id}`, {
+  const updateVisitData = {
+    visitorId: data.visitor.id,
+    userId: data.resident.id,
+    status: data.status,
+    visitedAt: data.visitedAt,
+  };
+
+  const response = await fetch(`${API_URL}/visit/${data.id}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      name,
-      cellphone,
-      cpf,
-    }),
+    body: JSON.stringify(updateVisitData),
   });
 
   return response.json() as Promise<VisitDto[]>;

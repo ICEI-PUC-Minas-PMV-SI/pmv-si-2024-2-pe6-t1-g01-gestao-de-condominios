@@ -5,7 +5,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useEffect, useState } from 'react';
-import { getVisits } from '@/services/zeus-backend';
+import { getVisits, updateVisit } from '@/services/zeus-backend';
 import { VisitDto } from '@/services/zeus-backend/types';
 import { VisitCard } from '@/components/VisitCard';
 
@@ -13,17 +13,39 @@ export default function VisitsScreen() {
   const [visistsData, setVisits] = useState<VisitDto[]>([]);
 
   useEffect(() => {
-    const fetchvisists = async () => {
+    const fetchVisits = async () => {
       const visitsResponse = await getVisits();
       setVisits(visitsResponse);
     };
 
-    fetchvisists();
+    fetchVisits();
   }, []);
 
-  const handleApproveVisit = () => {};
+  const handleApproveVisit = async (id: number) => {
+    const visit = visistsData.find((visit) => visit.id === id);
+    if (!visit) return;
 
-  const handleRejectVisist = () => {};
+    await updateVisit({
+      ...visit,
+      status: 'APPROVED',
+    });
+
+    const visitsResponse = await getVisits();
+    setVisits(visitsResponse);
+  };
+
+  const handleRejectVisist = async (id: number) => {
+    const visit = visistsData.find((visit) => visit.id === id);
+    if (!visit) return;
+
+    await updateVisit({
+      ...visit,
+      status: 'DISAPPROVED',
+    });
+
+    const visitsResponse = await getVisits();
+    setVisits(visitsResponse);
+  };
 
   return (
     <ParallaxScrollView
@@ -42,7 +64,10 @@ export default function VisitsScreen() {
         <VisitCard
           key={visit.id}
           visitorName={visit.visitor.name}
+          visitedAt={visit.visitedAt}
           status={visit.status}
+          onApprove={() => handleApproveVisit(visit.id)}
+          onReject={() => handleRejectVisist(visit.id)}
         />
       ))}
     </ParallaxScrollView>
