@@ -7,15 +7,22 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from '@/hooks/useUserData';
+import { Button, Text, TextInput } from 'react-native-paper';
+import { useState } from 'react';
 
 export default function ProfileScreen() {
   const userData = useUserData();
+  const [shouldShowEditProfile, setShouldShowEditProfile] = useState(false);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('zeus_accessToken');
     await AsyncStorage.removeItem('zeus_user');
     router.replace('/');
   };
+
+  const handleEditProfile = () => setShouldShowEditProfile(true);
+
+  const handleSaveProfile = () => setShouldShowEditProfile(false);
 
   return (
     <ParallaxScrollView
@@ -28,14 +35,22 @@ export default function ProfileScreen() {
         <ThemedText type="title">Perfil</ThemedText>
       </ThemedView>
 
-      <View>
-        <ThemedText>Página de perfil</ThemedText>
-      </View>
-      <ThemedText>Nome: {userData?.name}</ThemedText>
-      <ThemedText>Email: {userData?.email}</ThemedText>
-      <Pressable onPress={handleLogout}>
-        <ThemedText type="link">Deslogar</ThemedText>
-      </Pressable>
+      {!shouldShowEditProfile && (
+        <>
+          <Text>Nome: {userData?.name}</Text>
+          <Text>Email: {userData?.email}</Text>
+          <Button onPress={handleEditProfile}>Editar perfil</Button>
+          <Button onPress={handleLogout}>Deslogar</Button>
+        </>
+      )}
+
+      {shouldShowEditProfile && (
+        <View>
+          <TextInput label="Nome" />
+          <TextInput label="Email" />
+          <Button onPress={handleSaveProfile}>Salvar</Button>
+        </View>
+      )}
     </ParallaxScrollView>
   );
 }
