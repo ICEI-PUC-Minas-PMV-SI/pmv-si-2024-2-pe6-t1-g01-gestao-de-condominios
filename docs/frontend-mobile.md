@@ -75,7 +75,7 @@ O projeto mobile do sistema "Zeus - Gestão Condominial" tem como objetivo princ
 
 ## Testes
 
-Serão testados os fluxos referentes aos endpoints do back-end do sistema. Será feito um vídeo e anexado seu link mostrando o funcionamento.
+Será feito um vídeo e anexado seu link mostrando o funcionamento.
 
 ### Casos de Teste para usuário
 
