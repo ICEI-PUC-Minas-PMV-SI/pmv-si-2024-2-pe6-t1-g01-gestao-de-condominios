@@ -44,7 +44,7 @@ export const AddNewsModal: React.FC<AddNewsModalProps> = ({
         Alert.alert('Erro', 'Preencha todos os campos!');
         return;
       }
-      console.log(file?.file)
+
       const newNews = await createNewsFeed({
         title,
         description,

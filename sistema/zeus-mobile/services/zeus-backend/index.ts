@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  NewsFeedDto,
-  AuthRequestResponse,
-  UserRole,
-  VisitDto,
-  UserDto,
-} from './types';
+import { NewsFeedDto, AuthRequestResponse, UserRole, VisitDto } from './types';
+
+type FileType = {
+  uri: string;
+  type: string;
+  name: string;
+};
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -38,31 +38,6 @@ export const createUser = async (email: string, password: string) => {
     }),
   });
   return response.json() as Promise<AuthRequestResponse>;
-};
-
-export const updateUser = async (data: Partial<UserDto>) => {
-  if (!data.id) {
-    return;
-  }
-
-  const token = await AsyncStorage.getItem('zeus_accessToken');
-
-  const updateUserData = {
-    name: data.name,
-    email: data.email,
-  };
-
-  const response = await fetch(`${API_URL}/user/${data.id}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(updateUserData),
-  });
-
-  return response.json() as Promise<UserDto>;
 };
 
 export const getNewsFeed = async () => {
@@ -103,7 +78,7 @@ export const createNewsFeed = async ({
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     },
     body: formData,
   });
@@ -111,14 +86,33 @@ export const createNewsFeed = async ({
   return response.json() as Promise<NewsFeedDto>;
 };
 
-export const updateNewsFeed = async (id, data) => {
-  const response = await fetch(`${API_URL}/news/${id}`, {
+export const updateNewsFeed = async (
+  id: number,
+  data: { title: string; description: string; file?: File }
+) => {
+  const token = await AsyncStorage.getItem('zeus_accessToken');
+  
+  const formData = new FormData();
+  formData.append('title', data.title);
+  formData.append('description', data.description);
+  
+  if (data.file) {
+    formData.append('file', data.file);
+  }
+
+  const response = await fetch(`${API_URL}/feed/${id}`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(data),
+    body: formData,
   });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Erro ao atualizar notícia');
+  }
+
   return response.json();
 };
 
