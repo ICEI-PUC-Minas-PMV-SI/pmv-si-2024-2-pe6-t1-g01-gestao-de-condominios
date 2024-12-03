@@ -1,5 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NewsFeedDto, AuthRequestResponse, UserRole, VisitDto } from './types';
+import {
+  NewsFeedDto,
+  AuthRequestResponse,
+  UserRole,
+  VisitDto,
+  UserDto,
+} from './types';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -32,6 +38,31 @@ export const createUser = async (email: string, password: string) => {
     }),
   });
   return response.json() as Promise<AuthRequestResponse>;
+};
+
+export const updateUser = async (data: Partial<UserDto>) => {
+  if (!data.id) {
+    return;
+  }
+
+  const token = await AsyncStorage.getItem('zeus_accessToken');
+
+  const updateUserData = {
+    name: data.name,
+    email: data.email,
+  };
+
+  const response = await fetch(`${API_URL}/user/${data.id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(updateUserData),
+  });
+
+  return response.json() as Promise<UserDto>;
 };
 
 export const getNewsFeed = async () => {
@@ -72,7 +103,7 @@ export const createNewsFeed = async ({
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: formData,
   });
