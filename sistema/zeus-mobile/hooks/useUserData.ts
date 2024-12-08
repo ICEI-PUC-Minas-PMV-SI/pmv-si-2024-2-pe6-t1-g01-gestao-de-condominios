@@ -13,5 +13,13 @@ export const useUserData = () => {
     });
   }, []);
 
-  return user;
+  const updateUser = () => {
+    AsyncStorage.getItem('zeus_user').then((user) => {
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    });
+  };
+
+  return { user, updateUser };
 };

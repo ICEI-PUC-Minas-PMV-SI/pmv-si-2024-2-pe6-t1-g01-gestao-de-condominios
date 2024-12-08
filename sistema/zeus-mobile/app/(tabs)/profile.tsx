@@ -13,13 +13,18 @@ import { ThemedView } from '@/components/ThemedView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from '@/hooks/useUserData';
 import { Button, Text, TextInput } from 'react-native-paper';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { updateUser } from '@/services/zeus-backend';
 
 export default function ProfileScreen() {
-  const userData = useUserData();
+  const { user: userData, updateUser: updateUserData } = useUserData();
   const [name, setName] = useState(userData?.name);
   const [email, setEmail] = useState(userData?.email);
+
+  useEffect(() => {
+    setName(userData?.name);
+    setEmail(userData?.email);
+  }, [userData]);
 
   const [shouldShowEditProfile, setShouldShowEditProfile] = useState(false);
 
@@ -29,13 +34,9 @@ export default function ProfileScreen() {
     router.replace('/');
   };
 
-  const handleChangeEmail = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>,
-  ) => setEmail(e.nativeEvent.text);
+  const handleChangeEmail = (text: string) => setEmail(text);
 
-  const handleChangeName = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>,
-  ) => setName(e.nativeEvent.text);
+  const handleChangeName = (text: string) => setName(text);
 
   const handleEditProfile = () => setShouldShowEditProfile(true);
 
@@ -44,6 +45,7 @@ export default function ProfileScreen() {
     const updatedUser = await updateUser({ ...userData, name, email });
     if (updatedUser) {
       await AsyncStorage.setItem('zeus_user', JSON.stringify(updatedUser));
+      updateUserData();
     }
   };
 
@@ -78,11 +80,15 @@ export default function ProfileScreen() {
       {shouldShowEditProfile && (
         <View>
           <View style={styles.inputContainer}>
-            <TextInput label="Nome" value={name} onChange={handleChangeName} />
+            <TextInput
+              label="Nome"
+              value={name}
+              onChangeText={handleChangeName}
+            />
             <TextInput
               label="Email"
               value={email}
-              onChange={handleChangeEmail}
+              onChangeText={handleChangeEmail}
             />
           </View>
           <View style={styles.buttonContainer}>

@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NewsFeedDto, AuthRequestResponse, UserRole, VisitDto } from './types';
-
-type FileType = {
-  uri: string;
-  type: string;
-  name: string;
-};
+import {
+  NewsFeedDto,
+  AuthRequestResponse,
+  UserRole,
+  VisitDto,
+  UserDto,
+} from './types';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -34,6 +34,24 @@ export const createUser = async (email: string, password: string) => {
     body: JSON.stringify({
       email,
       password,
+      role: UserRole.MORADOR,
+    }),
+  });
+  return response.json() as Promise<AuthRequestResponse>;
+};
+
+export const updateUser = async (user: Partial<UserDto>) => {
+  const token = await AsyncStorage.getItem('zeus_accessToken');
+
+  const response = await fetch(`${API_URL}/user/${user.id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      ...user,
       role: UserRole.MORADOR,
     }),
   });
@@ -78,7 +96,7 @@ export const createNewsFeed = async ({
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: formData,
   });
@@ -88,14 +106,14 @@ export const createNewsFeed = async ({
 
 export const updateNewsFeed = async (
   id: number,
-  data: { title: string; description: string; file?: File }
+  data: { title: string; description: string; file?: File },
 ) => {
   const token = await AsyncStorage.getItem('zeus_accessToken');
-  
+
   const formData = new FormData();
   formData.append('title', data.title);
   formData.append('description', data.description);
-  
+
   if (data.file) {
     formData.append('file', data.file);
   }
@@ -116,7 +134,9 @@ export const updateNewsFeed = async (
   return response.json();
 };
 
-export const deleteNewsFeed = async (id: number): Promise<{ success: boolean; message?: string }> => {
+export const deleteNewsFeed = async (
+  id: number,
+): Promise<{ success: boolean; message?: string }> => {
   try {
     const token = await AsyncStorage.getItem('zeus_accessToken');
 
@@ -135,7 +155,11 @@ export const deleteNewsFeed = async (id: number): Promise<{ success: boolean; me
     return { success: true };
   } catch (error) {
     console.error('Erro ao excluir a notícia:', error);
-    return { success: false, message: error instanceof Error ? error.message : 'Erro desconhecido: '+error };
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'Erro desconhecido: ' + error,
+    };
   }
 };
 
