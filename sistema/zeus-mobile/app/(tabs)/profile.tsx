@@ -1,5 +1,10 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Pressable, StyleSheet, View } from 'react-native';
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInputChangeEventData,
+  View,
+} from 'react-native';
 import { router } from 'expo-router';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -9,9 +14,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserData } from '@/hooks/useUserData';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { useState } from 'react';
+import { updateUser } from '@/services/zeus-backend';
 
 export default function ProfileScreen() {
   const userData = useUserData();
+  const [name, setName] = useState(userData?.name);
+  const [email, setEmail] = useState(userData?.email);
+
   const [shouldShowEditProfile, setShouldShowEditProfile] = useState(false);
 
   const handleLogout = async () => {
@@ -20,9 +29,23 @@ export default function ProfileScreen() {
     router.replace('/');
   };
 
+  const handleChangeEmail = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
+  ) => setEmail(e.nativeEvent.text);
+
+  const handleChangeName = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
+  ) => setName(e.nativeEvent.text);
+
   const handleEditProfile = () => setShouldShowEditProfile(true);
 
-  const handleSaveProfile = () => setShouldShowEditProfile(false);
+  const handleSaveProfile = async () => {
+    setShouldShowEditProfile(false);
+    const updatedUser = await updateUser({ ...userData, name, email });
+    if (updatedUser) {
+      await AsyncStorage.setItem('zeus_user', JSON.stringify(updatedUser));
+    }
+  };
 
   return (
     <ParallaxScrollView
@@ -46,8 +69,8 @@ export default function ProfileScreen() {
 
       {shouldShowEditProfile && (
         <View>
-          <TextInput label="Nome" />
-          <TextInput label="Email" />
+          <TextInput label="Nome" value={name} onChange={handleChangeName} />
+          <TextInput label="Email" value={email} onChange={handleChangeEmail} />
           <Button onPress={handleSaveProfile}>Salvar</Button>
         </View>
       )}
