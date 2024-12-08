@@ -1,13 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, View, Button, Alert, Image, Modal, Text, TouchableOpacity } from 'react-native';
-import { ExternalLink } from '@/components/ExternalLink';
+import {
+  StyleSheet,
+  View,
+  Alert,
+  Image,
+  Modal,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+import { Button } from 'react-native-paper';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { AddNewsModal } from '@/components/feedNews/AddNewsModal';
 import EditNewsModal from '@/components/feedNews/EditNewsModal';
-import { getNewsFeed, updateNewsFeed, deleteNewsFeed } from '@/services/zeus-backend';
+import {
+  getNewsFeed,
+  updateNewsFeed,
+  deleteNewsFeed,
+} from '@/services/zeus-backend';
 import { NewsFeedDto } from '@/services/zeus-backend/types';
 
 export default function NewsFeedScreen() {
@@ -15,7 +27,8 @@ export default function NewsFeedScreen() {
   const [isAddModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [isEditModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [selectedNews, setSelectedNews] = useState<NewsFeedDto | null>(null);
-  const [isConfirmDeleteVisible, setConfirmDeleteVisible] = useState<boolean>(false);
+  const [isConfirmDeleteVisible, setConfirmDeleteVisible] =
+    useState<boolean>(false);
   const [newsToDelete, setNewsToDelete] = useState<number | null>(null);
 
   // Abrir e fechar modal de criação
@@ -56,9 +69,16 @@ export default function NewsFeedScreen() {
     closeAddModal();
   };
 
-  const handleUpdate = async (updatedNews: { id: number; title: string; description: string; file?: File | null }) => {
+  const handleUpdate = async (updatedNews: {
+    id: number;
+    title: string;
+    description: string;
+    file?: File | null;
+  }) => {
     try {
-      const existingNews = newsFeedData.find((news) => news.id === updatedNews.id);
+      const existingNews = newsFeedData.find(
+        (news) => news.id === updatedNews.id,
+      );
 
       if (!existingNews) {
         throw new Error('Notícia não encontrada');
@@ -77,7 +97,9 @@ export default function NewsFeedScreen() {
         file: updatedNewsFeed.file || undefined,
       });
       setNewsFeedData((prevData) =>
-        prevData.map((news) => (news.id === updatedNewsFeed.id ? response : news))
+        prevData.map((news) =>
+          news.id === updatedNewsFeed.id ? response : news,
+        ),
       );
       closeEditModal();
       Alert.alert('Sucesso', 'Notícia atualizada com sucesso!');
@@ -91,7 +113,9 @@ export default function NewsFeedScreen() {
 
     try {
       await deleteNewsFeed(newsToDelete);
-      setNewsFeedData((prevData) => prevData.filter((news) => news.id !== newsToDelete));
+      setNewsFeedData((prevData) =>
+        prevData.filter((news) => news.id !== newsToDelete),
+      );
       Alert.alert('Sucesso', 'Notícia excluída com sucesso!');
     } catch (error: any) {
       Alert.alert('Erro', error.message || 'Erro ao excluir notícia');
@@ -103,26 +127,42 @@ export default function NewsFeedScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Ionicons size={310} name="newspaper" style={styles.headerImage} />}
+      headerImage={
+        <Ionicons size={310} name="newspaper" style={styles.headerImage} />
+      }
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Feed de notícias</ThemedText>
       </ThemedView>
 
-      <Button title="Adicionar Notícia" onPress={openAddModal} />
+      <Button mode="outlined" onPress={openAddModal}>
+        Adicionar notícia
+      </Button>
 
-      {!newsFeedData.length && <ThemedText>Nenhuma notícia publicada</ThemedText>}
+      {!newsFeedData.length && (
+        <ThemedText>Nenhuma notícia publicada</ThemedText>
+      )}
 
       {newsFeedData.map((newsFeed) => (
         <View key={newsFeed.id} style={styles.newsContainer}>
           <ThemedText>{newsFeed.title}</ThemedText>
           <ThemedText>{newsFeed.description}</ThemedText>
           {newsFeed.link && (
-            <Image source={{ uri: newsFeed.link }} style={{ width: 200, height: 200 }} />
+            <Image
+              source={{ uri: newsFeed.link }}
+              style={{ width: 200, height: 200 }}
+            />
           )}
           <View style={styles.buttonsContainer}>
-            <Button title="Editar" onPress={() => openEditModal(newsFeed)} />
-            <Button title="Excluir" onPress={() => openConfirmDeleteModal(newsFeed.id)} />
+            <Button mode="outlined" onPress={() => openEditModal(newsFeed)}>
+              Editar
+            </Button>
+            <Button
+              mode="outlined"
+              onPress={() => openConfirmDeleteModal(newsFeed.id)}
+            >
+              Excluir
+            </Button>
           </View>
         </View>
       ))}
@@ -140,14 +180,26 @@ export default function NewsFeedScreen() {
         onSave={handleUpdate}
       />
 
-      <Modal visible={isConfirmDeleteVisible} transparent={true} animationType="fade">
+      <Modal
+        visible={isConfirmDeleteVisible}
+        transparent={true}
+        animationType="fade"
+      >
         <View style={styles.confirmModal}>
-          <Text style={styles.confirmText}>Tem certeza que deseja excluir esta notícia?</Text>
+          <Text style={styles.confirmText}>
+            Tem certeza que deseja excluir esta notícia?
+          </Text>
           <View style={styles.modalButtons}>
-            <TouchableOpacity onPress={closeConfirmDeleteModal} style={styles.modalButton}>
+            <TouchableOpacity
+              onPress={closeConfirmDeleteModal}
+              style={styles.modalButton}
+            >
               <Text style={styles.modalButtonText}>Cancelar</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleConfirmDelete} style={styles.modalButton}>
+            <TouchableOpacity
+              onPress={handleConfirmDelete}
+              style={styles.modalButton}
+            >
               <Text style={styles.modalButtonText}>Sim</Text>
             </TouchableOpacity>
           </View>
