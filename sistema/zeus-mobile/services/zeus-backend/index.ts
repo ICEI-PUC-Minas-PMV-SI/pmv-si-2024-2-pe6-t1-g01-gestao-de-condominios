@@ -1,11 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  NewsFeedDto,
-  AuthRequestResponse,
-  UserRole,
-  VisitDto,
-  UserDto,
-} from './types';
+import { NewsFeedDto, AuthRequestResponse, UserRole, VisitDto } from './types';
 
 type FileType = {
   uri: string;
@@ -46,31 +40,6 @@ export const createUser = async (email: string, password: string) => {
   return response.json() as Promise<AuthRequestResponse>;
 };
 
-export const updateUser = async (data: Partial<UserDto>) => {
-  if (!data.id) {
-    return;
-  }
-
-  const token = await AsyncStorage.getItem('zeus_accessToken');
-
-  const updateUserData = {
-    name: data.name,
-    email: data.email,
-  };
-
-  const response = await fetch(`${API_URL}/user/${data.id}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(updateUserData),
-  });
-
-  return response.json() as Promise<UserDto>;
-};
-
 export const getNewsFeed = async () => {
   const token = await AsyncStorage.getItem('zeus_accessToken');
 
@@ -109,7 +78,7 @@ export const createNewsFeed = async ({
     method: 'POST',
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     },
     body: formData,
   });
@@ -147,11 +116,27 @@ export const updateNewsFeed = async (
   return response.json();
 };
 
-export const deleteNewsFeed = async (id) => {
-  const response = await fetch(`${API_URL}/news/${id}`, {
-    method: 'DELETE',
-  });
-  return response.json();
+export const deleteNewsFeed = async (id: number): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const token = await AsyncStorage.getItem('zeus_accessToken');
+
+    const response = await fetch(`${API_URL}/feed/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorDetails = await response.json();
+      throw new Error(errorDetails.message || 'Erro ao excluir a notícia.');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Erro ao excluir a notícia:', error);
+    return { success: false, message: error instanceof Error ? error.message : 'Erro desconhecido: '+error };
+  }
 };
 
 export const getVisits = async () => {

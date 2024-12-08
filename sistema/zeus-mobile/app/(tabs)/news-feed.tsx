@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, View, Button, Alert, Image } from 'react-native';
-import { useEffect, useState } from 'react';
+import { StyleSheet, View, Button, Alert, Image, Modal, Text, TouchableOpacity } from 'react-native';
 import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
@@ -15,6 +15,8 @@ export default function NewsFeedScreen() {
   const [isAddModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [isEditModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [selectedNews, setSelectedNews] = useState<NewsFeedDto | null>(null);
+  const [isConfirmDeleteVisible, setConfirmDeleteVisible] = useState<boolean>(false);
+  const [newsToDelete, setNewsToDelete] = useState<number | null>(null);
 
   // Abrir e fechar modal de criação
   const openAddModal = () => setAddModalVisible(true);
@@ -28,6 +30,16 @@ export default function NewsFeedScreen() {
   const closeEditModal = () => {
     setSelectedNews(null);
     setEditModalVisible(false);
+  };
+
+  // Abrir e fechar modal de confirmação de exclusão
+  const openConfirmDeleteModal = (id: number) => {
+    setNewsToDelete(id);
+    setConfirmDeleteVisible(true);
+  };
+  const closeConfirmDeleteModal = () => {
+    setNewsToDelete(null);
+    setConfirmDeleteVisible(false);
   };
 
   useEffect(() => {
@@ -56,13 +68,13 @@ export default function NewsFeedScreen() {
         ...existingNews,
         ...updatedNews,
         link: existingNews.link ?? null,
-        file: updatedNews.file ?? undefined
+        file: updatedNews.file ?? undefined,
       };
-  
+
       const response = await updateNewsFeed(updatedNewsFeed.id, {
         title: updatedNewsFeed.title,
         description: updatedNewsFeed.description,
-        file: updatedNewsFeed.file || undefined
+        file: updatedNewsFeed.file || undefined,
       });
       setNewsFeedData((prevData) =>
         prevData.map((news) => (news.id === updatedNewsFeed.id ? response : news))
@@ -74,18 +86,18 @@ export default function NewsFeedScreen() {
     }
   };
 
-  const handleDelete = (id: number) => {
-    Alert.alert('Confirmar exclusão', 'Tem certeza que deseja excluir esta notícia?', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Confirmar',
-        onPress: () => {
-          deleteNewsFeed(id).then(() => {
-            setNewsFeedData((prevData) => prevData.filter((news) => news.id !== id));
-          });
-        },
-      },
-    ]);
+  const handleConfirmDelete = async () => {
+    if (newsToDelete === null) return;
+
+    try {
+      await deleteNewsFeed(newsToDelete);
+      setNewsFeedData((prevData) => prevData.filter((news) => news.id !== newsToDelete));
+      Alert.alert('Sucesso', 'Notícia excluída com sucesso!');
+    } catch (error: any) {
+      Alert.alert('Erro', error.message || 'Erro ao excluir notícia');
+    } finally {
+      closeConfirmDeleteModal();
+    }
   };
 
   return (
@@ -110,7 +122,7 @@ export default function NewsFeedScreen() {
           )}
           <View style={styles.buttonsContainer}>
             <Button title="Editar" onPress={() => openEditModal(newsFeed)} />
-            <Button title="Excluir" onPress={() => handleDelete(newsFeed.id)} />
+            <Button title="Excluir" onPress={() => openConfirmDeleteModal(newsFeed.id)} />
           </View>
         </View>
       ))}
@@ -127,6 +139,20 @@ export default function NewsFeedScreen() {
         news={selectedNews}
         onSave={handleUpdate}
       />
+
+      <Modal visible={isConfirmDeleteVisible} transparent={true} animationType="fade">
+        <View style={styles.confirmModal}>
+          <Text style={styles.confirmText}>Tem certeza que deseja excluir esta notícia?</Text>
+          <View style={styles.modalButtons}>
+            <TouchableOpacity onPress={closeConfirmDeleteModal} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleConfirmDelete} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Sim</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ParallaxScrollView>
   );
 }
@@ -152,5 +178,31 @@ const styles = StyleSheet.create({
     marginTop: 8,
     flexDirection: 'row',
     gap: 10,
+  },
+  confirmModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  confirmText: {
+    fontSize: 18,
+    marginBottom: 20,
+    color: 'white',
+    textAlign: 'center',
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 20,
+  },
+  modalButton: {
+    backgroundColor: '#007BFF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
