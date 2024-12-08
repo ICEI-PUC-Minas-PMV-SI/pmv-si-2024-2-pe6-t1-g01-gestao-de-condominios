@@ -1,18 +1,46 @@
+import React, { useEffect, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, View, Button, Alert } from 'react-native';
+import { StyleSheet, View, Button, Alert, Image, Modal, Text, TouchableOpacity } from 'react-native';
 import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useEffect, useState } from 'react';
 import { AddNewsModal } from '@/components/feedNews/AddNewsModal';
+import EditNewsModal from '@/components/feedNews/EditNewsModal';
 import { getNewsFeed, updateNewsFeed, deleteNewsFeed } from '@/services/zeus-backend';
 import { NewsFeedDto } from '@/services/zeus-backend/types';
-import { Image } from 'react-native';
 
 export default function NewsFeedScreen() {
   const [newsFeedData, setNewsFeedData] = useState<NewsFeedDto[]>([]);
-  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [isAddModalVisible, setAddModalVisible] = useState<boolean>(false);
+  const [isEditModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [selectedNews, setSelectedNews] = useState<NewsFeedDto | null>(null);
+  const [isConfirmDeleteVisible, setConfirmDeleteVisible] = useState<boolean>(false);
+  const [newsToDelete, setNewsToDelete] = useState<number | null>(null);
+
+  // Abrir e fechar modal de criação
+  const openAddModal = () => setAddModalVisible(true);
+  const closeAddModal = () => setAddModalVisible(false);
+
+  // Abrir e fechar modal de edição
+  const openEditModal = (news: NewsFeedDto) => {
+    setSelectedNews(news);
+    setEditModalVisible(true);
+  };
+  const closeEditModal = () => {
+    setSelectedNews(null);
+    setEditModalVisible(false);
+  };
+
+  // Abrir e fechar modal de confirmação de exclusão
+  const openConfirmDeleteModal = (id: number) => {
+    setNewsToDelete(id);
+    setConfirmDeleteVisible(true);
+  };
+  const closeConfirmDeleteModal = () => {
+    setNewsToDelete(null);
+    setConfirmDeleteVisible(false);
+  };
 
   useEffect(() => {
     const fetchNewsFeed = async () => {
@@ -25,26 +53,51 @@ export default function NewsFeedScreen() {
 
   const handleAddNews = (newNews: NewsFeedDto) => {
     setNewsFeedData((prevData) => [newNews, ...prevData]);
+    closeAddModal();
   };
 
-  const handleUpdate = (id: number) => {
-    const updatedNews = { title: 'Notícia Atualizada', description: 'Descrição atualizada' }; // Exemplo de dados
-    updateNewsFeed(id, updatedNews).then((response) => {
+  const handleUpdate = async (updatedNews: { id: number; title: string; description: string; file?: File | null }) => {
+    try {
+      const existingNews = newsFeedData.find((news) => news.id === updatedNews.id);
+
+      if (!existingNews) {
+        throw new Error('Notícia não encontrada');
+      }
+
+      const updatedNewsFeed = {
+        ...existingNews,
+        ...updatedNews,
+        link: existingNews.link ?? null,
+        file: updatedNews.file ?? undefined,
+      };
+
+      const response = await updateNewsFeed(updatedNewsFeed.id, {
+        title: updatedNewsFeed.title,
+        description: updatedNewsFeed.description,
+        file: updatedNewsFeed.file || undefined,
+      });
       setNewsFeedData((prevData) =>
-        prevData.map((news) => (news.id === id ? response : news))
+        prevData.map((news) => (news.id === updatedNewsFeed.id ? response : news))
       );
-    });
+      closeEditModal();
+      Alert.alert('Sucesso', 'Notícia atualizada com sucesso!');
+    } catch (error: any) {
+      Alert.alert('Erro', error.message || 'Erro ao atualizar notícia');
+    }
   };
 
-  const handleDelete = (id: number) => {
-    Alert.alert('Confirmar exclusão', 'Tem certeza que deseja excluir esta notícia?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Confirmar', onPress: () => {
-        deleteNewsFeed(id).then(() => {
-          setNewsFeedData((prevData) => prevData.filter((news) => news.id !== id));
-        });
-      }},
-    ]);
+  const handleConfirmDelete = async () => {
+    if (newsToDelete === null) return;
+
+    try {
+      await deleteNewsFeed(newsToDelete);
+      setNewsFeedData((prevData) => prevData.filter((news) => news.id !== newsToDelete));
+      Alert.alert('Sucesso', 'Notícia excluída com sucesso!');
+    } catch (error: any) {
+      Alert.alert('Erro', error.message || 'Erro ao excluir notícia');
+    } finally {
+      closeConfirmDeleteModal();
+    }
   };
 
   return (
@@ -56,7 +109,7 @@ export default function NewsFeedScreen() {
         <ThemedText type="title">Feed de notícias</ThemedText>
       </ThemedView>
 
-      <Button title="Adicionar Notícia" onPress={() => setModalVisible(true)} />
+      <Button title="Adicionar Notícia" onPress={openAddModal} />
 
       {!newsFeedData.length && <ThemedText>Nenhuma notícia publicada</ThemedText>}
 
@@ -68,17 +121,38 @@ export default function NewsFeedScreen() {
             <Image source={{ uri: newsFeed.link }} style={{ width: 200, height: 200 }} />
           )}
           <View style={styles.buttonsContainer}>
-            <Button title="Editar" onPress={() => handleUpdate(newsFeed.id)} />
-            <Button title="Excluir" onPress={() => handleDelete(newsFeed.id)} />
+            <Button title="Editar" onPress={() => openEditModal(newsFeed)} />
+            <Button title="Excluir" onPress={() => openConfirmDeleteModal(newsFeed.id)} />
           </View>
         </View>
       ))}
 
       <AddNewsModal
-        visible={isModalVisible}
-        onClose={() => setModalVisible(false)}
+        visible={isAddModalVisible}
+        onClose={closeAddModal}
         onAdd={handleAddNews}
       />
+
+      <EditNewsModal
+        visible={isEditModalVisible}
+        onClose={closeEditModal}
+        news={selectedNews}
+        onSave={handleUpdate}
+      />
+
+      <Modal visible={isConfirmDeleteVisible} transparent={true} animationType="fade">
+        <View style={styles.confirmModal}>
+          <Text style={styles.confirmText}>Tem certeza que deseja excluir esta notícia?</Text>
+          <View style={styles.modalButtons}>
+            <TouchableOpacity onPress={closeConfirmDeleteModal} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleConfirmDelete} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Sim</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ParallaxScrollView>
   );
 }
@@ -104,5 +178,31 @@ const styles = StyleSheet.create({
     marginTop: 8,
     flexDirection: 'row',
     gap: 10,
+  },
+  confirmModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  confirmText: {
+    fontSize: 18,
+    marginBottom: 20,
+    color: 'white',
+    textAlign: 'center',
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 20,
+  },
+  modalButton: {
+    backgroundColor: '#007BFF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
