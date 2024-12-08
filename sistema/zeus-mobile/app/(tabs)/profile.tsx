@@ -47,6 +47,10 @@ export default function ProfileScreen() {
     }
   };
 
+  const handleCancelSaveProfile = () => {
+    setShouldShowEditProfile(false);
+  };
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
@@ -62,16 +66,41 @@ export default function ProfileScreen() {
         <>
           <Text>Nome: {userData?.name}</Text>
           <Text>Email: {userData?.email}</Text>
-          <Button onPress={handleEditProfile}>Editar perfil</Button>
-          <Button onPress={handleLogout}>Deslogar</Button>
+          <Button mode="outlined" onPress={handleEditProfile}>
+            Editar perfil
+          </Button>
+          <Button mode="outlined" onPress={handleLogout}>
+            Deslogar
+          </Button>
         </>
       )}
 
       {shouldShowEditProfile && (
         <View>
-          <TextInput label="Nome" value={name} onChange={handleChangeName} />
-          <TextInput label="Email" value={email} onChange={handleChangeEmail} />
-          <Button onPress={handleSaveProfile}>Salvar</Button>
+          <View style={styles.inputContainer}>
+            <TextInput label="Nome" value={name} onChange={handleChangeName} />
+            <TextInput
+              label="Email"
+              value={email}
+              onChange={handleChangeEmail}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              style={styles.button}
+              mode="outlined"
+              onPress={handleSaveProfile}
+            >
+              Salvar
+            </Button>
+            <Button
+              style={styles.button}
+              mode="outlined"
+              onPress={handleCancelSaveProfile}
+            >
+              Cancelar
+            </Button>
+          </View>
         </View>
       )}
     </ParallaxScrollView>
@@ -88,5 +117,18 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
+  },
+  inputContainer: {
+    flexDirection: 'column',
+    gap: 8,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    width: '100%',
+    marginTop: 16,
+  },
+  button: {
+    flex: 1,
   },
 });
