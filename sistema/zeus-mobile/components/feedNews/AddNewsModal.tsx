@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Modal, Alert, GestureResponderEvent } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  Alert,
+  GestureResponderEvent,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { createNewsFeed } from '@/services/zeus-backend/index';
 import { NewsFeedDto } from '@/services/zeus-backend/types';
+import { Button, TextInput } from 'react-native-paper';
 
 interface AddNewsModalProps {
   visible: boolean;
@@ -20,10 +27,12 @@ export const AddNewsModal: React.FC<AddNewsModalProps> = ({
   const [file, setFile] = useState<ImagePicker.ImagePickerAsset | null>(null);
 
   const handleSelectFile = async () => {
-
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permissão necessária', 'Precisamos de permissão para acessar suas fotos.');
+      Alert.alert(
+        'Permissão necessária',
+        'Precisamos de permissão para acessar suas fotos.',
+      );
       return;
     }
 
@@ -50,7 +59,7 @@ export const AddNewsModal: React.FC<AddNewsModalProps> = ({
         description,
         file: file ? file.file : undefined,
       });
-  
+
       onAdd(newNews);
       onClose();
     } catch (error: any) {
@@ -73,16 +82,26 @@ export const AddNewsModal: React.FC<AddNewsModalProps> = ({
           value={description}
           onChangeText={setDescription}
         />
-        <Button title="Selecionar Arquivo" onPress={handleSelectFile} />
-        {file && <Button title="Arquivo Selecionado" disabled />}
+        <Button mode="outlined" onPress={handleSelectFile}>
+          Selecionar Arquivo
+        </Button>
+        {file && (
+          <Button mode="outlined" disabled>
+            Arquivo Selecionado
+          </Button>
+        )}
         <View style={styles.buttonContainer}>
-          <Button title="Cancelar" onPress={onClose} />
-          <Button title="Adicionar" onPress={handleSubmit} />
+          <Button style={styles.button} mode="outlined" onPress={onClose}>
+            Cancelar
+          </Button>
+          <Button style={styles.button} mode="outlined" onPress={handleSubmit}>
+            Adicionar
+          </Button>
         </View>
       </View>
     </Modal>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -97,9 +116,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 4,
   },
+  button: {
+    flex: 1,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 16,
+    gap: 8,
   },
 });

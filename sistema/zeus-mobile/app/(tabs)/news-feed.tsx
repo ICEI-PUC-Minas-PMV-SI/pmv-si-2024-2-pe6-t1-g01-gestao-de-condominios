@@ -190,18 +190,20 @@ export default function NewsFeedScreen() {
             Tem certeza que deseja excluir esta notícia?
           </Text>
           <View style={styles.modalButtons}>
-            <TouchableOpacity
+            <Button
               onPress={closeConfirmDeleteModal}
               style={styles.modalButton}
+              mode="contained"
             >
               <Text style={styles.modalButtonText}>Cancelar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleConfirmDelete}
+            </Button>
+            <Button
               style={styles.modalButton}
+              mode="contained"
+              onPress={handleConfirmDelete}
             >
               <Text style={styles.modalButtonText}>Sim</Text>
-            </TouchableOpacity>
+            </Button>
           </View>
         </View>
       </Modal>
@@ -248,7 +250,6 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   modalButton: {
-    backgroundColor: '#007BFF',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,

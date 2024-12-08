@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { Modal, View, StyleSheet, Alert } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 
 type FileType = {
@@ -19,10 +20,20 @@ type EditNewsModalProps = {
   visible: boolean;
   onClose: () => void;
   news: NewsType | null;
-  onSave: (updatedNews: { id: number; title: string; description: string; file?: File | null }) => void;
+  onSave: (updatedNews: {
+    id: number;
+    title: string;
+    description: string;
+    file?: File | null;
+  }) => void;
 };
 
-const EditNewsModal: React.FC<EditNewsModalProps> = ({ visible, onClose, news, onSave }) => {
+const EditNewsModal: React.FC<EditNewsModalProps> = ({
+  visible,
+  onClose,
+  news,
+  onSave,
+}) => {
   const [title, setTitle] = useState(news?.title || '');
   const [description, setDescription] = useState(news?.description || '');
   const [file, setFile] = useState<ImagePicker.ImagePickerAsset | null>(null);
@@ -45,7 +56,7 @@ const EditNewsModal: React.FC<EditNewsModalProps> = ({ visible, onClose, news, o
       return;
     }
 
-    if(news?.id) {
+    if (news?.id) {
       onSave({ id: news.id, title, description, file: file?.file || null });
     }
   };
@@ -66,11 +77,21 @@ const EditNewsModal: React.FC<EditNewsModalProps> = ({ visible, onClose, news, o
           style={styles.input}
           multiline
         />
-        <Button title="Selecionar Arquivo (Opcional)" onPress={handleFileSelection} />
-        {file && <Button title="Arquivo Selecionado" disabled />}
+        <Button mode="outlined" onPress={handleFileSelection}>
+          Selecionar Arquivo (Opcional)
+        </Button>
+        {file && (
+          <Button mode="outlined" disabled>
+            Arquivo Selecionado
+          </Button>
+        )}
         <View style={styles.buttonContainer}>
-          <Button title="Cancelar" onPress={onClose} color="red" />
-          <Button title="Salvar" onPress={handleSave} />
+          <Button style={styles.button} mode="outlined" onPress={onClose}>
+            Cancelar
+          </Button>
+          <Button style={styles.button} mode="outlined" onPress={handleSave}>
+            Adicionar
+          </Button>
         </View>
       </View>
     </Modal>
@@ -81,19 +102,22 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: '#fff',
     padding: 20,
   },
   input: {
-    backgroundColor: 'white',
     marginBottom: 15,
     padding: 10,
     borderRadius: 5,
   },
+  button: {
+    flex: 1,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 15,
+    marginTop: 16,
+    gap: 8,
   },
 });
 
